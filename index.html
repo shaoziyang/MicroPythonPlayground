@@ -79,6 +79,17 @@
     /* 贪吃蛇：自动 / 手动 两种模式的蛇身配色（暗色主题） */
     --snake-auto-a: #2dd4bf; --snake-auto-b: #0d9488;    /* 自动：青绿同色系深浅（主题主色） */
     --snake-manual-a: #818cf8; --snake-manual-b: #6366f1; /* 手动：靛蓝同色系深浅（主题辅色） */
+    --snake-cpu-a: #fb7185; --snake-cpu-b: #e11d48;      /* 模式2 计算机蛇：玫红同色系（与青绿/靛蓝明显区别） */
+    /* 模式3 群雄争霸：6 条 PC 蛇各自配色（避开玩家青绿/靛蓝、食物黄、网格色） */
+    --snake-p1-a: #fb923c; --snake-p1-b: #ea580c;  /* 橙 */
+    --snake-p2-a: #c084fc; --snake-p2-b: #9333ea;  /* 紫 */
+    --snake-p3-a: #38bdf8; --snake-p3-b: #0284c7;  /* 天蓝 */
+    --snake-p4-a: #a3e635; --snake-p4-b: #4d7c0f;  /* 黄绿 */
+    --snake-p5-a: #f472b6; --snake-p5-b: #db2777;  /* 粉红 */
+    --snake-p6-a: #fb7185; --snake-p6-b: #e11d48;  /* 玫红 */
+    /* 俄罗斯方块 7 色（暗色主题） */
+    --tet-i: #22d3ee; --tet-o: #fbbf24; --tet-t: #a78bfa;
+    --tet-s: #4ade80; --tet-z: #fb7185; --tet-j: #60a5fa; --tet-l: #fb923c;
     --warn: #fbbf24;
     --ok: #34d399;
     --ok-ring: rgba(52, 211, 153, .14);
@@ -159,6 +170,17 @@
     /* 贪吃蛇：自动 / 手动 两种模式的蛇身配色（亮色主题，加深以保证对比） */
     --snake-auto-a: #0d9488; --snake-auto-b: #115e59;    /* 自动：深青绿同色系深浅 */
     --snake-manual-a: #4f46e5; --snake-manual-b: #4338ca; /* 手动：深靛蓝同色系深浅 */
+    --snake-cpu-a: #e11d48; --snake-cpu-b: #9f1239;      /* 模式2 计算机蛇：深玫红（加深保证对比） */
+    /* 模式3 群雄争霸：6 条 PC 蛇各自配色（亮色主题加深保证对比） */
+    --snake-p1-a: #ea580c; --snake-p1-b: #9a3412;  /* 橙 */
+    --snake-p2-a: #9333ea; --snake-p2-b: #6b21a8;  /* 紫 */
+    --snake-p3-a: #0284c7; --snake-p3-b: #075985;  /* 天蓝 */
+    --snake-p4-a: #4d7c0f; --snake-p4-b: #365314;  /* 黄绿 */
+    --snake-p5-a: #db2777; --snake-p5-b: #9d174d;  /* 粉红 */
+    --snake-p6-a: #e11d48; --snake-p6-b: #9f1239;  /* 玫红 */
+    /* 俄罗斯方块 7 色（亮色主题，加深保证对比） */
+    --tet-i: #0891b2; --tet-o: #b45309; --tet-t: #7c3aed;
+    --tet-s: #16a34a; --tet-z: #e11d48; --tet-j: #2563eb; --tet-l: #ea580c;
     --warn: #d97706;
     --ok: #16a34a;
     --ok-ring: rgba(22, 163, 74, .16);
@@ -810,6 +832,8 @@
   }
   .about-body ul { margin: 0; padding-left: 18px; }
   .about-body li { margin: 2px 0; }
+  .about-body .more-link { color: var(--accent-strong); text-decoration: none; font-weight: 600; }
+  .about-body .more-link:hover { text-decoration: underline; }
   .about-body kbd {
     font: 500 10.5px/1 var(--mono); padding: 2px 5px; border-radius: 4px;
     background: var(--kbd-bg); color: var(--muted); border: 1px solid var(--border-soft);
@@ -860,6 +884,74 @@
   .about-snake-score .manual { color: var(--snake-manual-a); }  /* 手动分：手动模式主题色 */
   .about-snake-score .sep    { color: var(--muted-2); margin: 0 2px; }
   .about-snake-score .auto   { color: var(--snake-auto-a); }    /* 自动分：自动模式主题色 */
+  /* 大屏控制行：模式下拉框 + 分数；默认隐藏（小屏沿用画布 HUD 分数） */
+  .about-snake-bar {
+    display: none; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 0 6px 10px;
+  }
+  .about-snake-bar select {
+    font: inherit; font-size: 14px; cursor: pointer;
+    color: var(--fg); background: var(--panel-2);
+    border: 1px solid var(--border-soft); border-radius: 6px;
+    padding: 5px 10px;
+  }
+  .about-snake-bar-score {
+    margin-left: auto; font-family: var(--mono);
+    font-size: 18px; font-weight: 700; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  /* 分数颜色与蛇身颜色对应：手动=靛蓝、自动/人工=青绿、计算机=玫红 */
+  .about-snake-bar-score .manual { color: var(--snake-manual-a); } /* 手动分：手动蛇色 */
+  .about-snake-bar-score .auto   { color: var(--snake-auto-a); }   /* 自动分：自动蛇色 */
+  .about-snake-bar-score .human  { color: var(--snake-auto-a); }   /* 人工分（模式2）：人工蛇主色 */
+  .about-snake-bar-score .cpu    { color: var(--snake-cpu-a); }    /* 计算机分：CPU蛇色 */
+  .about-snake-bar-score .sep    { color: var(--muted-2); margin: 0 4px; }
+  /* 最高分：品牌强调色醒目、可点击清零 */
+  .about-snake-bar-best {
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-2); cursor: default; white-space: nowrap;
+  }
+  .about-snake-bar-best .hb, .about-snake-bar-best .cb {
+    pointer-events: auto; cursor: pointer;
+  }
+  .about-snake-bar-best .hb { color: var(--accent-strong); }  /* 人工最高分：品牌强调色 */
+  .about-snake-bar-best .cb { color: var(--snake-cpu-a); }    /* 电脑最高分：CPU蛇色 */
+  .about-snake-bar-best .hb:hover, .about-snake-bar-best .cb:hover {
+    text-decoration: underline;
+  }
+  /* 亮色主题下「最高分」文字用灰色（需高于 .about-body b 的特异性，否则被近黑 --fg 覆盖） */
+  :root[data-theme="light"] .about-body .about-snake-bar-best { color: var(--muted-2); }
+  /* 模式3 群雄争霸：7 条蛇各自分数的紧凑显示 */
+  .about-snake-bar-arena {
+    display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .about-snake-bar-arena[hidden] { display: none; }
+  .about-snake-bar-arena .asb-item { white-space: nowrap; }
+  .about-snake-bar-arena .asb-item .asb-dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 2px;
+    margin-right: 3px; vertical-align: 1px;
+  }
+  .about-snake-bar-arena .asb-item.is-out { opacity: .35; text-decoration: line-through; }
+  /* 模式4 俄罗斯方块：得分/消行/等级 */
+  .about-snake-bar-tetris {
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted-2);
+  }
+  .about-snake-bar-tetris[hidden] { display: none; }
+  .about-snake-bar-tetris span { color: var(--accent-strong); }
+  /* 模式4：AI 对手开关（仅宽度足够/横屏时显示） */
+  .about-snake-bar-rival {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; color: var(--muted-2); cursor: pointer; white-space: nowrap;
+    user-select: none;
+  }
+  .about-snake-bar-rival[hidden] { display: none; }
+  .about-snake-bar-rival input { cursor: pointer; accent-color: var(--accent-strong); margin: 0; }
+  .about-snake-bar-rival select { font-size: 12px; padding: 3px 6px; }
+  .about-snake-bar-rival > span { color: var(--muted-2); }
   .about-snake canvas {
     width: 100%; height: 112px; display: block; cursor: pointer;
     background: var(--panel-2); border: 1px solid var(--border-soft);
@@ -879,16 +971,16 @@
   }
   .about-modal.snake-max .about-body > *:not(.about-snake) { display: none; }
   .about-modal.snake-max .about-snake {
-    flex: 1; min-height: 0; margin: 0; padding: 0; border: 0;
-    display: flex;
+    flex: 1; min-height: 0; margin: 0; padding: 12px; border: 0;
+    display: flex; flex-direction: column;
   }
+  .about-modal.snake-max .about-snake-bar { display: flex; }
   .about-modal.snake-max .about-snake-stage { flex: 1; min-height: 0; }
   .about-modal.snake-max .about-snake canvas {
     width: 100%; height: 100%; border: 0; border-radius: 0;
   }
-  .about-modal.snake-max .about-snake-score {
-    top: 14px; right: 18px; font-size: 22px;
-  }
+  /* 大屏分数移到上方控制行，隐藏画布右上 HUD 分数 */
+  .about-modal.snake-max .about-snake-score { display: none; }
   /* 环境信息行：内核版本 + PHP 版本同排 */
   .about-env-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 10px; }
   /* 版本行：程序版本 + 项目链接按钮同排 */
@@ -1099,7 +1191,8 @@
         <li>两级示例菜单（按类别浏览）与常用链接</li>
         <li>检查并更新内核，支持多 CDN 与 PHP 本地更新</li>
         <li>上下 / 左右分区切换，拖动分割条调整</li>
-        <li>代码、主题与布局自动保存到本地（file 模式用 localStorage，HTTP 模式兼容 Cookie）</li>
+        <li>代码、主题与布局自动保存到本地</li>
+        <li><a class="more-link" href="https://gitee.com/shaoziyang/MicroPythonPlayground/blob/main/README.md" target="_blank" rel="noopener">详细说明 →</a></li>
       </ul>
       <h3>快捷键</h3>
       <ul>
@@ -1109,6 +1202,22 @@
         <li>双击分割条重置分区比例</li>
       </ul>
       <div class="about-snake">
+        <div class="about-snake-bar" id="snakeBar">
+          <select id="snakeModeSel" aria-label="选择贪吃蛇模式" title="选择模式（也可按数字键 1-9）">
+            <option value="1">1. 合作模式</option>
+            <option value="2">2. 人机对战</option>
+            <option value="3">3. 群雄争霸</option>
+            <option value="4">4. 俄罗斯方块</option>
+            <option value="5">5. 2048</option>
+          </select>
+          <b class="about-snake-bar-score" id="snakeBarScore"><span class="manual" id="barHumanScore">0</span><span class="sep" id="barSep">:</span><span class="auto" id="barOtherScore">0</span></b>
+          <b class="about-snake-bar-best" id="barBest">最高分 <span class="hb" id="barBestHuman" title="点击清零最高分">0</span><span id="barBestCpuWrap" hidden> · <span class="cb" id="barBestCpu" title="点击清零电脑最高分">0</span></span></b>
+          <div class="about-snake-bar-arena" id="arenaScoreBar" hidden></div>
+          <b class="about-snake-bar-tetris" id="tetrisScoreBar" hidden>得分 <span id="tetScore">0</span> · 消行 <span id="tetLines">0</span> · 等级 <span id="tetLevel">1</span></b>
+          <b class="about-snake-bar-tetris" id="g2048ScoreBar" hidden>得分 <span id="g2048Score">0</span></b>
+          <label class="about-snake-bar-rival" id="tetRivalWrap" hidden title="勾选后和电脑对战，右边会多出一盘由电脑自己玩"><input type="checkbox" id="tetRivalChk"> 对战</label>
+          <label class="about-snake-bar-rival" id="tetAiLevelWrap" hidden title="电脑对手的等级，等级越高下落越快；修改后重新开局"><span>电脑等级</span><select id="tetAiLevelSel" aria-label="选择电脑对手等级"></select></label>
+        </div>
         <div class="about-snake-stage">
           <canvas id="snakeCanvas"></canvas>
           <b id="snakeScore" class="about-snake-score"><span class="manual" id="snakeManualScore">0</span><span class="sep">:</span><span class="auto" id="snakeAutoScore">0</span></b>
@@ -3014,7 +3123,7 @@ setTimeout(autoCheckUpdate, 1500);
  * 【约定】以后每次修改默认自动递增最后一位（除非特别说明），
  * 只改本常量一处即可，显示在「关于」信息框正文。
  * 历史：1.1.10 → 1.1.11 → 1.1.12 → 1.1.13 → 1.1.14 → 1.1.15 → 1.1.16 → 1.1.17 → 1.1.19 */
-const APP_VERSION = '1.1.41';
+const APP_VERSION = '1.6.5';
 
 const SAMPLE_GROUPS = [
   {
@@ -4726,6 +4835,20 @@ linksEl.addEventListener('change', () => {
   const scoreEl = $('snakeScore');
   const manualScoreEl = $('snakeManualScore');
   const autoScoreEl = $('snakeAutoScore');
+  const modeSel = $('snakeModeSel');
+  const barHumanScoreEl = $('barHumanScore');
+  const barOtherScoreEl = $('barOtherScore');
+  const barBestHumanEl = $('barBestHuman');
+  const barBestCpuEl = $('barBestCpu');
+  const barBestCpuWrapEl = $('barBestCpuWrap');
+  const barBestEl = $('barBest');
+  const snakeBarScoreEl = $('snakeBarScore');
+  const arenaScoreBarEl = $('arenaScoreBar');
+  const tetrisScoreBarEl = $('tetrisScoreBar');
+  const tetScoreEl = $('tetScore'), tetLinesEl = $('tetLines'), tetLevelEl = $('tetLevel');
+  const tetRivalWrapEl = $('tetRivalWrap'), tetRivalChkEl = $('tetRivalChk');
+  const tetAiLevelWrapEl = $('tetAiLevelWrap'), tetAiLevelSelEl = $('tetAiLevelSel');
+  const g2048ScoreBarEl = $('g2048ScoreBar'), g2048ScoreEl = $('g2048Score');
   const ctx = canvas ? canvas.getContext('2d') : null;
   const BASE_CELL = 12;          // 初始每格像素（小屏）
   const MIN_CELL = 6;            // 每格像素下限（小屏）
@@ -4738,23 +4861,119 @@ linksEl.addEventListener('change', () => {
   const SPEED_MIN = 60;          // 最快：每步 60ms
   const SPEED_MAX = 300;         // 最慢：每步 300ms
   const SPEED_STEP = 20;         // 每次加速/减速调整的步长
-  let speed = SPEED_DEFAULT;     // 当前每步毫秒（值越小越快）
+  let speed = SPEED_DEFAULT;     // 人工蛇每步毫秒（玩家用方向键加减速，值越小越快）
+  const CPU_SPEED_DEFAULT = 150; // CPU 蛇每步毫秒（模式2独立速度，稍慢于人工默认，不随玩家按键变化）
+  let cpuSpeed = CPU_SPEED_DEFAULT;
   const FOOD_MIN = 2, FOOD_MAX = 3;   // 初始食物数量范围（每局随机 2~3 个）
   const FOOD_INTERVAL = 5000;    // 每隔多少毫秒自动增加一个食物
   const FOOD_CAP_SMALL = 6;      // 小屏食物数量上限
   const FOOD_CAP_MAX = 12;       // 大屏（摸鱼模式）食物数量上限
   const foodCap = () => snakeMax ? FOOD_CAP_MAX : FOOD_CAP_SMALL;
   let snakeMax = false;          // 是否处于大屏摸鱼模式（提前声明，供 foodCap 读取）
-  const FOOD_PER_TICK = 2;       // 定时器每次触发增加的食物数量
+  const FOOD_PER_TICK = 2;       // 定时器每次触发增加的食物数量（模式1/2）
+  // ---- 模式3 群雄争霸 ----
+  const ARENA_BOT_COUNT = 6;             // PC 蛇数量（玩家 + 6 条 PC = 7 条）
+  const ARENA_WIN_SCORE = 100;           // 先到 100 分者获胜/判负
+  const ARENA_FOOD_INTERVAL = 3000;      // 模式3：每 3 秒增加食物
+  const ARENA_FOOD_MIN = 3, ARENA_FOOD_MAX = 5;  // 模式3：每次增加 3~5 个食物
+  const ARENA_BOT_SPEED_MIN = 140;       // 模式3 PC 蛇随机速度下限（每步毫秒）
+  const ARENA_BOT_SPEED_MAX = 200;       // 模式3 PC 蛇随机速度上限（每步毫秒）
+  const ARENA_END_DELAY = 4500;          // game over / 获胜后停留时长（像素风结算画面），之后自动重开
+  // 6 条 PC 蛇的 CSS 配色变量名与兜底色（与上面暗色主题一致）
+  const ARENA_BOT_COLORS = [
+    ['--snake-p1-a', '--snake-p1-b', '#fb923c', '#ea580c'],
+    ['--snake-p2-a', '--snake-p2-b', '#c084fc', '#9333ea'],
+    ['--snake-p3-a', '--snake-p3-b', '#38bdf8', '#0284c7'],
+    ['--snake-p4-a', '--snake-p4-b', '#a3e635', '#4d7c0f'],
+    ['--snake-p5-a', '--snake-p5-b', '#f472b6', '#db2777'],
+    ['--snake-p6-a', '--snake-p6-b', '#fb7185', '#e11d48']
+  ];
+  // ---- 模式4 俄罗斯方块 ----
+  const TET_COLS = 10, TET_ROWS = 20;      // 标准 10×20 网格
+  const TET_BASE_DROP = 800;               // 初始每格自动下落间隔(ms)
+  const TET_MIN_DROP = 24;                 // 最快下落间隔(ms)：高等级持续加速，不再统一触底
+  const TET_LV_LINEAR = 12;                // 1~12 级线性加速上限；之后指数级继续加快
+  const TET_LEVEL_LINES = 10;              // 每消 10 行升一级、加速
+  const TET_OVER_DELAY = 2200;             // 结束后停留时长，之后自动重开
+  // 7 种方块（SRS 常见形状），每种含 4×4 旋转矩阵的 4 个朝向，预先按绕中心旋转生成
+  // 颜色用 CSS 变量名 + 兜底色，明暗主题自动适配
+  const TET_SHAPES = {
+    I: { cells: [[0,1],[1,1],[2,1],[3,1]], color: ['--tet-i', '#22d3ee'] },
+    O: { cells: [[1,0],[2,0],[1,1],[2,1]], color: ['--tet-o', '#fbbf24'] },
+    T: { cells: [[1,0],[0,1],[1,1],[2,1]], color: ['--tet-t', '#a78bfa'] },
+    S: { cells: [[1,0],[2,0],[0,1],[1,1]], color: ['--tet-s', '#4ade80'] },
+    Z: { cells: [[0,0],[1,0],[1,1],[2,1]], color: ['--tet-z', '#fb7185'] },
+    J: { cells: [[0,0],[0,1],[1,1],[2,1]], color: ['--tet-j', '#60a5fa'] },
+    L: { cells: [[2,0],[0,1],[1,1],[2,1]], color: ['--tet-l', '#fb923c'] }
+  };
+  const TET_TYPES = Object.keys(TET_SHAPES);
+  // 把 cells 绕 4×4 旋转： (x,y) -> (3-y, x)
+  const tetRotateCells = (cells) => cells.map(([x, y]) => [3 - y, x]);
+  // ---- 模式5 2048 ----
+  const G2048_SIZE = 4;                 // 4×4 棋盘
+  const G2048_WIN = 2048;               // 达成该数字即通关（可继续）
+  const G2048_OVER_DELAY = 2200;        // 无路可走后停留时长，之后自动重开
+  // 方块配色：按 2 的幂次映射，暗色主题用高饱和糖果色（与原版 2048 观感一致），明暗主题通用
+  const G2048_COLORS = {
+    2: '#eee4da', 4: '#ede0c8', 8: '#f2b179', 16: '#f59563',
+    32: '#f67c5f', 64: '#f65e3b', 128: '#edcf72', 256: '#edcc61',
+    512: '#edc850', 1024: '#edc53f', 2048: '#edc22e'
+  };
   const USER_IDLE_SMALL = 2000;  // 小屏：手动操作后多久无操作转回自动模式
   const USER_IDLE_MAX = 5000;    // 大屏摸鱼模式：延长到 5 秒，便于手动操控
   const userIdleMs = () => snakeMax ? USER_IDLE_MAX : USER_IDLE_SMALL;
   let cols = 0, rows = 0, snake = [], dir = { x: 1, y: 0 }, foods = [];
   let score = 0, manualScore = 0, alive = true, running = false, raf = 0, acc = 0, lastTs = 0;
+  let paused = false;            // 暂停开关：暂停时冻结推进（P 键切换，再次按恢复）
+  let pauseStartedAt = 0;        // 本次暂停开始时间（performance.now 基准），用于恢复时平移各计时基准
+  let accCpu = 0;                // CPU 蛇独立的步进累加器（与人工蛇 acc 分开，实现各自速度）
   let foodNextAt = 0;            // 下一次增加食物的绝对时间（performance.now 基准，独立于 rAF）
   let foodTimer = 0;             // 独立定时器句柄
   let userControl = false;       // 是否被方向键接管
   let lastUserInputAt = 0;       // 最后一次手动操作的时间（performance.now 基准）
+
+  // ---- 模式状态 ----
+  // gameMode: 1=单蛇（原版，小屏固定）；2=人机对战；3=群雄争霸（玩家 + 6 条 PC，仅大屏）
+  let gameMode = 1;
+  // 上次处于大屏时使用的模式（1~5），持久化：退出大屏时保存，再进大屏时恢复。
+  // 小屏始终强制模式1，故此处记录的是「大屏模式」，而非当前实际模式。
+  let savedBigMode = Math.max(1, Math.min(5, parseInt(cookieGet('mp_snake_mode') || '1', 10) || 1));
+  // 模式2 的计算机蛇：独立蛇身/方向/存活/分数，与人工蛇共用食物与网格
+  let cpuSnake = [], cpuDir = { x: -1, y: 0 }, cpuAlive = true, cpuScore = 0;
+  // 模式3 群雄争霸：6 条 PC 蛇，各自独立蛇身/方向/存活/分数/配色
+  // 每项：{ body, dir, alive, score, acc, color:[aVar,bVar,aFb,bFb] }
+  let arenaBots = [];
+  let arenaOver = false;         // 模式3 是否已分出胜负（game over / 获胜）
+  let arenaOverWin = false;      // true=玩家获胜，false=玩家失败（game over）
+  let arenaOverAt = 0;           // 分出胜负的时间戳，用于延时自动重开
+  // 模式4 俄罗斯方块：状态封装为实例，主游戏与右侧 AI 对手各持一份、互不干扰。
+  // createTetris() 为工厂函数（声明提升到本作用域，下方实例化时其依赖的常量均已就绪）。
+  const TET_AI_IDLE = 4000;      // 手动后多久无操作交给 AI
+  const TET_AI_STEP = 60;        // AI 每执行一步（旋转/平移）的间隔(ms)
+  const tetWide = () => window.innerWidth >= 960;   // 横屏/宽度足够：才显示 AI 对手复选框并允许并排两盘
+  const tetMain = createTetris();    // 左侧主游戏：开局手动、空闲交 AI、键盘可接管
+  const tetRival = createTetris();   // 右侧 AI 对手：完全 AI 控制
+  tetRival.alwaysAI = true;          // 对手恒为 AI，不接受键盘、不走空闲交还逻辑
+  // 对手起始等级默认 5，从持久化存储读取（localStorage 优先、Cookie 回退），范围钳制 1~100
+  let tetRivalLevel = Math.max(1, Math.min(100, parseInt(cookieGet('mp_tet_ai_level') || '5', 10) || 5));
+  tetRival.baseLevel = tetRivalLevel;
+  // 动态生成 1~100 等级选项，再回显当前等级
+  if (tetAiLevelSelEl) {
+    let _opts = '';
+    for (let i = 1; i <= 100; i++) _opts += '<option value="' + i + '">' + i + '</option>';
+    tetAiLevelSelEl.innerHTML = _opts;
+    tetAiLevelSelEl.value = String(tetRivalLevel);
+  }
+  let tetRivalOn = false;            // 复选框是否勾选（默认不选中）
+  // 模式5 2048：状态封装为实例（工厂 create2048 声明提升，下方定义）
+  const g2048 = create2048();
+  // 各模式最高分（峰值），用统一存储层持久化
+  // 模式1（合作模式）= mp_snake_best1；模式2 人工 = mp_snake_best2、电脑 = mp_snake_best2_cpu
+  let best1 = parseInt(cookieGet('mp_snake_best1') || '0', 10) || 0;
+  let best2 = parseInt(cookieGet('mp_snake_best2') || '0', 10) || 0;
+  let best2Cpu = parseInt(cookieGet('mp_snake_best2_cpu') || '0', 10) || 0;
+  let tetBest = parseInt(cookieGet('mp_snake_best4') || '0', 10) || 0;  // 模式4 俄罗斯方块最高分
+  let g2048Best = parseInt(cookieGet('mp_snake_best5') || '0', 10) || 0; // 模式5 2048 最高分
 
   const cssVar = (n, fb) => (getComputedStyle(document.documentElement).getPropertyValue(n).trim() || fb);
 
@@ -4773,7 +4992,10 @@ linksEl.addEventListener('change', () => {
   // 在所有空格中挑一个不与蛇身、其它食物重叠的位置
   function randomFreeCell() {
     const occupied = (x, y) =>
-      snake.some(s => s.x === x && s.y === y) || foods.some(f => f.x === x && f.y === y);
+      snake.some(s => s.x === x && s.y === y) ||
+      (gameMode === 2 && cpuSnake.some(s => s.x === x && s.y === y)) ||
+      (gameMode === 3 && arenaBots.some(b => b.alive && b.body.some(s => s.x === x && s.y === y))) ||
+      foods.some(f => f.x === x && f.y === y);
     const free = [];
     for (let y = 0; y < rows; y++)
       for (let x = 0; x < cols; x++)
@@ -4782,7 +5004,11 @@ linksEl.addEventListener('change', () => {
   }
   function addFood() {
     const cell = randomFreeCell();
-    if (cell) foods.push(cell);
+    if (cell) {
+      // 模式3：10% 概率生成加5分食物（bonus），其余为普通食物
+      if (gameMode === 3 && Math.random() < 0.1) cell.bonus = true;
+      foods.push(cell);
+    }
     return !!cell;
   }
   // 摆放指定数量的食物（撞死后重开时保留原数量、避开新蛇身）
@@ -4791,46 +5017,248 @@ linksEl.addEventListener('change', () => {
     for (let i = 0; i < n; i++) if (!addFood()) break; // 空格用尽则停止
   }
 
-  // 分数 HUD：手动分 : 自动分，颜色由主题变量控制（见 .about-snake-score 子 span）
-  // 自动分 = 总分 − 手动分（总分计入所有模式吃到的食物）
+  // 模式4：根据「当前模式 + 宽度是否足够」显示 AI 对手复选框；等级下拉框仅在勾选对战时显示。
+  // 宽度不足时自动隐藏（但保留勾选/等级状态）。
+  function syncTetRivalUI() {
+    const show = (gameMode === 4 && tetWide());
+    if (tetRivalWrapEl) tetRivalWrapEl.hidden = !show;
+    if (tetAiLevelWrapEl) tetAiLevelWrapEl.hidden = !(show && tetRivalOn);
+  }
+  // 分数显示：画布 HUD（小屏/模式1）与控制行（大屏）同步更新。
+  // 模式1：手动分 : 自动分（自动分 = 总分 − 手动分），颜色与两种蛇身色对应。
+  // 模式2：人工得分 : 计算机得分。
   function updateScore() {
+    if (gameMode === 3) {
+      // 模式3：不写最高分；分列显示玩家 + 6 条 PC 各自分数（撞死的蛇分数置灰划线）
+      if (snakeBarScoreEl) snakeBarScoreEl.hidden = true;
+      if (barBestEl) barBestEl.hidden = true;
+      if (tetrisScoreBarEl) tetrisScoreBarEl.hidden = true;
+      if (g2048ScoreBarEl) g2048ScoreBarEl.hidden = true;
+      if (arenaScoreBarEl) {
+        arenaScoreBarEl.hidden = false;
+        const meColor = cssVar(userControl ? '--snake-manual-a' : '--snake-auto-a', userControl ? '#818cf8' : '#2dd4bf');
+        let html = '<span class="asb-item" style="color:' + meColor + '"><i class="asb-dot" style="background:' + meColor + '"></i>玩家 ' + score + '</span>';
+        arenaBots.forEach((b, i) => {
+          const c = cssVar(b.color[0], b.color[2]);
+          html += '<span class="asb-item' + (b.alive ? '' : ' is-out') + '" style="color:' + c + '"><i class="asb-dot" style="background:' + c + '"></i>PC' + (i + 1) + ' ' + b.score + '</span>';
+        });
+        arenaScoreBarEl.innerHTML = html;
+      }
+      return;
+    }
+    if (gameMode === 4) {
+      // 模式4：显示俄罗斯方块得分/消行/等级；最高分复用 barBest 行（可点击清零）
+      if (snakeBarScoreEl) snakeBarScoreEl.hidden = true;
+      if (arenaScoreBarEl) arenaScoreBarEl.hidden = true;
+      if (tetrisScoreBarEl) tetrisScoreBarEl.hidden = false;
+      if (g2048ScoreBarEl) g2048ScoreBarEl.hidden = true;
+      if (tetScoreEl) tetScoreEl.textContent = String(tetMain.score);
+      if (tetLinesEl) tetLinesEl.textContent = String(tetMain.lines);
+      if (tetLevelEl) tetLevelEl.textContent = String(tetMain.level);
+      // 破纪录即更新并持久化俄罗斯方块最高分（只记主游戏，对手不计）
+      if (tetMain.score > tetBest) { tetBest = tetMain.score; cookieSet('mp_snake_best4', String(tetBest)); }
+      renderBest();
+      return;
+    }
+    if (gameMode === 5) {
+      // 模式5：显示 2048 当前得分；最高分复用 barBest 行（可点击清零）
+      if (snakeBarScoreEl) snakeBarScoreEl.hidden = true;
+      if (arenaScoreBarEl) arenaScoreBarEl.hidden = true;
+      if (tetrisScoreBarEl) tetrisScoreBarEl.hidden = true;
+      if (g2048ScoreBarEl) g2048ScoreBarEl.hidden = false;
+      if (g2048ScoreEl) g2048ScoreEl.textContent = String(g2048.score);
+      if (g2048.score > g2048Best) { g2048Best = g2048.score; cookieSet('mp_snake_best5', String(g2048Best)); }
+      renderBest();
+      return;
+    }
+    // 模式1/2：恢复原分数行与最高分行
+    if (snakeBarScoreEl) snakeBarScoreEl.hidden = false;
+    if (barBestEl) barBestEl.hidden = false;
+    if (arenaScoreBarEl) arenaScoreBarEl.hidden = true;
+    if (tetrisScoreBarEl) tetrisScoreBarEl.hidden = true;
+    if (g2048ScoreBarEl) g2048ScoreBarEl.hidden = true;
+    // HUD（小屏/模式1）：手动分 : 自动分，语义恒定（颜色已由 .manual/.auto 对应蛇色）
     if (manualScoreEl) manualScoreEl.textContent = String(manualScore);
     if (autoScoreEl) autoScoreEl.textContent = String(score - manualScore);
+    // 大屏控制行：模式1 = 手动分 : 自动分；模式2 = 人工得分(人工蛇总分) : 计算机得分
+    const human = gameMode === 2 ? score : manualScore;
+    const other = gameMode === 2 ? cpuScore : score - manualScore;
+    if (barHumanScoreEl) {
+      barHumanScoreEl.textContent = String(human);
+      barHumanScoreEl.className = gameMode === 2 ? 'human' : 'manual'; // 手动分=靛蓝、人工分=青绿
+    }
+    if (barOtherScoreEl) {
+      barOtherScoreEl.textContent = String(other);
+      barOtherScoreEl.className = gameMode === 2 ? 'cpu' : 'auto';     // 自动分=青绿、计算机分=玫红
+    }
+    // 最高分：模式1记总分；模式2 人工与电脑分别记，破纪录即更新并持久化
+    if (gameMode === 2) {
+      if (score > best2) { best2 = score; cookieSet('mp_snake_best2', String(best2)); }
+      if (cpuScore > best2Cpu) { best2Cpu = cpuScore; cookieSet('mp_snake_best2_cpu', String(best2Cpu)); }
+    } else if (score > best1) {
+      best1 = score; cookieSet('mp_snake_best1', String(best1));
+    }
+    renderBest();
+  }
+  // 把当前模式的最高分渲染到大屏控制行（模式2 显示人工与电脑两档；模式3 不记录/不显示）
+  function renderBest() {
+    if (gameMode === 3) {
+      if (barBestEl) barBestEl.hidden = true;
+      return;
+    }
+    if (barBestEl) barBestEl.hidden = false;
+    if (gameMode === 4) {
+      // 模式4：复用最高分行显示俄罗斯方块最高分（点击 barBestHuman 清零）
+      if (barBestHumanEl) { barBestHumanEl.textContent = String(tetBest); barBestHumanEl.title = '点击清零最高分'; }
+      if (barBestCpuWrapEl) barBestCpuWrapEl.hidden = true;
+    } else if (gameMode === 5) {
+      // 模式5：复用最高分行显示 2048 最高分（点击 barBestHuman 清零）
+      if (barBestHumanEl) { barBestHumanEl.textContent = String(g2048Best); barBestHumanEl.title = '点击清零最高分'; }
+      if (barBestCpuWrapEl) barBestCpuWrapEl.hidden = true;
+    } else if (gameMode === 2) {
+      if (barBestHumanEl) { barBestHumanEl.textContent = String(best2); barBestHumanEl.title = '点击清零玩家最高分'; }
+      if (barBestCpuEl) barBestCpuEl.textContent = String(best2Cpu);
+      if (barBestCpuWrapEl) barBestCpuWrapEl.hidden = false;
+    } else {
+      if (barBestHumanEl) { barBestHumanEl.textContent = String(best1); barBestHumanEl.title = '点击清零最高分'; }
+      if (barBestCpuWrapEl) barBestCpuWrapEl.hidden = true;
+    }
+  }
+  // 点击最高分：清零指定记录并重开本局（避免当前分数立刻把记录顶回）
+  function clearBest(who) {
+    if (gameMode === 3) return;                     // 模式3 不记录最高分，无可清零
+    if (gameMode === 4) {
+      tetBest = 0; cookieSet('mp_snake_best4', '0');
+      renderBest();
+      if (running) restartGame();
+      return;
+    }
+    if (gameMode === 5) {
+      g2048Best = 0; cookieSet('mp_snake_best5', '0');
+      renderBest();
+      if (running) restartGame();
+      return;
+    }
+    if (gameMode === 2) {
+      if (who === 'cpu') { best2Cpu = 0; cookieSet('mp_snake_best2_cpu', '0'); }
+      else { best2 = 0; cookieSet('mp_snake_best2', '0'); }
+    } else {
+      best1 = 0; cookieSet('mp_snake_best1', '0');
+    }
+    renderBest();
+    if (running) restartGame();
+  }
+  // 生成一条最短（3 节）蛇；ox 为网格横向比例，sx 为初始朝向（+1 向右 / -1 向左）
+  function newSnake(ox, sx) {
+    const cy = Math.floor(rows / 2), cx = Math.floor(cols * ox);
+    const body = [{ x: cx, y: cy }, { x: cx - sx, y: cy }, { x: cx - 2 * sx, y: cy }];
+    return { body, dir: { x: sx, y: 0 } };
+  }
+  // 模式3：生成 7 条蛇（玩家 + 6 PC），各自配色、独立累加器与随机速度
+  function resetArena() {
+    // 7 条蛇沿屏幕边缘的椭圆环均匀分布（比圆形更贴合矩形四边），蛇头朝中心行进。
+    // 椭圆半径按网格尺寸留 2 格余量，蛇身朝中心方向排列，保证不出界。
+    const cx = cols / 2, cy = rows / 2;
+    const rx = Math.max(2, cols / 2 - 2), ry = Math.max(2, rows / 2 - 2);
+    // i: 0=玩家，1~6=PC；角度从正上方(-π/2)起顺时针均分
+    const spawn = (i) => {
+      const ang = -Math.PI / 2 + i * (2 * Math.PI / (ARENA_BOT_COUNT + 1));
+      const hx = Math.round(cx + rx * Math.cos(ang));
+      const hy = Math.round(cy + ry * Math.sin(ang));
+      // 朝向中心：由蛇头指向中心的向量，取主轴分量
+      const vx = cx - hx, vy = cy - hy;
+      const d = Math.abs(vx) >= Math.abs(vy)
+        ? { x: vx >= 0 ? 1 : -1, y: 0 }
+        : { x: 0, y: vy >= 0 ? 1 : -1 };
+      // 蛇头在边缘环上，蛇身三节沿朝内方向延伸（头 + 方向*i），避免出界
+      return {
+        body: [{ x: hx, y: hy }, { x: hx + d.x, y: hy + d.y }, { x: hx + 2 * d.x, y: hy + 2 * d.y }],
+        dir: { x: d.x, y: d.y }
+      };
+    };
+    const me = spawn(0);
+    snake = me.body; dir = me.dir;
+    score = 0; manualScore = 0; alive = true; userControl = false; lastUserInputAt = 0;
+    arenaBots = ARENA_BOT_COLORS.map((color, i) => {
+      const b = spawn(i + 1);
+      // 每条 PC 蛇独立随机速度 140~200ms（含端点），重开时重新随机
+      const botSpeed = ARENA_BOT_SPEED_MIN + Math.floor(Math.random() * (ARENA_BOT_SPEED_MAX - ARENA_BOT_SPEED_MIN + 1));
+      return { body: b.body, dir: b.dir, alive: true, score: 0, acc: 0, speed: botSpeed, color: color };
+    });
+    arenaOver = false; arenaOverWin = false; arenaOverAt = 0;
   }
   function resetGame(fullReset) {
+    if (gameMode === 4) { tetMain.reset(); tetRival.reset(); updateScore(); draw(); return; }   // 俄罗斯方块：主游戏与对手各自独立重置
+    if (gameMode === 5) { g2048.reset(); updateScore(); draw(); return; }   // 2048：重置 4×4 棋盘
     const keep = foods.length;   // 重摆前记住当前食物数量（撞死后据此保留）
     if (fullReset) {
-      // 进入信息框：重置全部参数（大屏格宽固定 10 / 小屏回到动态初始值、食物数随机 2~3、计时清零）
+      // 进入信息框：重置全部参数（大屏格宽固定 10 / 小屏回到动态初始值、食物数随机、计时清零）
       CELL = snakeMax ? CELL_MAX_MODE : cellForLength(3);
-      speed = SPEED_DEFAULT;     // 完整重开时速度恢复默认
-      foodNextAt = performance.now() + FOOD_INTERVAL;
+      speed = SPEED_DEFAULT;        // 完整重开时人工蛇速度恢复默认
+      cpuSpeed = CPU_SPEED_DEFAULT; // CPU 蛇速度恢复默认
+      acc = 0; accCpu = 0;          // 各蛇步进累加器清零，保证各自节奏从头开始
+      foodNextAt = performance.now() + (gameMode === 3 ? ARENA_FOOD_INTERVAL : FOOD_INTERVAL);
     }
     // 撞死后（fullReset 为假）：保留 CELL 与当前食物数量，不恢复格宽
     sizeCanvas();
-    snake = [];
-    const cy = Math.floor(rows / 2), cx = Math.floor(cols / 3);
-    snake.push({ x: cx, y: cy }, { x: cx - 1, y: cy }, { x: cx - 2, y: cy });
-    dir = { x: 1, y: 0 };
-    score = 0; manualScore = 0; alive = true; userControl = false; lastUserInputAt = 0;
+    if (gameMode === 3) {
+      resetArena();
+    } else {
+      // 人工蛇：模式1 始终在左侧 1/3；模式2 同样在左侧，CPU 蛇在右侧 2/3
+      const s = newSnake(1 / 3, 1);
+      snake = s.body; dir = s.dir;
+      score = 0; manualScore = 0; alive = true; userControl = false; lastUserInputAt = 0;
+      // 模式2 才初始化计算机蛇与其分数；模式1 清空 CPU 蛇，行为与原版一致
+      if (gameMode === 2) {
+        const c = newSnake(2 / 3, -1);
+        cpuSnake = c.body; cpuDir = c.dir; cpuAlive = true; cpuScore = 0;
+      } else {
+        cpuSnake = [];
+      }
+      arenaBots = [];
+      arenaOver = false; arenaOverWin = false; arenaOverAt = 0;
+    }
     const n = fullReset
-      ? FOOD_MIN + Math.floor(Math.random() * (FOOD_MAX - FOOD_MIN + 1))
+      ? (gameMode === 3
+          ? ARENA_FOOD_MIN + Math.floor(Math.random() * (ARENA_FOOD_MAX - ARENA_FOOD_MIN + 1))
+          : FOOD_MIN + Math.floor(Math.random() * (FOOD_MAX - FOOD_MIN + 1)))
       : Math.min(keep, foodCap());
     placeFoods(n);
     updateScore();
     draw();
   }
-
-  // 自动巡游：优先不改变方向，避免撞墙/自身；必要时转向食物
-  function safe(nx, ny) {
-    if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) return false;
-    // 尾格下一步会空出，允许进入
-    const body = snake.slice(0, -1);
-    return !body.some(s => s.x === nx && s.y === ny);
+  // 模式2 单条蛇撞死后的重生：蛇身回到最短、方向复位，但不重置 CELL / 食物 / 计时 / 分数
+  function respawnHuman() {
+    const s = newSnake(1 / 3, 1);
+    snake = s.body; dir = s.dir; alive = true;
   }
-  function autoDir() {
-    const head = snake[0];
-    const opts = [dir, { x: -dir.y, y: dir.x }, { x: dir.y, y: -dir.x }];
-    const valid = opts.filter(d => safe(head.x + d.x, head.y + d.y));
+  function respawnCpu() {
+    const c = newSnake(2 / 3, -1);
+    cpuSnake = c.body; cpuDir = c.dir; cpuAlive = true;
+  }
+
+  // 自动巡游：优先不改变方向，避免撞墙/自身；必要时转向食物。
+  // 参数可省略：不传时按人工蛇（snake/dir）计算，保证模式1调用完全等价；
+  // 模式2 传入指定蛇身、方向与对手，实现两条蛇各自寻路并互相避让。
+  // opponents 可为 null、单条蛇身数组（模式2），或蛇身数组的数组（模式3 多对手）
+  function safe(nx, ny, self, opponents) {
+    if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) return false;
+    const body = (self || snake).slice(0, -1);   // 自身尾格下一步会空出，允许进入
+    if (body.some(s => s.x === nx && s.y === ny)) return false;
+    if (!opponents) return true;
+    // 归一化：单条蛇身（元素为 {x,y}）→ 包成数组；多条 → 直接用
+    const list = (opponents.length && opponents[0] && typeof opponents[0].x === 'number')
+      ? [opponents] : opponents;
+    for (const ob of list) {
+      if (ob && ob.slice(0, -1).some(s => s.x === nx && s.y === ny)) return false;
+    }
+    return true;
+  }
+  function autoDir(self, curDir, opponents) {
+    self = self || snake; curDir = curDir || dir;
+    const head = self[0];
+    const opts = [curDir, { x: -curDir.y, y: curDir.x }, { x: curDir.y, y: -curDir.x }];
+    const valid = opts.filter(d => safe(head.x + d.x, head.y + d.y, self, opponents));
     if (!valid.length) return null;
     // 略微朝食物：在有效方向里选距离最近食物更近的
     let best = valid[0], bd = Infinity;
@@ -4842,30 +5270,50 @@ linksEl.addEventListener('change', () => {
         if (d1 < dist) dist = d1;
       }
       // 保持直行有轻微偏好，避免抖动
-      const biased = dist - (d.x === dir.x && d.y === dir.y ? 0.5 : 0);
+      const biased = dist - (d.x === curDir.x && d.y === curDir.y ? 0.5 : 0);
       if (biased < bd) { bd = biased; best = d; }
     }
     return best;
   }
 
-  function step() {
-    if (!alive) { resetGame(false); return; }   // 撞死后重开：保留 CELL 与食物数量
-  // 手动操作后若空闲超时（大屏 5 秒 / 小屏 2 秒）无新操作，自动切回自动巡游
-  if (userControl && performance.now() - lastUserInputAt >= userIdleMs()) userControl = false;
-    const nd = userControl ? dir : autoDir();
-    if (!nd) { alive = false; return; }   // 无路可走 → 下一拍重开
+  // 推进人工蛇一步（由 step 调用）。返回 true 表示本步吃到食物。
+  // opponent 为对手蛇身（模式2 的 CPU 蛇），模式1 传 null → 行为与原版完全一致。
+  function advanceHuman(opponent) {
+    if (userControl && performance.now() - lastUserInputAt >= userIdleMs()) userControl = false;
+    const nd = userControl ? dir : autoDir(snake, dir, opponent);
+    if (!nd) { alive = false; return false; }   // 无路可走
     dir = nd;
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
-    if (!safe(head.x, head.y)) { alive = false; return; }
+    // 模式3：蛇头撞到 PC 蛇身视作「撞死对方」——对方出局、玩家 +15 分并继续前进；
+    // 撞墙 / 撞自己仍按原规则死亡。opponent 为所有活 PC 蛇身数组的数组。
+    if (gameMode === 3 && opponent && opponent.length) {
+      const selfBody = snake.slice(0, -1);
+      const hitWall = head.x < 0 || head.y < 0 || head.x >= cols || head.y >= rows;
+      const hitSelf = selfBody.some(s => s.x === head.x && s.y === head.y);
+      if (!hitWall && !hitSelf) {
+        let victim = null;
+        for (const body of opponent) {
+          if (body.some(s => s.x === head.x && s.y === head.y)) { victim = body; break; }
+        }
+        if (victim) {
+          const bot = arenaBots.find(b => b.alive && b.body === victim);
+          if (bot) { bot.alive = false; score += 15; if (userControl) manualScore += 15; }
+          snake.unshift(head); snake.pop();   // 占据该格，长度不变
+          return false;                        // 未吃到食物（分数变化由调用方统一刷新）
+        }
+      }
+    }
+    if (!safe(head.x, head.y, snake, opponent)) { alive = false; return false; }
     const ateIdx = foods.findIndex(f => f.x === head.x && f.y === head.y);
     const ate = ateIdx >= 0;
     snake.unshift(head);
     if (ate) {
-      score++;                          // 总分：所有模式吃到的都计入
-      if (userControl) manualScore++;   // 手动分：仅手动操控期间吃到的计入
-      updateScore();
+      // 加分食物（仅模式3生成）吃一次 +5，普通食物 +1
+      const gain = (gameMode === 3 && foods[ateIdx] && foods[ateIdx].bonus) ? 5 : 1;
+      score += gain;                       // 总分：所有模式吃到的都计入
+      if (userControl) manualScore += gain; // 手动分：仅手动操控期间吃到的计入
       // 小屏：蛇身变长后适度缩小格子（CELL 单调不增，撞死后不恢复）；大屏固定 10 不参与
-      if (!snakeMax) {
+      if (!snakeMax && gameMode !== 3) {
         const nextCell = Math.min(CELL, cellForLength(snake.length));
         if (nextCell !== CELL) {
           CELL = nextCell;
@@ -4876,11 +5324,678 @@ linksEl.addEventListener('change', () => {
     } else {
       snake.pop();
     }
+    return ate;
+  }
+  // 推进模式3 单条 PC 蛇一步。避开其余所有活蛇（玩家 + 其它 PC），吃到食物加分。
+  function advanceArenaBot(bot) {
+    if (!bot.alive) return false;
+    // 收集所有对手蛇身（玩家 + 其它活着的 PC）
+    const others = [];
+    if (alive) others.push(snake);
+    for (const o of arenaBots) if (o !== bot && o.alive) others.push(o.body);
+    const nd = autoDir(bot.body, bot.dir, others);
+    if (!nd) { bot.alive = false; return false; }
+    bot.dir = nd;
+    const head = { x: bot.body[0].x + bot.dir.x, y: bot.body[0].y + bot.dir.y };
+    if (!safe(head.x, head.y, bot.body, others)) { bot.alive = false; return false; }
+    const ateIdx = foods.findIndex(f => f.x === head.x && f.y === head.y);
+    const ate = ateIdx >= 0;
+    bot.body.unshift(head);
+    if (ate) {
+      // 加分食物（仅模式3生成）吃一次 +5，普通食物 +1
+      bot.score += (gameMode === 3 && foods[ateIdx] && foods[ateIdx].bonus) ? 5 : 1;
+      foods.splice(ateIdx, 1);
+    } else bot.body.pop();
+    return ate;
+  }
+
+  // ============ 模式4 俄罗斯方块 ============
+  // 工厂函数：每个实例持有独立网格/方块/分数/AI 状态；主游戏与右侧对手互不干扰。
+  function createTetris() {
+    const st = {
+      grid: [], cur: null, next: null,
+      score: 0, lines: 0, level: 1, baseLevel: 1,   // baseLevel：起始等级（玩家=1，AI 对手可由下拉框设置）
+      over: false, overAt: 0, acc: 0,
+      ai: false, alwaysAI: false, lastInputAt: 0,
+      aiAcc: 0, aiPlanCache: null, aiStuck: 0,
+      bag: []
+    };
+    // 用 7-bag 随机：每轮把 7 种方块洗牌后依次取用，保证分布均匀
+    st.randomType = function () {
+      if (!st.bag.length) {
+        st.bag = TET_TYPES.slice();
+        for (let i = st.bag.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [st.bag[i], st.bag[j]] = [st.bag[j], st.bag[i]];
+        }
+      }
+      return st.bag.pop();
+    };
+    // 碰撞检测：piece 在 (dx,dy) 偏移、rot 朝向下是否与边界或已固定格子重叠
+    st.collides = function (piece, dx, dy, rot) {
+      const cells = piece.rots[rot];
+      for (const [cx, cy] of cells) {
+        const x = piece.x + cx + dx, y = piece.y + cy + dy;
+        if (x < 0 || x >= TET_COLS || y >= TET_ROWS) return true;
+        if (y >= 0 && st.grid[y][x]) return true;
+      }
+      return false;
+    };
+    st.merge = function () {
+      for (const [cx, cy] of st.cur.rots[st.cur.rot]) {
+        const x = st.cur.x + cx, y = st.cur.y + cy;
+        if (y >= 0 && y < TET_ROWS && x >= 0 && x < TET_COLS) st.grid[y][x] = st.cur.color[1];
+      }
+    };
+    // 消行并按经典规则计分：1/2/3/4 行 = 100/300/500/800 × 等级
+    st.clearLines = function () {
+      let cleared = 0;
+      for (let y = TET_ROWS - 1; y >= 0; y--) {
+        if (st.grid[y].every(Boolean)) {
+          st.grid.splice(y, 1);
+          st.grid.unshift(Array(TET_COLS).fill(null));
+          cleared++;
+          y++;
+        }
+      }
+      if (cleared) {
+        st.score += [0, 100, 300, 500, 800][cleared] * st.level;
+        st.lines += cleared;
+        st.level = st.baseLevel + Math.floor(st.lines / TET_LEVEL_LINES);
+      }
+    };
+    st.spawn = function () {
+      st.cur = st.next || tetMakePiece(st.randomType());
+      st.next = tetMakePiece(st.randomType());
+      st.cur.x = Math.floor((TET_COLS - 4) / 2);
+      st.cur.y = 0;
+      st.cur.rot = 0;
+      st.aiPlanCache = null;
+      if (st.collides(st.cur, 0, 0, 0)) { st.over = true; st.overAt = performance.now(); }
+    };
+    st.rotate = function () {
+      if (st.over || !st.cur) return;
+      const nr = (st.cur.rot + 1) % 4;
+      for (const kick of [[0, 0], [-1, 0], [1, 0], [-2, 0], [2, 0], [0, -1]]) {
+        if (!st.collides(st.cur, kick[0], kick[1], nr)) {
+          st.cur.x += kick[0]; st.cur.y += kick[1]; st.cur.rot = nr;
+          return;
+        }
+      }
+    };
+    st.move = function (dx) {
+      if (st.over || !st.cur) return;
+      if (!st.collides(st.cur, dx, 0, st.cur.rot)) st.cur.x += dx;
+    };
+    st.step = function () {
+      if (st.over || !st.cur) return;
+      if (!st.collides(st.cur, 0, 1, st.cur.rot)) {
+        st.cur.y++;
+      } else {
+        st.merge(); st.clearLines(); st.spawn();
+      }
+    };
+    st.hardDrop = function () {
+      if (st.over || !st.cur) return;
+      while (!st.collides(st.cur, 0, 1, st.cur.rot)) st.cur.y++;
+      st.score += 2;
+      st.step();
+    };
+    st.dropInterval = function () {
+      const lv = st.level;
+      if (lv <= TET_LV_LINEAR) {
+        // 1~12 级：线性加速，800 → 约 85ms（沿用玩家主游戏的原有手感）
+        return Math.max(TET_MIN_DROP, TET_BASE_DROP - (lv - 1) * 65);
+      }
+      // 12 级以上：指数级持续加快，等级越高下落越快，100 级才逼近下限（高等级之间仍有区分）
+      // 以 12 级间隔为起点，每升一级乘以 0.986；50 级约 50ms、100 级约 25ms
+      const at12 = TET_BASE_DROP - (TET_LV_LINEAR - 1) * 65;   // ≈ 85ms
+      return Math.max(TET_MIN_DROP, at12 * Math.pow(0.986, lv - TET_LV_LINEAR));
+    };
+    // 完整重开。对手(alwaysAI)重开后仍保持 AI；主游戏重开为手动。
+    st.reset = function () {
+      st.grid = Array.from({ length: TET_ROWS }, () => Array(TET_COLS).fill(null));
+      st.bag = [];
+      st.score = 0; st.lines = 0; st.level = st.baseLevel;
+      st.over = false; st.overAt = 0; st.acc = 0;
+      st.ai = st.alwaysAI; st.aiAcc = 0; st.lastInputAt = performance.now();
+      st.aiPlanCache = null; st.aiStuck = 0;
+      st.next = tetMakePiece(st.randomType());
+      st.spawn();
+    };
+    // 模拟落点：把方块放到指定朝向、列 x，返回消行后的网格；起始即碰撞返回 null
+    st.simPlace = function (piece, rot, x) {
+      const g = st.grid.map(row => row.slice());
+      const tmp = { rots: piece.rots, rot, x, y: 0, color: piece.color };
+      if (st.collides(tmp, 0, 0, rot)) return null;
+      while (!st.collides(tmp, 0, 1, rot)) { tmp.y++; }
+      for (const [cx, cy] of piece.rots[rot]) {
+        const gx = x + cx, gy = tmp.y + cy;
+        if (gy < 0 || gy >= TET_ROWS || gx < 0 || gx >= TET_COLS || g[gy][gx]) return null;
+        g[gy][gx] = piece.color[1];
+      }
+      const kept = g.filter(row => !row.every(Boolean));
+      while (kept.length < TET_ROWS) kept.unshift(Array(TET_COLS).fill(null));
+      return kept;
+    };
+    st.aiPlan = function () {
+      if (!st.cur || st.over) return null;
+      let best = null;
+      for (let rot = 0; rot < 4; rot++) {
+        for (let x = -2; x < TET_COLS + 2; x++) {
+          const g = st.simPlace(st.cur, rot, x);
+          if (!g) continue;
+          const sc = tetEvalGrid(g);
+          if (!best || sc > best.score) best = { rot, x, score: sc };
+        }
+      }
+      return best;
+    };
+    // AI 推进一步：只做旋转 + 左右平移「摆位」，绝不硬降——下落速度由 frame 统一驱动。
+    st.aiTick = function () {
+      if (st.over || !st.cur) return;
+      if (!st.aiPlanCache) st.aiPlanCache = st.aiPlan();
+      if (!st.aiPlanCache) return;
+      const plan = st.aiPlanCache;
+      const before = st.cur.rot + ',' + st.cur.x;
+      if (st.cur.rot !== plan.rot) {
+        st.rotate();
+      } else if (st.cur.x < plan.x) {
+        st.move(1);
+      } else if (st.cur.x > plan.x) {
+        st.move(-1);
+      }
+      const after = st.cur.rot + ',' + st.cur.x;
+      if (before === after) st.aiPlanCache = { rot: st.cur.rot, x: st.cur.x, done: true };
+    };
+    return st;
+  }
+
+  // ============ 模式5 2048 ============
+  // 状态与逻辑封装为工厂；棋盘为 4×4 二维数组，0 表示空格，其余为 2 的幂。
+  function create2048() {
+    const st = {
+      grid: [], score: 0, won: false, keepPlaying: false,
+      over: false, overAt: 0, moved: false,
+      anim: null   // 本次移动的动画信息：{ cells:[{x,y,val,merged}], dir }
+    };
+    // 在随机空格生成一个新块：90% 出 2、10% 出 4（返回新块坐标供动画使用）
+    st.spawn = function () {
+      const empty = [];
+      for (let y = 0; y < G2048_SIZE; y++)
+        for (let x = 0; x < G2048_SIZE; x++)
+          if (!st.grid[y][x]) empty.push({ x, y });
+      if (!empty.length) return null;
+      const c = empty[Math.floor(Math.random() * empty.length)];
+      st.grid[c.y][c.x] = Math.random() < 0.9 ? 2 : 4;
+      return c;
+    };
+    st.reset = function () {
+      st.grid = Array.from({ length: G2048_SIZE }, () => Array(G2048_SIZE).fill(0));
+      st.score = 0; st.won = false; st.keepPlaying = false;
+      st.over = false; st.overAt = 0; st.anim = null;
+      st.spawn(); st.spawn();
+    };
+    // 是否还存在可移动方向（有空格，或存在相邻相同数字）
+    st.canMove = function () {
+      for (let y = 0; y < G2048_SIZE; y++)
+        for (let x = 0; x < G2048_SIZE; x++) {
+          const v = st.grid[y][x];
+          if (!v) return true;
+          if (x + 1 < G2048_SIZE && st.grid[y][x + 1] === v) return true;
+          if (y + 1 < G2048_SIZE && st.grid[y + 1][x] === v) return true;
+        }
+      return false;
+    };
+    // 核心：沿 (dx,dy) 滑动合并一行/列。返回 { line, gained, merges }
+    const collapse = (line) => {
+      const vals = line.filter(v => v > 0);
+      const out = [], merges = [];
+      let gained = 0;
+      for (let i = 0; i < vals.length; i++) {
+        if (i + 1 < vals.length && vals[i] === vals[i + 1]) {
+          const nv = vals[i] * 2;
+          out.push(nv); merges.push(nv); gained += nv;
+          if (nv === G2048_WIN) st.won = true;
+          i++;
+        } else out.push(vals[i]);
+      }
+      while (out.length < G2048_SIZE) out.push(0);
+      return { line: out, gained, merges };
+    };
+    // 移动：dx=±1 或 dy=±1。棋盘按移动方向从远端开始读取，使合并落在近端。
+    st.move = function (dx, dy) {
+      if (st.over) return false;
+      if (st.won && !st.keepPlaying) return false;   // 通关画面暂停，直到选择继续
+      const before = st.grid.map(r => r.slice());
+      let gained = 0, changed = false;
+      for (let i = 0; i < G2048_SIZE; i++) {
+        const idx = (j) => (dx > 0 || dy > 0) ? (G2048_SIZE - 1 - j) : j;
+        const line = [];
+        for (let j = 0; j < G2048_SIZE; j++) {
+          line.push(dy === 0 ? before[i][idx(j)] : before[idx(j)][i]);
+        }
+        const res = collapse(line);
+        gained += res.gained;
+        for (let j = 0; j < G2048_SIZE; j++) {
+          const val = res.line[j];
+          if (dy === 0) st.grid[i][idx(j)] = val;
+          else st.grid[idx(j)][i] = val;
+        }
+      }
+      for (let y = 0; y < G2048_SIZE; y++)
+        for (let x = 0; x < G2048_SIZE; x++)
+          if (st.grid[y][x] !== before[y][x]) { changed = true; break; }
+      if (!changed) return false;
+      st.score += gained;
+      const born = st.spawn();
+      st.anim = { born, dir: { dx, dy } };
+      if (!st.canMove()) { st.over = true; st.overAt = performance.now(); }
+      return true;
+    };
+    st.reset();
+    return st;
+  }
+  // 生成一个方块对象：预存 4 个旋转朝向的 cells，x/y 为左上角在网格中的位置
+  function tetMakePiece(type) {
+    const base = TET_SHAPES[type].cells;
+    const rots = [base];
+    for (let i = 1; i < 4; i++) rots.push(tetRotateCells(rots[i - 1]));
+    return { type, rot: 0, rots, x: Math.floor((TET_COLS - 4) / 2), y: 0, color: TET_SHAPES[type].color };
+  }
+  // 评估网格（纯函数）：消行多、总高度低、空洞少、相邻列平整 为优
+  function tetEvalGrid(g) {
+    const heights = [];
+    let agg = 0, holes = 0, lines = 0;
+    for (let y = 0; y < TET_ROWS; y++) if (g[y].every(Boolean)) lines++;
+    for (let x = 0; x < TET_COLS; x++) {
+      let top = -1;
+      for (let y = 0; y < TET_ROWS; y++) if (g[y][x]) { top = y; break; }
+      if (top < 0) { heights.push(0); continue; }
+      const h = TET_ROWS - top;
+      heights.push(h); agg += h;
+      for (let y = top + 1; y < TET_ROWS; y++) if (!g[y][x]) holes++;
+    }
+    let bump = 0;
+    for (let x = 0; x < TET_COLS - 1; x++) bump += Math.abs(heights[x] - heights[x + 1]);
+    return lines * 120 - agg * 3 - holes * 12 - bump * 2;
+  }
+
+  // 推进计算机蛇一步（仅模式2）。CPU 全自动寻路，避开人工蛇。
+  function advanceCpu() {
+    if (!cpuAlive) return false;
+    const nd = autoDir(cpuSnake, cpuDir, snake);
+    if (!nd) { cpuAlive = false; return false; }
+    cpuDir = nd;
+    const head = { x: cpuSnake[0].x + cpuDir.x, y: cpuSnake[0].y + cpuDir.y };
+    if (!safe(head.x, head.y, cpuSnake, snake)) { cpuAlive = false; return false; }
+    const ateIdx = foods.findIndex(f => f.x === head.x && f.y === head.y);
+    const ate = ateIdx >= 0;
+    cpuSnake.unshift(head);
+    if (ate) { cpuScore++; foods.splice(ateIdx, 1); } else cpuSnake.pop();
+    return ate;
+  }
+
+  // 模式3 胜负判定：任一条件成立即锁定结果并开始延时倒计时，期间蛇停止推进。
+  // win=true 玩家获胜（PC 全灭 / 玩家先到 100 分）；win=false 玩家失败（撞死 / PC 先到 100 分）
+  function arenaFinish(win) {
+    if (arenaOver) return;
+    arenaOver = true;
+    arenaOverWin = win;
+    arenaOverAt = performance.now();
+    draw();
+  }
+  function arenaCheckEnd() {
+    if (arenaOver) return;
+    // 玩家撞死
+    if (!alive) { arenaFinish(false); return; }
+    // 玩家先到 100 分获胜
+    if (score >= ARENA_WIN_SCORE) { arenaFinish(true); return; }
+    // 任意 PC 先到 100 分 → 玩家失败
+    if (arenaBots.some(b => b.score >= ARENA_WIN_SCORE)) { arenaFinish(false); return; }
+    // 6 条 PC 全部撞死 → 玩家获胜
+    if (arenaBots.length && arenaBots.every(b => !b.alive)) { arenaFinish(true); return; }
+  }
+  // 推进人工蛇一步。模式1：撞死重开；模式2：撞死重生；模式3：撞死 game over。
+  function stepHuman() {
+    if (arenaOver) return;   // 模式3 结束后蛇不再推进
+    if (gameMode === 3) {
+      const others = arenaBots.filter(b => b.alive).map(b => b.body);
+      advanceHuman(others);
+      updateScore();   // 吃食物 / 撞死对手 +15 都需即时刷新 7 条蛇分数栏
+      arenaCheckEnd();
+      draw();
+      return;
+    }
+    if (gameMode === 2) {
+      if (!alive) respawnHuman();
+      const a = advanceHuman(cpuSnake);
+      if (a) updateScore();
+      draw();
+      return;
+    }
+    // ---- 模式1：原始逻辑，保持不变 ----
+    if (!alive) { resetGame(false); return; }   // 撞死后重开：保留 CELL 与食物数量
+    const ate = advanceHuman(null);
+    if (ate) updateScore();
+    draw();
+  }
+  // 推进 CPU 蛇一步（模式2 单条 / 模式3 六条）。各自独立累加器与速度。
+  // bot 参数：模式3 指定推进哪一条 PC 蛇（每条用自己的累加器/速度独立推进，避免重复推进）；
+  // 模式2 不传参，保持原逻辑。玩家蛇走 stepHuman，与 PC 速度完全分开。
+  function stepCpu(bot) {
+    if (arenaOver) return;
+    if (gameMode === 3) {
+      if (bot && bot.alive) advanceArenaBot(bot);
+      arenaCheckEnd();
+      updateScore();   // 刷新 7 条蛇分数（含撞死置灰）
+      draw();
+      return;
+    }
+    if (gameMode !== 2) return;
+    if (!cpuAlive) respawnCpu();
+    const c = advanceCpu();
+    if (c) updateScore();
     draw();
   }
 
-  function draw() {
+  // 绘制单个俄罗斯方块棋盘。opts: { title, sideColor, showTips, showNext, badge }
+  function drawTetrisBoard(st, ox, oy, cell, opts) {
+    const boardW = TET_COLS * cell, boardH = TET_ROWS * cell;
+    // 棋盘背景与边框
+    ctx.fillStyle = cssVar('--panel', '#11151d');
+    ctx.fillRect(ox - 1, oy - 1, boardW + 2, boardH + 2);
+    // 网格线（淡）
+    ctx.strokeStyle = cssVar('--border-soft', '#1a2230');
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= TET_COLS; x++) { ctx.moveTo(ox + x * cell + 0.5, oy); ctx.lineTo(ox + x * cell + 0.5, oy + boardH); }
+    for (let y = 0; y <= TET_ROWS; y++) { ctx.moveTo(ox, oy + y * cell + 0.5); ctx.lineTo(ox + boardW, oy + y * cell + 0.5); }
+    ctx.stroke();
+    // 画一个格子（带高光描边，立体感）
+    const paintCell = (px, py, color) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(px + 1, py + 1, cell - 2, cell - 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillRect(px + 1, py + 1, cell - 2, Math.max(1, cell * 0.16));
+    };
+    // 已固定的方块
+    for (let y = 0; y < TET_ROWS; y++)
+      for (let x = 0; x < TET_COLS; x++)
+        if (st.grid[y][x]) paintCell(ox + x * cell, oy + y * cell, st.grid[y][x]);
+    // 当前下落块（幽灵影：先算落点）
+    if (st.cur) {
+      let gy = 0;
+      while (!st.collides(st.cur, 0, gy + 1, st.cur.rot)) gy++;
+      if (gy > st.cur.y) {
+        ctx.globalAlpha = 0.22;
+        for (const [cx, cy] of st.cur.rots[st.cur.rot]) {
+          const x = st.cur.x + cx, y = st.cur.y + cy + gy;
+          if (y >= 0 && y < TET_ROWS && x >= 0 && x < TET_COLS) paintCell(ox + x * cell, oy + y * cell, st.cur.color[1]);
+        }
+        ctx.globalAlpha = 1;
+      }
+      for (const [cx, cy] of st.cur.rots[st.cur.rot]) {
+        const x = st.cur.x + cx, y = st.cur.y + cy;
+        if (y >= 0 && y < TET_ROWS && x >= 0 && x < TET_COLS) paintCell(ox + x * cell, oy + y * cell, st.cur.color[1]);
+      }
+    }
+    // 信息栏：标题、NEXT 预览（颜色随控制状态：手动=靛蓝、AI=青绿）、操作提示。
+    // 单盘模式放在棋盘右侧；双盘模式由 drawSharedTetInfo 统一画在两盘中间，这里传 infoSide:'none' 跳过。
+    if (opts.infoSide !== 'none') {
+      const nx = ox + boardW + 10;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      let lineY = oy + 2;
+      if (opts.title) {
+        ctx.fillStyle = opts.sideColor || cssVar('--muted-2', '#7d8898');
+        ctx.font = 'bold 12px system-ui, sans-serif';
+        ctx.fillText(opts.title, nx, lineY); lineY += 18;
+      }
+      if (opts.showNext !== false) {
+        ctx.fillStyle = st.ai ? cssVar('--snake-auto-a', '#2dd4bf') : cssVar('--snake-manual-a', '#818cf8');
+        ctx.font = 'bold 11px system-ui, sans-serif';
+        ctx.fillText('NEXT', nx, lineY);
+        if (st.next) {
+          const pc = Math.max(5, Math.floor(cell * 0.7));
+          const ny = lineY + 18;
+          for (const [cx, cy] of st.next.rots[0]) paintCell(nx + cx * pc, ny + cy * pc, st.next.color[1]);
+        }
+      }
+      if (opts.showTips) {
+        ctx.fillStyle = cssVar('--muted-2', '#7d8898');
+        ctx.font = '10px system-ui, sans-serif';
+        const tips = ['←→ 移动', '↑ 旋转', '↓ 软降', '空格 硬降', 'A 交还电脑'];
+        tips.forEach((t, i) => ctx.fillText(t, nx, oy + boardH - 77 + i * 15));
+      }
+    }
+    // 结束遮罩
+    if (st.over) {
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fillRect(ox, oy, boardW, boardH);
+      ctx.fillStyle = cssVar('--err', '#f87171');
+      ctx.font = 'bold ' + Math.max(14, Math.floor(cell * 0.9)) + 'px system-ui, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('GAME OVER', ox + boardW / 2, oy + boardH / 2);
+    }
+  }
+  // 双盘模式：玩家与电脑的「标题 + NEXT 预览 + 统计」共用两盘之间的中间信息区，
+  // 全部画在空白带里，绝不覆盖任何一方的棋盘。
+  // 玩家信息靠左、AI 信息靠右（贴近 AI 棋盘）；操作提示统一放到最下方并放大。
+  // mx: 中间区左边界；mw: 中间区宽度；oy/boardH: 棋盘纵向范围；cell: 格子尺寸。
+  function drawSharedTetInfo(mx, oy, mw, boardH, cell) {
+    const pc = Math.max(5, Math.floor(cell * 0.7));      // NEXT 小格尺寸
+    const pad = 6;                                        // 与棋盘的左右留白
+    const leftX = mx + pad;                               // 玩家栏左对齐
+    const rightX = mx + mw - pad;                         // AI 栏右对齐（贴近 AI 棋盘）
+    ctx.textBaseline = 'top';
+
+    // 画一个 NEXT 预览块（align: left 从 x 向右排；right 以 x 为右边缘向左排）
+    const paintNext = (st, x, y, align) => {
+      ctx.textAlign = align;
+      ctx.fillStyle = st.ai ? cssVar('--snake-auto-a', '#2dd4bf') : cssVar('--snake-manual-a', '#818cf8');
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      ctx.fillText('NEXT', x, y);
+      if (!st.next) return;
+      const ny = y + 16;
+      for (const [cx, cy] of st.next.rots[0]) {
+        const bx = align === 'right' ? x - (cx + 1) * pc : x + cx * pc;
+        const by = ny + cy * pc;
+        ctx.fillStyle = st.next.color[1];
+        ctx.fillRect(bx + 1, by + 1, pc - 2, pc - 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.18)';
+        ctx.fillRect(bx + 1, by + 1, pc - 2, Math.max(1, pc * 0.16));
+      }
+    };
+
+    // ---- 玩家（上半，左对齐）：标题 + NEXT ----
+    let y = oy + 2;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = cssVar('--snake-manual-a', '#818cf8');
+    ctx.font = 'bold 12px system-ui, sans-serif';
+    ctx.fillText('玩家', leftX, y); y += 17;
+    paintNext(tetMain, leftX, y, 'left');
+
+    // ---- AI 对手（上半偏下，右对齐贴近 AI 棋盘）：标题 + NEXT + 得分/消行/等级 ----
+    let ay = oy + 2 + 17 + 16 + pc * 4 + 12;
+    ctx.textAlign = 'right';
+    ctx.fillStyle = cssVar('--snake-auto-a', '#2dd4bf');
+    ctx.font = 'bold 12px system-ui, sans-serif';
+    ctx.fillText('AI 对手', rightX, ay); ay += 17;
+    paintNext(tetRival, rightX, ay, 'right'); ay += 16 + pc * 4 + 6;
+    ctx.fillStyle = cssVar('--muted-2', '#7d8898');
+    ctx.font = 'bold 12px system-ui, sans-serif';
+    ctx.fillText('得分 ' + tetRival.score, rightX, ay); ay += 17;
+    ctx.fillText('消行 ' + tetRival.lines, rightX, ay); ay += 17;
+    ctx.fillText('等级 ' + tetRival.level, rightX, ay);
+
+    // ---- 操作提示（最下方，字体增大）----
+    const tipFont = 13, tipLine = 20;
+    const tips = ['←→ 移动', '↑ 旋转', '↓ 软降', '空格 硬降', 'A 交还电脑'];
+    let ty = oy + boardH - tips.length * tipLine - 2;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = cssVar('--muted-2', '#7d8898');
+    ctx.font = tipFont + 'px system-ui, sans-serif';
+    tips.forEach((t, i) => ctx.fillText(t, leftX, ty + i * tipLine));
+  }
+  // 模式5 专用绘制：居中 4×4 棋盘，圆角方块 + 数字，含通关/无路可走结算层。
+  function draw2048() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    const pad = 8;
+    // 棋盘取正方形，尽量铺满可用区域，左右为分数/提示留一点空间
+    const avail = Math.min(w - pad * 2, h - pad * 2);
+    const cell = Math.floor(avail / G2048_SIZE);
+    const bw = cell * G2048_SIZE, bh = bw;
+    const ox = Math.floor((w - bw) / 2), oy = Math.floor((h - bh) / 2);
+    const gap = Math.max(2, Math.floor(cell * 0.06));   // 方块之间的缝隙
+    // 棋盘底板
+    ctx.fillStyle = cssVar('--panel-2', '#1b2230');
+    ctx.fillRect(ox - gap, oy - gap, bw + gap * 2, bh + gap * 2);
+    const font = 'system-ui, -apple-system, sans-serif';
+    for (let y = 0; y < G2048_SIZE; y++) {
+      for (let x = 0; x < G2048_SIZE; x++) {
+        const v = g2048.grid[y][x];
+        const bx = ox + x * cell, by = oy + y * cell;
+        if (v) {
+          ctx.fillStyle = G2048_COLORS[v] || '#3c3a32';
+          ctx.fillRect(bx + gap / 2, by + gap / 2, cell - gap, cell - gap);
+          // 数字：位数越多字号越小，保证 4 位数仍能放下
+          const digits = String(v).length;
+          const fs = Math.floor(cell * (digits <= 2 ? 0.46 : digits === 3 ? 0.38 : 0.30));
+          ctx.fillStyle = (v === 2 || v === 4) ? '#776e65' : '#f9f6f2';
+          ctx.font = 'bold ' + fs + 'px ' + font;
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(String(v), bx + cell / 2, by + cell / 2 + 1);
+        } else {
+          ctx.fillStyle = 'rgba(127,127,127,0.10)';
+          ctx.fillRect(bx + gap / 2, by + gap / 2, cell - gap, cell - gap);
+        }
+      }
+    }
+    // 通关提示：达成 2048 后暂停，提示可继续挑战
+    if (g2048.won && !g2048.keepPlaying) draw2048Banner(w, h, 'YOU WIN!', '按空格或点击继续挑战', cssVar('--ok', '#34d399'));
+    // 无路可走：停留后自动重开
+    else if (g2048.over) draw2048Banner(w, h, 'GAME OVER', '即将自动重开', cssVar('--err', '#f87171'));
+  }
+  // 2048 结算覆盖层：半透明遮罩 + 居中标题与副标题
+  function draw2048Banner(w, h, title, sub, color) {
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(0, 0, w, h);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = color;
+    ctx.font = 'bold ' + Math.max(22, Math.round(Math.min(w, h) * 0.11)) + 'px system-ui, sans-serif';
+    ctx.fillText(title, w / 2, h / 2 - 12);
+    ctx.fillStyle = cssVar('--muted-2', '#9aa5b5');
+    ctx.font = Math.max(11, Math.round(Math.min(w, h) * 0.042)) + 'px system-ui, sans-serif';
+    ctx.fillText(sub, w / 2, h / 2 + Math.max(18, h * 0.07));
+  }
+  // 模式4 专用绘制：宽度足够且勾选时并排显示「主游戏 + AI 对手」两盘，否则只显示主游戏一盘。
+  function drawTetris() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    const dual = tetRivalOn && tetWide();
+    if (dual) {
+      // 两盘并排：玩家盘在左、AI 盘在右，中间是一条共用信息带（标题/NEXT/提示都放这里）。
+      // cell 需同时满足高度与「两盘 + 中间带」的总宽度约束。
+      const cell = Math.max(5, Math.floor(Math.min((h - 12) / TET_ROWS, (w - 24) / (TET_COLS * 2 + 12))));
+      const boardW = TET_COLS * cell, boardH = TET_ROWS * cell;
+      // 中间信息带宽度：至少容得下 4 格 NEXT 预览 + 左右留白，随格子增大
+      const nextW = Math.max(5, Math.floor(cell * 0.7)) * 4;
+      const infoW = Math.max(70, nextW + 32);
+      const totalW = infoW + boardW * 2;
+      const startX = Math.floor((w - totalW) / 2);
+      const oy = Math.floor((h - boardH) / 2);
+      // 两个棋盘本身不画各自信息栏
+      drawTetrisBoard(tetMain, startX, oy, cell, { infoSide: 'none' });
+      drawTetrisBoard(tetRival, startX + infoW + boardW, oy, cell, { infoSide: 'none' });
+      // 中间共用提示区
+      drawSharedTetInfo(startX + boardW, oy, infoW, boardH, cell);
+    } else {
+      const cell = Math.max(6, Math.floor(Math.min((h - 16) / TET_ROWS, (w - 70) / (TET_COLS + 5))));
+      const boardW = TET_COLS * cell, boardH = TET_ROWS * cell;
+      const ox = Math.floor((w - boardW - 46) / 2), oy = Math.floor((h - boardH) / 2);
+      drawTetrisBoard(tetMain, ox, oy, cell, { showTips: true });
+    }
+  }
+  // ---- 模式3 复古像素风结算画面 ----
+  // 5×7 点阵字模：仅含 "GAME OVER" / "YOU WIN" 所需字符，逐点画成方块营造老式街机感
+  const PX_FONT = {
+    'G': ['01110','10000','10000','10111','10001','10001','01110'],
+    'A': ['01110','10001','10001','11111','10001','10001','10001'],
+    'M': ['10001','11011','10101','10101','10001','10001','10001'],
+    'E': ['11111','10000','10000','11110','10000','10000','11111'],
+    'O': ['01110','10001','10001','10001','10001','10001','01110'],
+    'V': ['10001','10001','10001','10001','10001','01010','00100'],
+    'R': ['11110','10001','10001','11110','10100','10010','10001'],
+    'Y': ['10001','10001','01010','00100','00100','00100','00100'],
+    'U': ['10001','10001','10001','10001','10001','10001','01110'],
+    'W': ['10001','10001','10001','10101','10101','10101','01010'],
+    'I': ['11111','00100','00100','00100','00100','00100','11111'],
+    'N': ['10001','11001','10101','10011','10001','10001','10001'],
+    ' ': ['00000','00000','00000','00000','00000','00000','00000']
+  };
+  function drawPixelEnd(win) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const now = performance.now(), elapsed = now - arenaOverAt;
+    const main = cssVar(win ? '--ok' : '--err', win ? '#34d399' : '#f87171');
+    const dark = cssVar('--panel', '#11151d');
+    ctx.save();
+    // 结束最初 350ms 画面轻微抖动（复古撞击感）
+    if (elapsed >= 0 && elapsed < 350) {
+      const j = 4 * (1 - elapsed / 350);
+      ctx.translate((Math.random() - 0.5) * j, (Math.random() - 0.5) * j);
+    }
+    // 深色遮罩 + CRT 扫描线
+    ctx.fillStyle = 'rgba(0,0,0,0.72)';
+    ctx.fillRect(-8, -8, w + 16, h + 16);
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    for (let sy = 0; sy < h; sy += 4) ctx.fillRect(0, sy, w, 2);
+    // 复古双线像素边框 + 四角装饰块
+    const m = Math.max(10, Math.round(Math.min(w, h) * 0.06));
+    ctx.strokeStyle = main; ctx.lineWidth = 2;
+    ctx.strokeRect(m, m, w - 2 * m, h - 2 * m);
+    ctx.strokeStyle = 'rgba(255,255,255,0.28)'; ctx.lineWidth = 1;
+    ctx.strokeRect(m + 4, m + 4, w - 2 * m - 8, h - 2 * m - 8);
+    const q = 8;
+    const corners = [[m, m], [w - m - q, m], [m, h - m - q], [w - m - q, h - m - q]];
+    ctx.fillStyle = main;
+    corners.forEach(p => ctx.fillRect(p[0] - 2, p[1] - 2, q + 4, q + 4));
+    ctx.fillStyle = dark;
+    corners.forEach(p => ctx.fillRect(p[0], p[1], q, q));
+    // 点阵大标题
+    const title = win ? 'YOU WIN' : 'GAME OVER';
+    const px = Math.max(3, Math.floor((w * 0.82) / (title.length * 6)));
+    const tw = title.length * 6 * px - px, th = 7 * px;
+    const tx = Math.round((w - tw) / 2), ty = Math.round(h * 0.34 - th / 2);
+    for (let ci = 0; ci < title.length; ci++) {
+      const glyph = PX_FONT[title[ci]] || PX_FONT[' '];
+      for (let r = 0; r < 7; r++) for (let c = 0; c < 5; c++) {
+        if (glyph[r][c] !== '1') continue;
+        const bx = tx + (ci * 6 + c) * px, by = ty + r * px;
+        ctx.fillStyle = main; ctx.fillRect(bx, by, px, px);
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillRect(bx, by, Math.max(1, px / 3), Math.max(1, px / 3));
+      }
+    }
+    // 中文副标题（粗体描边阴影）
+    const sub = win ? '玩家获胜！' : '挑战失败';
+    ctx.font = 'bold ' + Math.max(16, Math.round(Math.min(w, h) * 0.075)) + 'px system-ui, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const sy = ty + th + Math.max(18, h * 0.06);
+    ctx.fillStyle = 'rgba(0,0,0,0.9)'; ctx.fillText(sub, w / 2 + 2, sy + 2);
+    ctx.fillStyle = main; ctx.fillText(sub, w / 2, sy);
+    // 闪烁提示
+    if (Math.floor(now / 400) % 2 === 0) {
+      ctx.font = 'bold ' + Math.max(11, Math.round(Math.min(w, h) * 0.032)) + 'px monospace';
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText('即将自动重开', w / 2, h - m - Math.max(14, h * 0.04));
+    }
+    ctx.restore();
+  }
+  function drawScene() {
     if (!ctx || !canvas) return;
+    if (gameMode === 4) { drawTetris(); return; }
+    if (gameMode === 5) { draw2048(); return; }
     const w = cols * CELL, h = rows * CELL;
     ctx.clearRect(0, 0, w, h);
     // 细网格点
@@ -4888,41 +6003,82 @@ linksEl.addEventListener('change', () => {
     for (let y = 0; y < rows; y++)
       for (let x = 0; x < cols; x++)
         ctx.fillRect(x * CELL + CELL / 2 - 0.5, y * CELL + CELL / 2 - 0.5, 1, 1);
-    // 食物（同时 2~3 个）
-    ctx.fillStyle = cssVar('--warn', '#fbbf24');
+    // 食物：普通=黄色圆点；模式3 加分食物(bonus)=颜色与普通食物完全一致，仅半径大一圈（吃一次 +5 分）
     for (const f of foods) {
+      const fxp = f.x * CELL + CELL / 2, fyp = f.y * CELL + CELL / 2;
+      ctx.fillStyle = cssVar('--warn', '#fbbf24');
       ctx.beginPath();
-      ctx.arc(f.x * CELL + CELL / 2, f.y * CELL + CELL / 2, CELL * 0.32, 0, Math.PI * 2);
+      ctx.arc(fxp, fyp, CELL * (f.bonus ? 0.48 : 0.32), 0, Math.PI * 2);
       ctx.fill();
     }
-    // 蛇身渐变：手动 / 自动两种模式使用不同主题色，便于区分
+    // 绘制一条蛇（渐变蛇身 + 蛇眼），两种模式共用；颜色由调用方给定
+    const paintSnake = (body, d, colorA, colorB) => {
+      if (!body || !body.length) return;
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, colorA); grad.addColorStop(1, colorB);
+      ctx.fillStyle = grad;
+      for (let i = body.length - 1; i >= 0; i--) {
+        const s = body[i];
+        ctx.globalAlpha = 0.55 + 0.45 * (1 - i / Math.max(1, body.length));
+        ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2);
+      }
+      ctx.globalAlpha = 1;
+      // 蛇眼（按 CELL 比例绘制，格子缩小后仍居中对齐）
+      const h0 = body[0];
+      ctx.fillStyle = cssVar('--panel', '#11151d');
+      const ex = h0.x * CELL, ey = h0.y * CELL;
+      const eNear = Math.max(1, Math.round(CELL * 0.25));
+      const eFar  = Math.max(2, Math.round(CELL * 0.58));
+      const eSize = Math.max(1, Math.round(CELL * 0.17));
+      if (d.x !== 0) {
+        const px = ex + (d.x > 0 ? eFar : eNear);
+        ctx.fillRect(px, ey + eNear, eSize, eSize);
+        ctx.fillRect(px, ey + eFar,  eSize, eSize);
+      } else {
+        const py = ey + (d.y > 0 ? eFar : eNear);
+        ctx.fillRect(ex + eNear, py, eSize, eSize);
+        ctx.fillRect(ex + eFar,  py, eSize, eSize);
+      }
+    };
+    // 人工蛇：手动 / 自动两种模式使用不同主题色，便于区分（与原版一致）
+    // 模式3 玩家蛇同样保持这套配色，与模式1 完全一致
     const manual = userControl;
     const a = cssVar(manual ? '--snake-manual-a' : '--snake-auto-a', manual ? '#818cf8' : '#2dd4bf');
     const b = cssVar(manual ? '--snake-manual-b' : '--snake-auto-b', manual ? '#6366f1' : '#0d9488');
-    const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, a); grad.addColorStop(1, b);
-    ctx.fillStyle = grad;
-    for (let i = snake.length - 1; i >= 0; i--) {
-      const s = snake[i];
-      ctx.globalAlpha = 0.55 + 0.45 * (1 - i / Math.max(1, snake.length));
-      ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2);
+    if (alive || gameMode !== 3) paintSnake(snake, dir, a, b);   // 模式3 玩家撞死后不再绘制，模式1/2 保持原样
+    // 模式2：计算机蛇用玫红色系，与人工蛇明显区别
+    if (gameMode === 2 && cpuSnake.length) {
+      const ca = cssVar('--snake-cpu-a', '#fb7185');
+      const cb = cssVar('--snake-cpu-b', '#e11d48');
+      paintSnake(cpuSnake, cpuDir, ca, cb);
     }
-    ctx.globalAlpha = 1;
-    // 蛇眼（按 CELL 比例绘制，格子缩小后仍居中对齐）
-    const h0 = snake[0];
-    ctx.fillStyle = cssVar('--panel', '#11151d');
-    const ex = h0.x * CELL, ey = h0.y * CELL;
-    const eNear = Math.max(1, Math.round(CELL * 0.25));
-    const eFar  = Math.max(2, Math.round(CELL * 0.58));
-    const eSize = Math.max(1, Math.round(CELL * 0.17));
-    if (dir.x !== 0) {
-      const px = ex + (dir.x > 0 ? eFar : eNear);
-      ctx.fillRect(px, ey + eNear, eSize, eSize);
-      ctx.fillRect(px, ey + eFar,  eSize, eSize);
-    } else {
-      const py = ey + (dir.y > 0 ? eFar : eNear);
-      ctx.fillRect(ex + eNear, py, eSize, eSize);
-      ctx.fillRect(ex + eFar,  py, eSize, eSize);
+    // 模式3：6 条 PC 蛇，各自配色；撞死的不再绘制
+    if (gameMode === 3) {
+      for (const bot of arenaBots) {
+        if (!bot.alive) continue;
+        paintSnake(bot.body, bot.dir, cssVar(bot.color[0], bot.color[2]), cssVar(bot.color[1], bot.color[3]));
+      }
+      // 结束提示：复古像素风结算画面（停留期间由 frame 持续重绘，驱动扫描线/闪烁/抖动）
+      if (arenaOver) drawPixelEnd(arenaOverWin);
+    }
+  }
+  // 统一绘制入口：先画游戏场景，暂停时再叠加半透明遮罩与提示文字
+  function draw() {
+    drawScene();
+    if (paused && canvas) {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      ctx.fillStyle = 'rgba(0,0,0,0.62)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const mainY = h / 2 - Math.max(10, h * 0.035);
+      const subY = h / 2 + Math.max(16, h * 0.06);
+      ctx.font = 'bold ' + Math.max(20, Math.round(Math.min(w, h) * 0.1)) + 'px system-ui, sans-serif';
+      ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+      ctx.strokeText('已暂停', w / 2, mainY);
+      ctx.fillStyle = '#ffffff'; ctx.fillText('已暂停', w / 2, mainY);
+      ctx.font = Math.max(11, Math.round(Math.min(w, h) * 0.04)) + 'px system-ui, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText('按 P 继续', w / 2, subY);
     }
   }
 
@@ -4932,29 +6088,139 @@ linksEl.addEventListener('change', () => {
     // 直接累加 rAF 的 ts 可能偏差；单调时钟跨浏览器稳定，且不受系统时间调整影响。
     const now = performance.now();
     if (!lastTs) lastTs = now;
+    // 暂停：冻结所有推进；lastTs 保持不变，恢复时统一平移各时间基准
+    if (paused) { raf = requestAnimationFrame(frame); return; }
     const dt = now - lastTs;
     acc += dt; lastTs = now;
+    // 模式5 2048：回合制，无自动推进；无路可走后停留一段时间自动重开。
+    if (gameMode === 5) {
+      if (g2048.over && now - g2048.overAt >= G2048_OVER_DELAY) {
+        g2048.reset(); updateScore(); draw();
+      }
+      raf = requestAnimationFrame(frame);
+      return;
+    }
+    // 模式4 俄罗斯方块：主游戏开局手动、空闲 4 秒交 AI；右侧对手始终 AI。
+    // 两个实例各自独立推进与重开；AI 只摆位、不硬降，下落速度由各自 dropInterval() 驱动。
+    if (gameMode === 4) {
+      const dual = tetRivalOn && tetWide();
+      // ---- 主游戏 ----
+      if (tetMain.over) {
+        if (now - tetMain.overAt >= TET_OVER_DELAY) tetMain.reset();
+      } else {
+        // 手动空闲超时 → 交给 AI（对手 alwaysAI 不走此分支）。不重置 acc/level，速度连续
+        if (!tetMain.ai && !tetMain.alwaysAI && now - tetMain.lastInputAt >= TET_AI_IDLE) {
+          tetMain.ai = true; tetMain.aiAcc = 0; tetMain.aiPlanCache = null;
+        }
+        if (tetMain.ai) {
+          tetMain.aiAcc += dt;
+          let ga = 0;
+          while (tetMain.aiAcc >= TET_AI_STEP && ga++ < 8) { tetMain.aiAcc -= TET_AI_STEP; tetMain.aiTick(); }
+        }
+        tetMain.acc += dt;
+        let g = 0;
+        const iv = tetMain.dropInterval();
+        while (tetMain.acc >= iv && g++ < 6) { tetMain.acc -= iv; tetMain.step(); }
+      }
+      // ---- 右侧 AI 对手（仅并排显示时推进；纯 AI，不接受键盘）----
+      if (dual) {
+        if (tetRival.over) {
+          if (now - tetRival.overAt >= TET_OVER_DELAY) tetRival.reset();
+        } else {
+          tetRival.aiAcc += dt;
+          let gr = 0;
+          while (tetRival.aiAcc >= TET_AI_STEP && gr++ < 8) { tetRival.aiAcc -= TET_AI_STEP; tetRival.aiTick(); }
+          tetRival.acc += dt;
+          let g2 = 0;
+          const ivr = tetRival.dropInterval();
+          while (tetRival.acc >= ivr && g2++ < 6) { tetRival.acc -= ivr; tetRival.step(); }
+        }
+      }
+      updateScore();
+      draw();
+      raf = requestAnimationFrame(frame);
+      return;
+    }
+    // 模式3：分出胜负后蛇停止推进，停留一段时间自动重开新局
+    if (gameMode === 3 && arenaOver) {
+      if (now - arenaOverAt >= ARENA_END_DELAY) {
+        restartGame();
+      } else {
+        draw();   // 停留期间持续重绘，驱动像素风结算画面的闪烁/条纹动画
+      }
+      raf = requestAnimationFrame(frame);
+      return;
+    }
     let guard = 0;
-    while (acc >= speed && guard++ < 4) { acc -= speed; step(); }
+    // 人工蛇按自己的速度推进
+    while (acc >= speed && guard++ < 4) { acc -= speed; stepHuman(); }
+    // 模式2：单条 CPU 蛇独立累加器与速度
+    if (gameMode === 2) {
+      accCpu += dt;
+      guard = 0;
+      while (accCpu >= cpuSpeed && guard++ < 4) { accCpu -= cpuSpeed; stepCpu(); }
+    }
+    // 模式3：玩家蛇用 speed（方向键可增减），6 条 PC 蛇各自用独立累加器 + 固定 PC 速度推进。
+    // 每条 PC 蛇只推进自己（stepCpu(b)），速度体系与玩家完全分开、互不干扰。
+    if (gameMode === 3) {
+      for (const b of arenaBots) {
+        if (!b.alive) continue;
+        b.acc += dt;
+        guard = 0;
+        while (b.acc >= b.speed && guard++ < 4) { b.acc -= b.speed; stepCpu(b); }
+      }
+    }
     raf = requestAnimationFrame(frame);
   }
   // 食物增加用独立定时器 + 绝对时间戳，不依赖 requestAnimationFrame。
   // Edge 等浏览器在节能/后台策略下会暂停或降频 rAF，若把计时挂在 frame() 上会不准；
   // 这里即使 setInterval 被节流到较低频率，也能按真实经过时间一次性补齐错过的间隔。
   function foodTick() {
-    if (!running) return;
+    if (!running || paused) return;    // 暂停时停止补食物
+    if (gameMode === 4 || gameMode === 5) return;    // 俄罗斯方块/2048 无需食物
+    if (gameMode === 3 && arenaOver) return;   // 模式3 结束后暂停补食物
     const now = performance.now();
     if (now < foodNextAt) return;
-    const steps = Math.floor((now - foodNextAt) / FOOD_INTERVAL) + 1;
-    foodNextAt += steps * FOOD_INTERVAL;
-    const toAdd = steps * FOOD_PER_TICK;
-    for (let i = 0; i < toAdd && foods.length < foodCap(); i++) {
+    const interval = gameMode === 3 ? ARENA_FOOD_INTERVAL : FOOD_INTERVAL;
+    const steps = Math.floor((now - foodNextAt) / interval) + 1;
+    foodNextAt += steps * interval;
+    // 模式3：每次补 3~5 个（每次触发重新随机）；模式1/2：固定 2 个
+    const perTick = gameMode === 3
+      ? ARENA_FOOD_MIN + Math.floor(Math.random() * (ARENA_FOOD_MAX - ARENA_FOOD_MIN + 1))
+      : FOOD_PER_TICK;
+    const toAdd = steps * perTick;
+    // 模式3 食物上限按网格容量放宽（7 条蛇抢食），其余用原上限
+    const cap = gameMode === 3 ? Math.max(FOOD_CAP_MAX, Math.floor(cols * rows / 24)) : foodCap();
+    for (let i = 0; i < toAdd && foods.length < cap; i++) {
       if (!addFood()) break;   // 无空格可放，停止补加
     }
   }
+  // 暂停开关（P 键）：暂停时冻结推进；恢复时把所有绝对时间基准向后平移暂停时长，
+  // 这样暂停期间流逝的真实时间不会导致恢复瞬间「偷跑」（过期食物、误判结束/交 AI 等）。
+  function togglePause() {
+    if (!running) return;
+    if (!paused) {
+      paused = true;
+      pauseStartedAt = performance.now();
+    } else {
+      const dur = performance.now() - pauseStartedAt;
+      if (foodNextAt) foodNextAt += dur;
+      if (lastUserInputAt) lastUserInputAt += dur;
+      if (arenaOverAt) arenaOverAt += dur;
+      if (tetMain.overAt) tetMain.overAt += dur;
+      if (tetMain.lastInputAt) tetMain.lastInputAt += dur;
+      if (tetRival.overAt) tetRival.overAt += dur;
+      if (tetRival.lastInputAt) tetRival.lastInputAt += dur;
+      if (g2048.overAt) g2048.overAt += dur;
+      lastTs = performance.now();   // 丢弃暂停期间累积的时间差
+      paused = false;
+    }
+    draw();
+  }
+
   function snakeStart() {
     if (running || !ctx) return;
-    running = true; acc = 0; lastTs = 0;
+    running = true; acc = 0; lastTs = 0; paused = false;
     resetGame(true);   // 进入信息框：完整重置所有参数（含 foodNextAt）
     foodTimer = setInterval(foodTick, 100);  // 100ms 轮询，实际间隔由绝对时间控制
     raf = requestAnimationFrame(frame);
@@ -4974,20 +6240,77 @@ linksEl.addEventListener('change', () => {
     // 先彻底停掉旧循环，再按当前画布尺寸重新计时并完整重置
     snakeStop();
     if (!ctx) return;
-    running = true; acc = 0; lastTs = 0;
+    running = true; acc = 0; lastTs = 0; paused = false;
     resetGame(true);   // CELL、食物数量/计时、分数、蛇身全部重置
     foodTimer = setInterval(foodTick, 100);
     raf = requestAnimationFrame(frame);
   }
+  // 切换模式（1 合作 / 2 人机 / 3 群雄 / 4 俄罗斯方块 / 5 2048）。仅大屏允许；小屏强制模式1。
+  function switchMode(n) {
+    if (n !== 1 && n !== 2 && n !== 3 && n !== 4 && n !== 5) return;
+    const next = snakeMax ? n : 1;           // 小屏无论选择什么，都保持模式1
+    gameMode = next;
+    if (modeSel) modeSel.value = String(next);
+    // 大屏下切换模式即记住，刷新页面后再次进大屏也能恢复
+    if (snakeMax) { savedBigMode = next; cookieSet('mp_snake_mode', String(next)); }
+    renderBest();                            // 立即刷新最高分显示（模式3 隐藏）
+    syncTetRivalUI();                        // 仅在模式4且宽度足够时显示 AI 对手复选框
+    if (gameMode !== 3 && gameMode !== 4 && gameMode !== 5) updateScore();  // 模式3/4/5 由自身分支处理分数行
+    if (running) restartGame();              // 切换模式即完整重置、重新开局
+  }
+  if (modeSel) modeSel.addEventListener('change', () => switchMode(parseInt(modeSel.value, 10)));
+  // AI 对手复选框：勾选后重置对手并立即重绘；取消勾选则对手停止推进（画面切回单盘）
+  if (tetRivalChkEl) tetRivalChkEl.addEventListener('change', () => {
+    tetRivalOn = !!tetRivalChkEl.checked;
+    if (tetRivalOn) tetRival.reset();
+    syncTetRivalUI();   // 勾选对战才显示等级下拉框，取消则隐藏
+    draw();
+  });
+  // AI 对手等级：改等级即从该等级重新开局，并持久化
+  if (tetAiLevelSelEl) tetAiLevelSelEl.addEventListener('change', () => {
+    tetRivalLevel = Math.max(1, Math.min(100, parseInt(tetAiLevelSelEl.value, 10) || 1));
+    tetAiLevelSelEl.value = String(tetRivalLevel);
+    tetRival.baseLevel = tetRivalLevel;
+    cookieSet('mp_tet_ai_level', String(tetRivalLevel));
+    tetRival.reset();
+    draw();
+  });
+  // 点击最高分清零对应记录（人工 / 电脑）
+  if (barBestHumanEl) barBestHumanEl.addEventListener('click', () => clearBest('human'));
+  if (barBestCpuEl) barBestCpuEl.addEventListener('click', () => clearBest('cpu'));
+
   function toggleSnakeMax() {
+    // 退出大屏前保存当前模式，供下次进入大屏时恢复
+    if (snakeMax) {
+      savedBigMode = gameMode;
+      cookieSet('mp_snake_mode', String(savedBigMode));
+    }
     snakeMax = !snakeMax;
     if (modalEl) modalEl.classList.toggle('snake-max', snakeMax);
+    if (!snakeMax) {
+      // 回到小屏：强制模式1，下拉框同步显示
+      gameMode = 1;
+      if (modeSel) modeSel.value = '1';
+      renderBest();                          // 回小屏强制模式1，提示同步恢复
+    } else {
+      // 进入大屏：恢复上次保存的模式，下拉框同步显示
+      gameMode = savedBigMode;
+      if (modeSel) modeSel.value = String(gameMode);
+      renderBest();
+    }
+    syncTetRivalUI();                        // 大屏↔小屏切换后同步 AI 对手复选框显隐
     // 尺寸变化是即时的（画布无高度过渡动画）。读取一次 clientWidth 强制同步布局，
     // 确保 sizeCanvas() 量到的是切换后的终值，避免缓冲区停在中间尺寸导致蛇体被压窄。
     if (canvas) void canvas.clientWidth;
     restartGame();
   }
-  if (canvas) canvas.addEventListener('click', toggleSnakeMax);
+  if (canvas) canvas.addEventListener('click', () => {
+    // 模式5 通关画面：点击优先用于「继续挑战」，不触发大小屏切换
+    if (gameMode === 5 && g2048.won && !g2048.keepPlaying) {
+      g2048.keepPlaying = true; draw(); return;
+    }
+    toggleSnakeMax();
+  });
 
   // 兜底：任何来源导致画布显示尺寸变化后，都校正一次缓冲区分辨率并重绘，
   // 保证蛇身坐标始终与 CSS 尺寸一一对应（不再依赖"等重绘才正常"）。
@@ -5005,9 +6328,62 @@ linksEl.addEventListener('change', () => {
 
   const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 },
                  ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 },
-                 w: { x: 0, y: -1 }, s: { x: 0, y: 1 }, a: { x: -1, y: 0 }, d: { x: 1, y: 0 } };
+                 w: { x: 0, y: -1 }, s: { x: 0, y: 1 }, d: { x: 1, y: 0 } };
   document.addEventListener('keydown', (e) => {
     if (back.hidden || !running) return;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;   // 组合键（如 alt+a 打开信息框）交给全局处理
+    // P 键：暂停 / 继续（所有模式通用）；暂停期间屏蔽其余游戏按键
+    if (e.key === 'p' || e.key === 'P') { e.preventDefault(); togglePause(); return; }
+    if (paused) return;
+    // 大屏下数字键 1-9 直接选择模式（小屏不响应；焦点在下拉框时交给原生处理）
+    if (snakeMax && /^[1-9]$/.test(e.key) && document.activeElement !== modeSel) {
+      e.preventDefault();
+      switchMode(parseInt(e.key, 10));
+      return;
+    }
+    // 模式5 2048：方向键 / WASD 滑动合并；空格用于通关后继续挑战
+    if (gameMode === 5) {
+      const G = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1],
+                  a: [-1, 0], d: [1, 0], w: [0, -1], s: [0, 1] };
+      if (e.key === ' ' && g2048.won && !g2048.keepPlaying) {
+        e.preventDefault(); g2048.keepPlaying = true; draw(); return;
+      }
+      const mv = G[e.key];
+      if (mv) {
+        e.preventDefault();
+        if (g2048.move(mv[0], mv[1])) updateScore();
+        draw();
+      }
+      return;
+    }
+    // 模式4 俄罗斯方块：键盘只控制左侧主游戏；右侧 AI 对手不受影响。A 键交还 PC 托管
+    if (gameMode === 4) {
+      if (e.key === 'a' || e.key === 'A') {           // A 键：交还 PC 托管（主游戏）
+        e.preventDefault();
+        tetMain.ai = true; tetMain.aiAcc = 0; tetMain.aiPlanCache = null; tetMain.aiStuck = 0;
+        draw();
+        return;
+      }
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'd', 'w', 's'].includes(e.key)) {
+        e.preventDefault();
+        if (tetMain.over) return;
+        tetMain.ai = false; tetMain.lastInputAt = performance.now();   // 玩家接管，开始 4 秒空闲倒计时
+        if (e.key === 'ArrowLeft') tetMain.move(-1);
+        else if (e.key === 'ArrowRight' || e.key === 'd') tetMain.move(1);
+        else if (e.key === 'ArrowUp' || e.key === 'w') tetMain.rotate();
+        else if (e.key === 'ArrowDown' || e.key === 's') { tetMain.step(); updateScore(); }
+        else if (e.key === ' ') { tetMain.hardDrop(); updateScore(); }
+        draw();
+      }
+      return;
+    }
+    // 模式1/2/3：A 键立即交还 AI（自动寻路），清空手动接管状态
+    if (e.key === 'a' || e.key === 'A') {
+      e.preventDefault();
+      userControl = false;
+      lastUserInputAt = 0;
+      return;
+    }
     const d = DIRS[e.key];
     if (!d) return;
     e.preventDefault();
@@ -5026,7 +6402,10 @@ linksEl.addEventListener('change', () => {
       dir = d;
     }
   });
-  window.addEventListener('resize', () => { if (running) resetGame(false); });
+  window.addEventListener('resize', () => {
+    syncTetRivalUI();                        // 宽度跨过阈值时显示/隐藏 AI 对手复选框
+    if (running) resetGame(false);
+  });
 
   const open = () => {
     if (verEl) verEl.textContent = currentVersion ? ('v' + currentVersion) : '未检测到（内核加载中或不可用）';
@@ -5038,11 +6417,16 @@ linksEl.addEventListener('change', () => {
   const close = () => {
     back.hidden = true;
     snakeStop();
-    // 大屏摸鱼模式下退出：恢复小屏关于窗体，避免下次打开仍停在大屏画面
+    // 大屏摸鱼模式下退出：先保存当前模式（供下次进大屏恢复），再恢复小屏关于窗体
     if (snakeMax) {
+      savedBigMode = gameMode;
+      cookieSet('mp_snake_mode', String(savedBigMode));
       snakeMax = false;
       if (modalEl) modalEl.classList.remove('snake-max');
     }
+    // 小屏固定模式1，复位状态与下拉框，保证下次打开为单蛇
+    gameMode = 1;
+    if (modeSel) modeSel.value = '1';
   };
   btn.addEventListener('click', open);
   // 左上角图标 + 标题：点击或键盘 Enter/空格同样打开信息框
@@ -5056,6 +6440,18 @@ linksEl.addEventListener('change', () => {
   $('aboutOk').addEventListener('click', close);
   back.addEventListener('click', (e) => { if (e.target === back) close(); });
   document.addEventListener('keydown', (e) => {
+    // 主界面按 alt+a 打开关于信息框（e.code 基于物理键，兼容 alt 组合下 key 值差异）
+    if (e.altKey && e.code === 'KeyA') {
+      e.preventDefault();
+      if (back.hidden) open();
+      return;
+    }
+    // 信息框内按 b 切换大屏/小屏（摸鱼模式），与点击画布等效；排除组合键避免误触
+    if ((e.key === 'b' || e.key === 'B') && !e.altKey && !e.ctrlKey && !e.metaKey && !back.hidden) {
+      e.preventDefault();
+      toggleSnakeMax();
+      return;
+    }
     if (e.key === 'Escape' && !back.hidden) close();
   });
 })();

@@ -2,7 +2,7 @@
 
 > 一个基于 **WebAssembly** 的本地 MicroPython 交互式运行环境。代码全部在浏览器内编译执行，无需连接后端，打开即可用。
 
-![版本](https://img.shields.io/badge/version-v1.1.41-brightgreen.svg) ![内核](https://img.shields.io/badge/kernel-MicroPython-blue.svg) ![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
+![版本](https://img.shields.io/badge/version-v1.6.7-brightgreen.svg) ![内核](https://img.shields.io/badge/kernel-MicroPython-blue.svg) ![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 
 一个单文件 HTML 应用，把 MicroPython 解释器（`micropython.wasm`）搬进浏览器，提供带语法高亮的编辑器、REPL 交互、两级示例库与贪吃蛇彩蛋。支持直接用 `file://` 双击打开，也支持部署到任意静态服务器或 PHP 环境。
 
@@ -34,7 +34,7 @@
 | **常用链接**    | 内置 MicroPython 官方/文档/固件/中文社区等快捷入口                          |
 | **内核更新**    | 检查并更新内核，支持多 CDN 回退与 PHP 本地更新                               |
 | **分区布局**    | 上下/左右布局切换，拖动分割条调整，双击重置                                     |
-| **本地持久化**   | 代码、主题与布局自动保存，刷新不丢失（file 模式用 localStorage，HTTP 模式兼容 Cookie） |
+| **本地持久化**   | 代码、主题与布局自动保存，刷新不丢失 |
 | **版本探测**    | 「关于」框显示内核版本、程序版本与 PHP 版本                                   |
 | **贪吃蛇彩蛋**   | 信息框里的小惊喜，等你来发现                                             |
 
@@ -143,7 +143,7 @@ python3 -m http.server 8000
 
 ## WorkBuddy 开发过程
 
-本项目由 **WorkBuddy** 持续迭代开发，版本从 0 开始，逐步演进至 `v1.1.41`。主要里程碑：
+本项目由 **WorkBuddy** 持续迭代开发，版本从 0 开始，逐步演进至 `v1.6.5`。主要里程碑：
 
 1. **界面与主题**：关于框样式、署名与跳转、GitHub/Gitee 按钮、明暗主题切换、主题按钮去文字化。
 2. **信息框增强**：点击图标/标题打开、显示内核与 PHP 版本、WorkBuddy 品牌署名、内嵌贪吃蛇、`ℹ️` 改 `💬`。
@@ -151,7 +151,8 @@ python3 -m http.server 8000
 4. **内核加载重构**：因 Firefox / Edge 在 `file://` 下报 `Failed to fetch dynamically imported module`，放弃内联方案，改为外置经典脚本 bundle（`micropython.bundle.js`），file 模式用经典 Worker + `importScripts()`，HTTP 模式用 module Worker。
 5. **示例**：示例库从最初的几个例子扩充到 15 个分类、100 多个可直接运行的程序，按类别浏览、一键载入。
 6. **常用链接**：整理官网、文档、固件下载、中文社区等常用网址，放进下拉菜单，点一下即可打开。
-7. **贪吃蛇打磨**：署名文字与配色、CELL 自适应、食物数量/定时/上限、抗 Edge rAF 节流的独立定时器、手动/自动双主题配色、修复跨色系渐变导致的「混色」问题。
+7. **贪吃蛇打磨**：署名文字与配色、CELL 自适应、食物数量/定时/上限、抗 Edge rAF 节流的独立定时器、手动/自动双主题配色、修复跨色系渐变导致的「混色」问题。增加合作模式、人机对战、群雄争霸。
+8. **增加更多摸鱼小游戏**：增加俄罗斯方块、2048，并设置对战模式，完善游戏规则。
 
 每一轮修改默认递增版本号，核心配置集中于文件末尾配置区，便于维护。
 
