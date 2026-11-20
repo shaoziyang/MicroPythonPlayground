@@ -1,2 +1,166 @@
-# MicroPythonPlayground
-一个基于 WebAssembly 的本地 MicroPython 交互式运行环境。代码全部在浏览器内编译执行，无需连接服务器。
+# MicroPython Playground
+
+> 一个基于 **WebAssembly** 的本地 MicroPython 交互式运行环境。代码全部在浏览器内编译执行，无需连接后端，打开即可用。
+
+![版本](https://img.shields.io/badge/version-v1.1.41-brightgreen.svg) ![内核](https://img.shields.io/badge/kernel-MicroPython-blue.svg) ![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
+
+一个单文件 HTML 应用，把 MicroPython 解释器（`micropython.wasm`）搬进浏览器，提供带语法高亮的编辑器、REPL 交互、两级示例库与贪吃蛇彩蛋。支持直接用 `file://` 双击打开，也支持部署到任意静态服务器或 PHP 环境。
+
+---
+
+## 目录
+
+- [主要功能](#主要功能)
+- [文件清单](#文件清单)
+- [使用说明](#使用说明)
+  - [文件模式（file://）](#文件模式file)
+  - [HTTP 模式](#http-模式)
+- [示例程序](#示例程序)
+- [快捷键](#快捷键)
+- [升级方式](#升级方式)
+- [贪吃蛇彩蛋](#贪吃蛇彩蛋)
+- [WorkBuddy 开发过程](#workbuddy-开发过程)
+- [鸣谢](#鸣谢)
+
+---
+
+## 主要功能
+
+| 功能          | 说明                                                         |
+| ----------- | ---------------------------------------------------------- |
+| **编辑器**     | Python 语法高亮，亮/暗双主题，一键切换                                    |
+| **REPL 交互** | 支持交互输入、表达式回显与 `Tab` 补全                                     |
+| **两级示例菜单**  | 15 个分类、100+ 示例程序，按类别浏览，一键载入                                |
+| **常用链接**    | 内置 MicroPython 官方/文档/固件/中文社区等快捷入口                          |
+| **内核更新**    | 检查并更新内核，支持多 CDN 回退与 PHP 本地更新                               |
+| **分区布局**    | 上下/左右布局切换，拖动分割条调整，双击重置                                     |
+| **本地持久化**   | 代码、主题与布局自动保存，刷新不丢失（file 模式用 localStorage，HTTP 模式兼容 Cookie） |
+| **版本探测**    | 「关于」框显示内核版本、程序版本与 PHP 版本                                   |
+| **贪吃蛇彩蛋**   | 信息框里的小惊喜，等你来发现                                             |
+
+---
+
+## 文件清单
+
+项目既能整体部署，也能只拷走主页面单独使用（需联网加载内核）：
+
+| 文件                                 | 作用                                 | 是否必需       |
+| ---------------------------------- | ---------------------------------- | ---------- |
+| `micropython-playground.html`      | 主页面（部署时可命名为 `index.html`）          | ✅ 必需       |
+| `micropython.wasm`                 | MicroPython 内核 WebAssembly 二进制     | HTTP 模式必需  |
+| `micropython.mjs`                  | 内核 ESM 胶水层                         | HTTP 模式必需  |
+| `micropython.bundle.js`            | 内核经典脚本打包版（含 wasm base64）           | file 模式必需  |
+| `update.php`                       | 服务端更新代理与 PHP 版本探测（`?probe=php`）    | 可选，PHP 环境用 |
+| `icon-dark.ico` / `icon-light.ico` | 明暗主题图标                             | 可选         |
+| `make_bundle.py`                   | 从 `.mjs` + `.wasm` 重新生成 bundle 的脚本 | 开发用        |
+
+> 图标已同时以 data URI 内联进主页面，因此即使不拷贝 `.ico` 文件，图标也能正常显示。
+
+---
+
+## 使用说明
+
+### 文件模式（file://）
+
+直接双击 `micropython-playground.html` 即可离线运行，无需服务器。
+
+- 内核通过外置的 `micropython.bundle.js`（经典脚本，非 ESM）加载，规避了 Firefox / Edge / Chrome 对 `file://` 下 `import()` / `fetch()` 本地文件的 CORS 限制。
+- 内核文件与主页面需放在**同一目录**。
+- 更新功能在 `file://` 下会自动降级为**浏览器下载**：逐个尝试多个 CDN，成功即触发下载，不依赖 `update.php`。
+- 浏览器禁用 `file://` 页面的 Cookie，因此主题、分区比例/方向、代码等配置改用 **localStorage** 保存，刷新后仍可恢复。
+- PHP 版本显示为「不可用」（本地无服务端）。
+
+### HTTP 模式
+
+把全部文件放到任意静态服务器目录，访问 `index.html` 即可。
+
+```bash
+# Python 自带静态服务器
+python3 -m http.server 8000
+# 然后浏览器打开 http://localhost:8000/
+```
+
+- 内核通过 `module Worker` + 动态 `import()` 加载 `micropython.mjs` 与 `micropython.wasm`，运行更流畅。
+- 若部署在 **PHP 环境**（保留 `update.php`），可使用服务端更新代理：由 PHP 多 CDN 回退抓取内核文件，绕开浏览器跨域限制；`update.php?probe=php` 用于探测 PHP 版本。
+
+---
+
+## 示例程序
+
+点击工具栏「示例类别」下拉框选择分类，再从「示例」下拉框选择具体程序，即可载入编辑器。共 **15 类、100+ 示例**：
+
+- **语法基础** — 变量、循环、函数、类、异常
+- **数学与时间** — math 进阶、圆周率、分形、time/cmath、ticks 计时
+- **异步与并发** — asyncio、gather、select、协程、事件同步
+- **数据与序列化** — json、struct、re、hashlib、bisect、heapq
+- **内存与底层** — uctypes、memoryview、gc、字节序转换
+- **文件与系统** — io 流、vfs、os 文件与目录操作
+- **列表 / 元组** — 增删改查、排序、切片拷贝陷阱
+- **framebuf** — 帧缓冲绘图原语、文本、滚动与 blit
+- **array / sys / platform / binascii / collections / uctypes** — 标准模块上手
+- **算法** — 排序、查找、递归等经典算法
+
+示例全部为可运行的 MicroPython 代码，直接点「运行」即可看到输出。
+
+---
+
+## 快捷键
+
+| 快捷键                | 功能      |
+| ------------------ | ------- |
+| `Ctrl / ⌘ + Enter` | 运行代码    |
+| `Tab`              | 补全 / 缩进 |
+| `Ctrl / ⌘ + J`     | 切换明暗主题  |
+| 双击分割条              | 重置分区比例  |
+| `Esc`              | 关闭信息框   |
+
+---
+
+## 升级方式
+
+应用提供两条升级通道：
+
+**1. 检查并更新内核（推荐）**
+
+- 点击工具栏「更新」按钮，程序会从 npm registry（含镜像）检测 MicroPython 内核最新版本。
+- 确认后逐文件下载 `wasm` 与 `mjs`，HTTP 模式由 `update.php` 代理、file 模式由浏览器直接下载。
+- 支持 4 个 CDN 自动回退：`jsdelivr`、`fastly`、`unpkg`、`jsdmirror`；若自动下载被拦截，还提供手动下载链接。
+
+**2. 升级程序本体**
+
+- 程序版本号集中在配置区的 `const APP_VERSION`（单一修改点），显示于「关于」框正文。
+- 请到 [GitHub](https://github.com/shaoziyang/MicroPythonPlayground) 或 [Gitee](https://gitee.com/shaoziyang/MicroPythonPlayground) 下载最新版主页面，替换旧文件即可。
+
+> 配置区位于文件末尾，集中了 `APP_VERSION`、`SAMPLE_GROUPS`（示例菜单）、`USEFUL_LINKS`（常用链接），修改后刷新页面即生效，无需改动其它代码。
+
+---
+
+## 贪吃蛇彩蛋
+
+信息框里藏着一个**贪吃蛇彩蛋**，等你自己去发现 😉。
+
+---
+
+## WorkBuddy 开发过程
+
+本项目由 **WorkBuddy** 持续迭代开发，版本从 0 开始，逐步演进至 `v1.1.41`。主要里程碑：
+
+1. **界面与主题**：关于框样式、署名与跳转、GitHub/Gitee 按钮、明暗主题切换、主题按钮去文字化。
+2. **信息框增强**：点击图标/标题打开、显示内核与 PHP 版本、WorkBuddy 品牌署名、内嵌贪吃蛇、`ℹ️` 改 `💬`。
+3. **离线适配**：图标改 data URI 内联，解决 `file://` 下图标不显示；更新在 file 模式降级为下载。
+4. **内核加载重构**：因 Firefox / Edge 在 `file://` 下报 `Failed to fetch dynamically imported module`，放弃内联方案，改为外置经典脚本 bundle（`micropython.bundle.js`），file 模式用经典 Worker + `importScripts()`，HTTP 模式用 module Worker。
+5. **示例**：示例库从最初的几个例子扩充到 15 个分类、100 多个可直接运行的程序，按类别浏览、一键载入。
+6. **常用链接**：整理官网、文档、固件下载、中文社区等常用网址，放进下拉菜单，点一下即可打开。
+7. **贪吃蛇打磨**：署名文字与配色、CELL 自适应、食物数量/定时/上限、抗 Edge rAF 节流的独立定时器、手动/自动双主题配色、修复跨色系渐变导致的「混色」问题。
+
+每一轮修改默认递增版本号，核心配置集中于文件末尾配置区，便于维护。
+
+---
+
+## 鸣谢
+
+- **MicroPython 中文社区** — 项目设计与维护
+- **MicroPython** — 强大的嵌入式 Python 实现
+- **WorkBuddy** — 开发与迭代支持
+
+项目主页：[GitHub](https://github.com/shaoziyang/MicroPythonPlayground) · [Gitee](https://gitee.com/shaoziyang/MicroPythonPlayground)

@@ -1,0 +1,5067 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link rel="icon" type="image/x-icon" id="favicon">
+<script>
+  /* 主题图标内联为 data URI：以单个 HTML 文件（file://）打开、
+   * 同目录没有 .ico 文件时，图标仍可正常显示。 */
+  window.MP_ICONS = {
+    dark:  'data:image/x-icon;base64,AAABAAEAQEAAAAEACAAoFgAAFgAAACgAAABAAAAAgAAAAAEACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJCQtAC0tLQBwcHIAgoKEAIaEhgCQkJEAkZCRAKamqACpqaoAq6qrALKysgC0tLUAy8rLANHQ0QDf398A4uLjAOPj5ADq6uoA6+vrAPDw8ADx8fEA+fn5APv7+wD8/PwA/Pz9AP39/QD+/v4A////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcHBwcHBwcHBwcHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBwcHBwcHBwcHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwcHBwcHBwcHBwcHBwcGxwVAAARHBocGRcXGhwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcHBwcHBwcHBwcHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBwcHBwcHBwcHBwcHBwbHBUAABEcFxwMAwMNHBkcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwcHBwcHBwcHBwcHBwcGxwVAAARHBYcBQEBChwXHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcHBwcHBwcHBwcHBwcHBscFQAAERwWHAYCAgscFxwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBwcHBwcHBwcHBwcHBwbHBUAABEcFhwHAgILHBccAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwcHBwaGhwcHBwcHBwcGxwVAAARHBYcBAEBCRwXHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcHBwcHBwcHBwcHBwcHBscFQAAERwYHA4ICA8cGhwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBwcGRERGRwcHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBIAABIcGxwcHBwcGxwVAAARHBocGRcXGhwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEQAAFRwbHBwcHBwbHBMAABMcGxwcHBwcGxwVAAARHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwaHBEAABUcGxwcHBwcGxwTAAATHBscHBwcHBscFQAAERwaHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcGhwRAAAVHBscHBwcHBscEwAAExwbHBwcHBwbHBUAABEcGhwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBocEAAAFBwbHBwcHBwbHBMAABMcGxwcHBwcGxwUAAAQHBocHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBgRERocHBwcHBwcGxwTAAATHBscHBwcHBwcGhERGBwcHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcHBwcHBwcHBscEwAAExwbHBwcHBwcHBwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBwcHBoaHBwcHBwcHBwbHBMAABMcGxwcHBwcHBwcGhocHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwcHBwcHBwcGxwTAAATHBscHBwcHBwcHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcHBwcHBwcHBscEwAAExwbHBwcHBwcHBwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBwcHBwcHBwcHBwcHBwbHBMAABMcGxwcHBwcHBwcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwcHBwcHBwcGxwTAAATHBscHBwcHBwcHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcHBwcHBwcHBscEwAAExwbHBwcHBwcHBwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBwcHBwcHBwcHBwcHBwbHBMAABMcGxwcHBwcHBwcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwcHBwcHBwcGxwTAAATHBscHBwcHBwcHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcHBwcHBwcHBscEwAAExwbHBwcHBwcHBwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    light: 'data:image/x-icon;base64,AAABAAEAQEAAAAEACAAoFgAAFgAAACgAAABAAAAAgAAAAAEACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBgYACQkJAAtLSQALS0tADU1NQBBQUEAYWFhAGRkZABycnIAdXV1AISEggCGhoQAjIyMAKKkogCqq6oAw8PCAMTExADKy8oAzMzLAM7OzQDc3dwA3d3cAOLj4gDk5OMA7OzrAPz8/AD9/fwA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAAAAAAAAAAAAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAAAAAAAAAAAAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAAAAAAAAAAAAAAAAAAAAQAHHBwLAAIAAwUFAgAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAAAAAAAAAAAAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAAAAAAAAAAAAAAAAAABAAccHAsABQAQGRkPAAMAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAAAAAAAAAAAAAAAAAAAAQAHHBwLAAYAFxsbEgAFABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAAAAAAAAAAAAAAAAAAEABxwcCwAGABYaGhEABQAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAAAAAAAAAAAAAAAAAABAAccHAsABgAVGhoRAAUAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAAAAAACAgAAAAAAAAAAAQAHHBwLAAYAGBsbEwAFABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAAAAAAAAAAAAAAAAAAEABxwcCwAEAA4UFA0AAgAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAAAAwsLAwAAAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAocHAoAAQAAAAAAAQAHHBwLAAIAAwUFAgAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIACxwcBwABAAAAAAABAAkcHAkAAQAAAAAAAQAHHBwLAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAACAAscHAcAAQAAAAAAAQAJHBwJAAEAAAAAAAEABxwcCwACAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAgALHBwHAAEAAAAAAAEACRwcCQABAAAAAAABAAccHAsAAgAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAIADBwcCAABAAAAAAABAAkcHAkAAQAAAAAAAQAIHBwMAAIAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAQLCwIAAAAAAAAAAQAJHBwJAAEAAAAAAAAAAgsLBAAAAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACRwcCQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAAAAAICAAAAAAAAAAABAAkcHAkAAQAAAAAAAAAAAgIAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAJHBwJAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACRwcCQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAkcHAkAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAJHBwJAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACRwcCQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAkcHAkAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABwcHBwcHBwcHBwcHBwcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAJHBwJAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACRwcCQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+  };
+</script>
+<title>MicroPython Playground</title>
+<style>
+  :root {
+    color-scheme: dark;
+
+    --bg: #0b0e14;
+    --glow-1: rgba(45, 212, 191, .10);
+    --glow-2: rgba(129, 140, 248, .10);
+    --topbar-bg: rgba(11, 14, 20, .78);
+
+    --panel: #11151d;
+    --panel-2: #0d1118;
+    --border: #202a3a;
+    --border-soft: #1a2230;
+
+    --fg: #e6edf3;
+    --fg-soft: #9fb0c6;
+    --muted: #7d8799;
+    --muted-2: #5b6478;
+    --muted-3: #3c465a;
+
+    --accent: #2dd4bf;
+    --accent-2: #818cf8;
+    --accent-ink: #04161a;
+    --accent-strong: #14b8a6;
+    --accent-strong-2: #0ea5a5;
+    --accent-strong-hover: #1ed3bf;
+    --accent-strong-hover-2: #12b6b6;
+    --accent-shadow: rgba(20, 184, 166, .28);
+    --accent-ring: rgba(45, 212, 191, .25);
+    --accent-soft: rgba(45, 212, 191, .06);
+    --accent-select: rgba(45, 212, 191, .26);
+    --accent-line: rgba(45, 212, 191, .5);
+
+    --btn-bg: #151b25;
+    --btn-bg-hover: #1c2431;
+    --btn-fg: #c8d3e2;
+    --btn-fg-hover: #eaf1f8;
+    --btn-border-hover: #2c3a4f;
+    --kbd-bg: rgba(0, 0, 0, .18);
+    --kbd-fg: rgba(4, 22, 26, .8);
+
+    --editor-bg: #11151d;
+    --gutter-bg: #0e121a;
+    --gutter-fg: #3c465a;
+    --code-fg: #dbe6f2;
+
+    --grip: #2b3648;
+
+    --term-bg: #0a0d13;
+    --term-fg: #cfd8e3;
+    --term-out: #d3dceb;
+    --term-ok: #5f8a76;
+    --term-banner: #8fa3bd;
+    --repl-fg: #eaf3ff;
+    --repl-placeholder: #465064;
+
+    --sb-thumb: #232e3f;
+    --sb-thumb-hover: #33415a;
+
+    --err: #f87171;
+    /* 贪吃蛇：自动 / 手动 两种模式的蛇身配色（暗色主题） */
+    --snake-auto-a: #2dd4bf; --snake-auto-b: #0d9488;    /* 自动：青绿同色系深浅（主题主色） */
+    --snake-manual-a: #818cf8; --snake-manual-b: #6366f1; /* 手动：靛蓝同色系深浅（主题辅色） */
+    --warn: #fbbf24;
+    --ok: #34d399;
+    --ok-ring: rgba(52, 211, 153, .14);
+    --sys: #6b7688;
+
+    --tok-kw: #c792ea;
+    --tok-str: #9ee08a;
+    --tok-num: #ffb86c;
+    --tok-com: #586780;
+    --tok-bi: #67d8ef;
+    --tok-fn: #ffd479;
+    --tok-dec: #e879f9;
+
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --ui: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  /* ---------- 亮色主题 ---------- */
+  :root[data-theme="light"] {
+    color-scheme: light;
+
+    --bg: #f6f8fb;
+    --glow-1: rgba(79, 70, 229, .07);
+    --glow-2: rgba(124, 58, 237, .06);
+    --topbar-bg: rgba(255, 255, 255, .82);
+
+    --panel: #ffffff;
+    --panel-2: #f2f6fa;
+    --border: #d8e0ea;
+    --border-soft: #e5ebf2;
+
+    --fg: #1e293b;
+    --fg-soft: #475569;
+    --muted: #64748b;
+    --muted-2: #7d8898;
+    --muted-3: #a6b0be;
+
+    --accent: #4f46e5;
+    --accent-2: #7c3aed;
+    --accent-ink: #ffffff;
+    --accent-strong: #4f46e5;
+    --accent-strong-2: #4338ca;
+    --accent-strong-hover: #6366f1;
+    --accent-strong-hover-2: #3730a3;
+    --accent-shadow: rgba(79, 70, 229, .25);
+    --accent-ring: rgba(79, 70, 229, .22);
+    --accent-soft: rgba(79, 70, 229, .06);
+    --accent-select: rgba(79, 70, 229, .18);
+    --accent-line: rgba(79, 70, 229, .45);
+
+    --btn-bg: #ffffff;
+    --btn-bg-hover: #eef3f9;
+    --btn-fg: #334155;
+    --btn-fg-hover: #0f172a;
+    --btn-border-hover: #c3cedd;
+    --kbd-bg: rgba(15, 23, 42, .09);
+    --kbd-fg: rgba(15, 23, 42, .75);
+
+    --editor-bg: #ffffff;
+    --gutter-bg: #f4f7fb;
+    --gutter-fg: #a6b0be;
+    --code-fg: #24292f;
+
+    --grip: #c9d3e0;
+
+    --term-bg: #fbfcfe;
+    --term-fg: #334155;
+    --term-out: #1e293b;
+    --term-ok: #15803d;
+    --term-banner: #64748b;
+    --repl-fg: #0f172a;
+    --repl-placeholder: #9aa6b6;
+
+    --sb-thumb: #cfd8e4;
+    --sb-thumb-hover: #b3c0d1;
+
+    --err: #d92d20;
+    /* 贪吃蛇：自动 / 手动 两种模式的蛇身配色（亮色主题，加深以保证对比） */
+    --snake-auto-a: #0d9488; --snake-auto-b: #115e59;    /* 自动：深青绿同色系深浅 */
+    --snake-manual-a: #4f46e5; --snake-manual-b: #4338ca; /* 手动：深靛蓝同色系深浅 */
+    --warn: #d97706;
+    --ok: #16a34a;
+    --ok-ring: rgba(22, 163, 74, .16);
+    --sys: #93a1b1;
+
+    --tok-kw: #a626a4;
+    --tok-str: #3f8f3f;
+    --tok-num: #b16000;
+    --tok-com: #9aa3b0;
+    --tok-bi: #0b76b8;
+    --tok-fn: #9a6700;
+    --tok-dec: #c026d3;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(1200px 600px at 12% -10%, var(--glow-1), transparent 60%),
+      radial-gradient(900px 500px at 95% 0%, var(--glow-2), transparent 55%),
+      var(--bg);
+    color: var(--fg);
+    font-family: var(--ui);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color .2s ease, color .2s ease;
+  }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    min-height: 54px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-soft);
+    background: var(--topbar-bg);
+    backdrop-filter: blur(10px);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+  }
+  /* 左侧图标 + 标题：整体可点击打开「关于」信息框 */
+  .brand-main {
+    display: flex; align-items: center; gap: 9px; min-width: 0;
+    cursor: pointer; border-radius: 8px;
+    transition: opacity .15s ease;
+  }
+  .brand-main:hover { opacity: .8; }
+  .brand-main:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .logo {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    flex: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: grid;
+    place-items: center;
+    color: var(--accent-ink);
+    font: 700 13px/1 var(--mono);
+    box-shadow: 0 4px 14px var(--accent-ring);
+  }
+
+  .brand h1 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: .2px;
+    white-space: nowrap;
+  }
+
+  /* 品牌图标（随主题切换 icon-light.ico / icon-dark.ico） */
+  .brand-icon {
+    width: 24px;
+    height: 24px;
+    flex: none;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 26px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--panel-2);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex: none;
+    transition: background .2s ease;
+  }
+
+  .status[data-state="loading"] .dot { background: var(--warn); animation: pulse 1.1s ease-in-out infinite; }
+  .status[data-state="ready"] .dot { background: var(--ok); box-shadow: 0 0 0 3px var(--ok-ring); }
+  .status[data-state="running"] .dot { background: var(--accent); animation: pulse .9s ease-in-out infinite; }
+  .status[data-state="error"] .dot { background: var(--err); }
+  .status[data-state="ready"] { color: var(--fg-soft); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .25; }
+  }
+
+  .spacer { flex: 1 1 0; min-width: 0; }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    min-width: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    font: 500 12.5px/1 var(--ui);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s ease, border-color .15s ease, color .15s ease, transform .08s ease;
+  }
+
+  .btn:hover:not(:disabled) { background: var(--btn-bg-hover); border-color: var(--btn-border-hover); color: var(--btn-fg-hover); }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn:disabled { opacity: .42; cursor: not-allowed; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-strong), var(--accent-strong-2));
+    border-color: transparent;
+    color: var(--accent-ink);
+    font-weight: 650;
+    box-shadow: 0 3px 14px var(--accent-shadow);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--accent-strong-hover), var(--accent-strong-hover-2));
+    color: var(--accent-ink);
+  }
+
+  .btn kbd {
+    font: 500 10.5px/1 var(--mono);
+    padding: 3px 4px;
+    border-radius: 4px;
+    background: var(--kbd-bg);
+    color: var(--kbd-fg);
+  }
+
+  .btn .ico { display: block; flex: none; }
+  .btn .ico-sun { display: none; }
+  :root[data-theme="light"] .btn .ico-moon { display: none; }
+  :root[data-theme="light"] .btn .ico-sun { display: block; }
+
+  /* 小图标按钮：分区方向切换 */
+  .btn.btn-icon { width: 30px; padding: 0; justify-content: center; }
+  .btn .ico-split-v { display: none; }
+  body[data-orient="horizontal"] .btn .ico-split-h { display: none; }
+  body[data-orient="horizontal"] .btn .ico-split-v { display: block; }
+
+  select.btn {
+    padding-right: 8px;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 13px) 12px, calc(100% - 9px) 12px;
+    background-size: 4px 4px, 4px 4px;
+    background-repeat: no-repeat;
+    padding-left: 10px;
+    padding-right: 26px;
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  /* 示例 / 链接下拉菜单限宽，避免挤掉运行按钮 */
+  #sampleCat, #samples, #links { width: 116px; max-width: 116px; }
+
+  /* 选中后才在框内显示前缀符号；下拉选项本身不带符号 */
+  .sel-wrap { position: relative; display: inline-flex; flex: none; }
+  .sel-wrap::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    line-height: 1;
+    color: var(--muted);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+  }
+  .sel-wrap.has-value::before { opacity: 1; }
+  .sel-wrap > select.btn { padding-left: 26px; }
+
+  select.btn option {
+    background: var(--panel);
+    color: var(--fg);
+  }
+
+  /* ---------- 工作区 ---------- */
+  .work {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: var(--split, 55%) 11px minmax(0, 1fr);
+  }
+
+  /* 左右分区：同一分割比例变量改作用于列 */
+  body[data-orient="horizontal"] .work {
+    grid-template-columns: var(--split, 55%) 11px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .pane-head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 30px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--border-soft);
+    background: var(--panel-2);
+    font-size: 11.5px;
+    letter-spacing: .3px;
+    color: var(--muted);
+    user-select: none;
+  }
+
+  .pane-head .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--fg-soft);
+    font-family: var(--mono);
+  }
+
+  .pane-head .tag::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  .pane-head .meta {
+    font-size: 11px;
+    color: var(--muted-2);
+    font-family: var(--mono);
+  }
+
+  .pane-head .kbd-hint {
+    font-size: 11px;
+    color: var(--muted-2);
+  }
+
+  /* ---------- 编辑器 ---------- */
+  .editor-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    background: var(--editor-bg);
+    overflow: hidden;
+  }
+
+  .gutter {
+    flex: none;
+    width: 44px;
+    padding: 14px 8px 40px 0;
+    overflow: hidden;
+    text-align: right;
+    color: var(--gutter-fg);
+    font: 13.5px/1.66 var(--mono);
+    user-select: none;
+    background: var(--gutter-bg);
+    border-right: 1px solid var(--border-soft);
+  }
+
+  .gutter div { will-change: transform; }
+
+  /* 高亮层 + 透明 textarea 叠放 */
+  .editor-stack {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  #hl {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    padding: 14px 16px 40px;
+    border: 0;
+    pointer-events: none;
+    color: var(--code-fg);
+    font: 13.5px/1.66 var(--mono);
+    tab-size: 4;
+    white-space: pre;
+    overflow: visible;
+    will-change: transform;
+  }
+
+  #code {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding: 14px 16px 40px;
+    border: 0;
+    outline: 0;
+    resize: none;
+    background: transparent;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    caret-color: var(--accent);
+    font: 13.5px/1.66 var(--mono);
+    tab-size: 4;
+    white-space: pre;
+    overflow: auto;
+  }
+
+  #code::selection { background: var(--accent-select); }
+  ::selection { background: var(--accent-select); }
+
+  /* 语法着色 */
+  .tok-kw  { color: var(--tok-kw); }
+  .tok-str { color: var(--tok-str); }
+  .tok-num { color: var(--tok-num); }
+  .tok-com { color: var(--tok-com); font-style: italic; }
+  .tok-bi  { color: var(--tok-bi); }
+  .tok-fn  { color: var(--tok-fn); }
+  .tok-dec { color: var(--tok-dec); }
+
+  /* ---------- 分割条 ---------- */
+  .splitter {
+    position: relative;
+    display: grid;
+    place-items: center;
+    cursor: row-resize;
+    background: var(--bg);
+    touch-action: none;
+    outline: none;
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .splitter .grip {
+    width: 46px;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--grip);
+    transition: background .16s ease, width .16s ease;
+  }
+
+  .splitter:hover .grip,
+  .splitter:focus-visible .grip,
+  .splitter.dragging .grip {
+    background: var(--accent);
+    width: 64px;
+  }
+
+  .splitter::after {
+    content: "";
+    position: absolute;
+    inset: -4px 0;
+  }
+
+  /* 左右分区时分割条改为竖条 */
+  body[data-orient="horizontal"] .splitter {
+    cursor: col-resize;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 1px solid var(--border-soft);
+    border-right: 1px solid var(--border-soft);
+  }
+  body[data-orient="horizontal"] .splitter .grip { width: 4px; height: 46px; }
+  body[data-orient="horizontal"] .splitter:hover .grip,
+  body[data-orient="horizontal"] .splitter:focus-visible .grip,
+  body[data-orient="horizontal"] .splitter.dragging .grip { width: 4px; height: 64px; }
+  body[data-orient="horizontal"] .splitter::after { inset: 0 -4px; }
+
+  body.dragging { cursor: row-resize; user-select: none; }
+  body[data-orient="horizontal"].dragging { cursor: col-resize; }
+  body.dragging #code { pointer-events: none; }
+
+  /* ---------- 终端 ---------- */
+  .term-pane { background: var(--term-bg); }
+
+  .term {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 10px 14px 12px;
+    font: 13px/1.62 var(--mono);
+    color: var(--term-fg);
+    scrollbar-gutter: stable;
+    cursor: text;
+  }
+
+  .line {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    min-height: 1.62em;
+  }
+
+  .line.out { color: var(--term-out); }
+  .line.err { color: var(--err); }
+  .line.sys { color: var(--sys); font-style: italic; }
+  .line.echo { color: var(--accent); }
+  .line.ok { color: var(--term-ok); }
+
+  .line.banner {
+    color: var(--term-banner);
+    font-style: normal;
+  }
+
+  .line.banner b { color: var(--fg); font-weight: 600; }
+
+  .term .input-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 2px -8px 0;
+    padding: 2px 8px 3px;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: background .15s ease, border-color .15s ease;
+  }
+
+  .term .input-line:focus-within {
+    background: var(--accent-soft);
+    border-left-color: var(--accent-line);
+  }
+
+  .input-line .prompt {
+    flex: none;
+    color: var(--accent);
+    font: 13px/1.62 var(--mono);
+    user-select: none;
+  }
+
+  #repl {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 21px;
+    max-height: 106px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    resize: none;
+    overflow: hidden;
+    background: transparent;
+    color: var(--repl-fg);
+    font: 13px/1.62 var(--mono);
+    caret-color: var(--accent);
+  }
+
+  #repl::placeholder { color: var(--repl-placeholder); }
+  #repl:disabled { opacity: .55; cursor: default; }
+  #repl::selection { background: var(--accent-select); }
+
+  /* ---------- 滚动条 ---------- */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb);
+    border-radius: 99px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--sb-thumb-hover); background-clip: content-box; }
+
+  @media (max-width: 720px) {
+    .pane-head .kbd-hint, .btn kbd { display: none; }
+    .topbar { padding: 8px 10px; }
+    .actions { width: 100%; }
+    #sampleCat, #samples, #links { width: 104px; max-width: 104px; }
+  }
+
+  /* ---------- 检查更新 ---------- */
+  #updateBtn { position: relative; }
+  .update-dot {
+    position: absolute; top: 3px; right: 3px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--warn); box-shadow: 0 0 0 2px var(--panel), 0 0 8px var(--warn);
+  }
+  .update-dot[hidden] { display: none; }
+
+  .update-toast {
+    position: fixed;
+    right: 18px; bottom: 18px;
+    width: 330px; max-width: calc(100vw - 36px);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 16px 44px rgba(0,0,0,.42);
+    z-index: 60;
+    overflow: hidden;
+    animation: ut-in .18s ease-out;
+  }
+  .update-toast[hidden] { display: none; }
+  @keyframes ut-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .ut-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 13px;
+    border-bottom: 1px solid var(--border-soft);
+    background: var(--panel-2);
+  }
+  .ut-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; flex: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: var(--accent-ink); font-size: 14px; font-weight: 700;
+  }
+  .ut-title { font-weight: 650; font-size: 14px; color: var(--fg); }
+  .ut-close {
+    margin-left: auto; border: 0; background: transparent;
+    color: var(--muted); font-size: 20px; line-height: 1;
+    cursor: pointer; padding: 0 3px;
+  }
+  .ut-close:hover { color: var(--fg); }
+  .ut-body { padding: 12px 13px; font-size: 12.5px; color: var(--fg-soft); line-height: 1.6; }
+  .ut-body b { color: var(--fg); }
+  .ut-body .ver-new { color: var(--ok); font-weight: 650; }
+  .ut-body .ver-old { color: var(--muted); }
+  .ut-actions {
+    display: flex; gap: 8px; padding: 0 13px 13px;
+  }
+  .ut-actions .btn { flex: 1; justify-content: center; }
+  .ut-note { margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+  .ut-note a { color: var(--accent); text-decoration: none; }
+  .ut-note a:hover { text-decoration: underline; }
+  /* 更新进度 */
+  .up-progress { padding: 2px 0 3px; }
+  .up-bar {
+    height: 8px; border-radius: 5px; background: var(--border-soft);
+    overflow: hidden; box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .up-bar-fill {
+    height: 100%; width: 0%; border-radius: 5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width .35s ease;
+  }
+  .up-status { margin-top: 10px; font-size: 12px; color: var(--fg-soft); line-height: 1.5; }
+  .up-step {
+    display: inline-block; min-width: 34px; margin-right: 6px;
+    color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  .up-status .ok { color: var(--ok); }
+  .up-status .fail { color: var(--err); }
+
+  /* ---------- 关于 ---------- */
+  .about-btn {
+    flex: none;
+    display: inline-grid; place-items: center;
+    width: 24px; height: 24px; padding: 0; margin-left: -2px;
+    border: 1px solid transparent; border-radius: 6px;
+    background: transparent; color: var(--muted);
+    font-size: 14px; line-height: 1; cursor: pointer;
+    /* emoji 图标：按平台优先选彩色 emoji 字体，避免回退成方框 */
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", sans-serif;
+    transition: background .15s ease, border-color .15s ease, transform .08s ease;
+  }
+  .about-btn:hover { background: var(--btn-bg-hover); border-color: var(--border); color: var(--fg); }
+  .about-btn:active { transform: translateY(1px); }
+
+  .about-backdrop {
+    position: fixed; inset: 0; z-index: 80;
+    display: grid; place-items: center; padding: 20px;
+    background: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(3px);
+    animation: ab-fade .16s ease-out;
+  }
+  .about-backdrop[hidden] { display: none; }
+  @keyframes ab-fade { from { opacity: 0; } to { opacity: 1; } }
+  .about-modal {
+    width: 440px; max-width: 100%;
+    max-height: calc(100vh - 40px); overflow: auto;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: 0 24px 64px rgba(0, 0, 0, .5);
+    animation: ab-pop .18s ease-out;
+  }
+  @keyframes ab-pop {
+    from { opacity: 0; transform: translateY(8px) scale(.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .about-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-bottom: 1px solid var(--border-soft);
+  }
+  .about-head .logo { width: 30px; height: 30px; border-radius: 9px; font-size: 14px; }
+  .about-head h2 { margin: 0; font-size: 15px; font-weight: 650; color: var(--fg); }
+  .about-body { padding: 16px; font-size: 12.8px; color: var(--fg-soft); line-height: 1.7; }
+  .about-body p { margin: 0 0 10px; }
+  .about-body b { color: var(--fg); }
+  .about-body .about-ver {
+    display: inline-block; padding: 2px 8px; border-radius: 6px;
+    background: var(--accent-soft); color: var(--accent);
+    font-family: var(--mono); font-size: 12px;
+  }
+  .about-body h3 {
+    margin: 14px 0 6px; font-size: 12.5px; font-weight: 650;
+    color: var(--fg); letter-spacing: .3px;
+  }
+  .about-body ul { margin: 0; padding-left: 18px; }
+  .about-body li { margin: 2px 0; }
+  .about-body kbd {
+    font: 500 10.5px/1 var(--mono); padding: 2px 5px; border-radius: 4px;
+    background: var(--kbd-bg); color: var(--muted); border: 1px solid var(--border-soft);
+  }
+  .about-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 16px; border-top: 1px solid var(--border-soft);
+  }
+  /* 底栏左侧署名组：设计署名 + 技术支持小字 */
+  .about-credits { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  /* 技术支持徽标：沿用 WorkBuddy 品牌绿（Logo 渐变 #0EC8A9 → #01C886） */
+  .about-credit-power {
+    display: inline-flex; align-items: center; gap: 3px; width: fit-content;
+    padding: 1.5px 8px; border-radius: 999px;
+    font-size: 10.5px; font-weight: 500; line-height: 1.35; letter-spacing: .3px;
+    white-space: nowrap;
+    color: var(--muted);
+    background: linear-gradient(90deg, rgba(14, 200, 169, .14), rgba(1, 200, 134, .14));
+    border: 1px solid rgba(14, 200, 169, .26);
+  }
+  .about-credit-power b { font-weight: 700; letter-spacing: .2px; color: #01C886; }
+  :root[data-theme="light"] .about-credit-power {
+    background: linear-gradient(90deg, rgba(14, 200, 169, .13), rgba(1, 200, 134, .13));
+    border-color: rgba(1, 168, 113, .28);
+  }
+  :root[data-theme="light"] .about-credit-power b { color: #0E9F6E; }
+  /* 关于框：主题图标 + 简介横排，图标循环渐隐 */
+  .about-hero { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .about-hero-icon {
+    width: 64px; height: 64px; flex: none; border-radius: 14px;
+  }
+  .about-hero p { margin: 0; }
+  /* 贪吃蛇特效画布 */
+  .about-snake {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border-soft);
+  }
+  /* 分数以 HUD 形式叠在画布右上角：手动分/总分，字体与颜色均取自主题变量 */
+  .about-snake-stage { position: relative; }
+  .about-snake-score {
+    position: absolute; top: 7px; right: 9px;
+    font-family: var(--mono);
+    font-size: 12px; font-weight: 700; line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 3px var(--panel-2), 0 1px 2px var(--panel-2);
+    pointer-events: none;
+  }
+  .about-snake-score .manual { color: var(--snake-manual-a); }  /* 手动分：手动模式主题色 */
+  .about-snake-score .sep    { color: var(--muted-2); margin: 0 2px; }
+  .about-snake-score .auto   { color: var(--snake-auto-a); }    /* 自动分：自动模式主题色 */
+  .about-snake canvas {
+    width: 100%; height: 112px; display: block; cursor: pointer;
+    background: var(--panel-2); border: 1px solid var(--border-soft);
+    border-radius: 8px;
+  }
+  /* 摸鱼模式：点击画布后铺满整个关于窗体，隐藏其它所有内容 */
+  .about-modal.snake-max {
+    width: min(920px, 94vw); height: min(680px, 88vh);
+    max-height: none; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .about-modal.snake-max .about-head,
+  .about-modal.snake-max .about-foot { display: none; }
+  .about-modal.snake-max .about-body {
+    flex: 1; min-height: 0; padding: 0; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .about-modal.snake-max .about-body > *:not(.about-snake) { display: none; }
+  .about-modal.snake-max .about-snake {
+    flex: 1; min-height: 0; margin: 0; padding: 0; border: 0;
+    display: flex;
+  }
+  .about-modal.snake-max .about-snake-stage { flex: 1; min-height: 0; }
+  .about-modal.snake-max .about-snake canvas {
+    width: 100%; height: 100%; border: 0; border-radius: 0;
+  }
+  .about-modal.snake-max .about-snake-score {
+    top: 14px; right: 18px; font-size: 22px;
+  }
+  /* 环境信息行：内核版本 + PHP 版本同排 */
+  .about-env-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 10px; }
+  /* 版本行：程序版本 + 项目链接按钮同排 */
+  .about-ver-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  /* 署名（底栏左下，颜色贴近背景 + 凹凸浮雕，可点击跳转） */
+  .about-credit-by {
+    font-size: 14px; font-weight: 700; letter-spacing: .3px;
+    color: #2a3242; text-decoration: none; cursor: pointer;
+    text-shadow: 0 1px 0 var(--panel), 0 -1px 1px rgba(0, 0, 0, .55);
+    transition: color .15s ease;
+  }
+  .about-credit-by:hover { color: var(--muted-3); text-decoration: none; }
+  :root[data-theme="light"] .about-credit-by {
+    color: #c5cdd7;
+    text-shadow: 0 1px 0 #fff, 0 -1px 1px rgba(0, 0, 0, .18);
+  }
+  :root[data-theme="light"] .about-credit-by:hover { color: var(--muted-3); }
+  /* 项目链接（与程序版本同行，紧凑按钮） */
+  .about-credit-links { display: flex; gap: 8px; flex-wrap: wrap; }
+  .about-credit-links a {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 6px;
+    color: #fff; font-size: 11.5px; font-weight: 600; text-decoration: none;
+    transition: filter .15s ease, transform .08s ease;
+  }
+  .about-credit-links a svg { width: 13px; height: 13px; fill: currentColor; display: block; flex: none; }
+  .about-credit-links a:hover { filter: brightness(1.15); text-decoration: none; }
+  .about-credit-links a:active { transform: translateY(1px); }
+  /* GitHub：深灰黑底白字（GitHub 品牌风格） */
+  .about-credit-links .credit-github { background: #24292f; }
+  /* Gitee：红色底白字（Gitee 品牌风格） */
+  .about-credit-links .credit-gitee { background: #c71d23; }
+</style>
+<script>
+  /* 主题预置：避免首屏闪烁（优先 localStorage，其次 cookie，最后跟随系统偏好）
+   * file:// 下浏览器禁用 cookie，必须用 localStorage 才能保存主题。 */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('mp_theme'); } catch (_) {}
+    if (t !== 'light' && t !== 'dark') {
+      var m = document.cookie.match(/(?:^|;\s*)mp_theme=(light|dark)/);
+      t = m ? m[1] : null;
+    }
+    if (t !== 'light' && t !== 'dark') {
+      t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+    // 图标同步：亮色主题用 icon-light.ico，暗色主题用 icon-dark.ico
+    var icon = document.getElementById('favicon');
+    if (icon) icon.setAttribute('href', window.MP_ICONS[t]);  // 内联图标，单文件也能显示
+  })();
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-main" id="brandMain" title="点击查看关于信息" role="button" tabindex="0" aria-label="打开关于信息框">
+      <div class="logo">py</div>
+      <img class="brand-icon" id="brandIcon" alt="MicroPython" width="24" height="24">
+      <h1>MicroPython Playground</h1>
+    </div>
+    <button class="about-btn" id="aboutBtn" title="关于" aria-label="关于">💬</button>
+  </div>
+
+  <div class="status" id="status" data-state="loading">
+    <span class="dot"></span>
+    <span id="statusText">正在加载内核…</span>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="actions">
+    <button class="btn" id="updateBtn" title="检查 MicroPython 内核是否有新版本">
+      <svg class="ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/>
+      </svg>
+      <span>检查更新</span>
+      <span class="update-dot" id="updateDot" hidden></span>
+    </button>
+    <button class="btn" id="phpUpdateBtn" disabled
+            title="有新版本时可用：由服务器上的 update.php 下载新内核并覆盖到本地目录">
+      <svg class="ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v3h16v-3"/>
+      </svg>
+      <span id="phpUpdateLabel">更新到本地</span>
+    </button>
+    <button class="btn btn-icon" id="themeBtn" title="切换到亮色主题（Ctrl/⌘ + J）" aria-label="切换到亮色主题（Ctrl/⌘ + J）">
+      <svg class="ico ico-moon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5z"/>
+      </svg>
+      <svg class="ico ico-sun" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+      </svg>
+    </button>
+    <button class="btn btn-icon" id="layoutBtn" title="切换为左右分区">
+      <svg class="ico ico-split-h" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>
+      </svg>
+      <svg class="ico ico-split-v" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 12h18"/>
+      </svg>
+    </button>
+    <span class="sel-wrap" data-icon="☷">
+      <select class="btn" id="sampleCat" title="示例类别">
+        <option value="">示例类别…</option>
+      </select>
+    </span>
+    <span class="sel-wrap" data-icon="📄">
+      <select class="btn" id="samples" title="载入示例代码" disabled>
+        <option value="">请先选类别</option>
+      </select>
+    </span>
+    <span class="sel-wrap" data-icon="🔗">
+      <select class="btn" id="links" title="常用链接：点击跳转">
+        <option value="">常用链接…</option>
+      </select>
+    </span>
+    <button class="btn" id="resetBtn" title="重建内核（清空所有 Python 状态）">重置内核</button>
+    <button class="btn" id="clearBtn" title="清空输出区">清空输出</button>
+    <button class="btn" id="stopBtn" disabled title="中断当前运行">停止</button>
+    <button class="btn btn-primary" id="runBtn" disabled>
+      运行 <kbd>⌘/Ctrl ↵</kbd>
+    </button>
+  </div>
+</header>
+
+<main class="work" id="work">
+  <section class="pane editor-pane">
+    <div class="pane-head">
+      <span class="tag">main.py</span>
+      <span class="kbd-hint">Ctrl / ⌘ + Enter 运行 · Tab 缩进 · 拖动中间横条调整高度</span>
+    </div>
+    <div class="editor-body">
+      <div class="gutter" id="gutter"><div id="gutterInner"></div></div>
+      <div class="editor-stack">
+        <pre id="hl" aria-hidden="true"></pre>
+        <textarea id="code" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <div class="splitter" id="splitter" role="separator" aria-orientation="horizontal" aria-label="调整上下区域高度" tabindex="0">
+    <span class="grip"></span>
+  </div>
+
+  <section class="pane term-pane">
+    <div class="pane-head">
+      <span class="tag">REPL 输出</span>
+      <span class="meta" id="termMeta">stdout / stderr</span>
+    </div>
+    <div class="term" id="term">
+      <div id="out"></div>
+      <div class="input-line" id="inputLine">
+        <span class="prompt" id="replPrompt">&gt;&gt;&gt;</span>
+        <textarea id="repl" rows="1" placeholder="在此输入 Python 命令 · Enter 执行 · Tab 补全 · ↑/↓ 历史"
+                  autocomplete="off" autocapitalize="off" spellcheck="false" disabled></textarea>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- 更新提示卡片 -->
+<div class="update-toast" id="updateToast" role="status" aria-live="polite" hidden>
+  <div class="ut-head">
+    <span class="ut-icon">↥</span>
+    <span class="ut-title" id="utTitle">发现新版本</span>
+    <button class="ut-close" id="utClose" title="关闭" aria-label="关闭">×</button>
+  </div>
+  <div class="ut-body" id="utBody"></div>
+  <div class="ut-actions" id="utActions"></div>
+</div>
+
+<!-- 关于信息框 -->
+<div class="about-backdrop" id="aboutBackdrop" hidden>
+  <div class="about-modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="about-head">
+      <div class="logo">py</div>
+      <h2 id="aboutTitle">关于 MicroPython Playground</h2>
+    </div>
+    <div class="about-body">
+      <div class="about-hero">
+        <img class="about-hero-icon" id="aboutIcon" alt="MicroPython" width="64" height="64">
+        <p>一个基于 <b>WebAssembly</b> 的本地 MicroPython 交互式运行环境。代码全部在浏览器内编译执行，无需连接服务器。</p>
+      </div>
+      <div class="about-env-row">
+        <span>当前内核版本：<span class="about-ver" id="aboutVersion">检测中…</span></span>
+        <span>PHP 版本：<span class="about-ver" id="aboutPhpVersion">检测中…</span></span>
+      </div>
+      <div class="about-ver-row">
+        <span>程序版本：<span class="about-ver" id="appVersionBody">v1.1.31</span></span>
+        <div class="about-credit-links">
+        <a class="credit-github" href="https://github.com/shaoziyang/MicroPythonPlayground" target="_blank" rel="noopener" title="GitHub 源码">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.7 7.7 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a class="credit-gitee" href="https://gitee.com/shaoziyang/MicroPythonPlayground" target="_blank" rel="noopener" title="Gitee 源码">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.2 2.2C6.2 2.2 2.2 6.2 2.2 11.2c0 3.7 2.2 7 5.4 8.5l1.4-2.5c-2.1-1.1-3.5-3.3-3.5-5.9 0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5c0 2.3-1.2 4.4-3.1 5.6l2.3 1.7c2.9-1.9 4.7-5.1 4.7-8.6 0-5-4.1-9.3-9.2-9.3z"/></svg>
+          <span>Gitee</span>
+        </a>
+        </div>
+      </div>
+      <h3>主要功能</h3>
+      <ul>
+        <li>编辑器 Python 语法高亮，亮 / 暗主题切换</li>
+        <li>REPL 交互输入、表达式回显与 Tab 补全</li>
+        <li>两级示例菜单（按类别浏览）与常用链接</li>
+        <li>检查并更新内核，支持多 CDN 与 PHP 本地更新</li>
+        <li>上下 / 左右分区切换，拖动分割条调整</li>
+        <li>代码、主题与布局自动保存到本地（file 模式用 localStorage，HTTP 模式兼容 Cookie）</li>
+      </ul>
+      <h3>快捷键</h3>
+      <ul>
+        <li><kbd>Ctrl / ⌘ + Enter</kbd> 运行代码</li>
+        <li><kbd>Tab</kbd> 补全 / 缩进</li>
+        <li><kbd>Ctrl / ⌘ + J</kbd> 切换主题</li>
+        <li>双击分割条重置分区比例</li>
+      </ul>
+      <div class="about-snake">
+        <div class="about-snake-stage">
+          <canvas id="snakeCanvas"></canvas>
+          <b id="snakeScore" class="about-snake-score"><span class="manual" id="snakeManualScore">0</span><span class="sep">:</span><span class="auto" id="snakeAutoScore">0</span></b>
+        </div>
+      </div>
+    </div>
+    <div class="about-foot">
+      <div class="about-credits">
+        <a class="about-credit-by" href="https://github.com/shaoziyang/MicroPythonPlayground" target="_blank" rel="noopener" title="访问 GitHub 项目主页">MicroPython中文社区</a>
+        <span class="about-credit-power">power by <b>WorkBuddy</b></span>
+      </div>
+      <button class="btn btn-primary" id="aboutOk">知道了</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+/* ============================================================
+ * MicroPython WebAssembly Playground
+ * 内核：@micropython/micropython-webassembly-pyscript 的 micropython.mjs
+ * 优先在 Web Worker 中运行（可中断），失败时回退主线程
+ * ============================================================ */
+
+/* 本地内核文件（与本页面放在同一目录）：
+ *   micropython.mjs
+ *   micropython.wasm
+ * http(s) 下直接加载这两个文件；file:// 下浏览器会拦截对本地 .mjs/.wasm 的
+ * 动态 import 与 fetch，此时改用外置经典脚本 micropython.bundle.js（由
+ * make_bundle.py 从上面两个文件生成）——经典 <script src>/importScripts
+ * 不受该 CORS 限制，因此无需把内核内联进本 HTML，文件体积保持精简。 */
+const MP_BASE = new URL('./', location.href).href;
+/* 内核资源 cache-buster：每次加载页面都生成全新的版本号，使内核文件 URL 每次都不同，
+ * 从而彻底绕过浏览器缓存。这样无论通过 PHP 更新、浏览器下载还是手动覆盖文件，
+ * 只要刷新页面就一定会重新拉取最新的 micropython.mjs / micropython.wasm。 */
+const ASSET_Q = '?v=' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+const MP_MJS_URL = MP_BASE + 'micropython.mjs' + ASSET_Q;
+const MP_WASM_URL = MP_BASE + 'micropython.wasm' + ASSET_Q;
+const MP_BUNDLE_URL = MP_BASE + 'micropython.bundle.js';
+const IS_FILE_PROTOCOL = location.protocol === 'file:';
+
+/* ---------------- file:// 外置内核包 ----------------
+ * micropython.bundle.js 是把 micropython.mjs 去掉 ESM 语法、连同 wasm 的
+ * base64 一起打进普通 JS 文件（见 make_bundle.py）。它在 window/self 上
+ * 暴露 __MP_BUNDLE__ = { default, loadMicroPython, wasmBase64 }。
+ * 主线程用 <script src> 动态插入；Worker 用 importScripts()。 */
+function wB64ToBytes(b64) {
+  const bin = atob(b64);
+  const u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+/* 等待 async IIFE 完成全局挂载 */
+async function waitBundle(scope, timeoutMs = 30000) {
+  const t0 = Date.now();
+  while (!scope.__MP_BUNDLE__ && !scope.__MP_BUNDLE_ERR__) {
+    if (Date.now() - t0 > timeoutMs) throw new Error('内核包初始化超时');
+    await new Promise(r => setTimeout(r, 20));
+  }
+  if (scope.__MP_BUNDLE_ERR__) throw new Error('内核包初始化失败：' + scope.__MP_BUNDLE_ERR__);
+  return scope.__MP_BUNDLE__;
+}
+/* 加载内核模块：http 走动态 import 外部 mjs；file 走外置 bundle */
+async function loadKernelModule() {
+  if (!IS_FILE_PROTOCOL) {
+    const mod = await import(MP_MJS_URL);
+    return { mod, wasmURL: MP_WASM_URL };
+  }
+  await new Promise((resolve, reject) => {
+    if (document.querySelector('script[data-mp-bundle]')) return resolve();
+    const s = document.createElement('script');
+    s.src = MP_BUNDLE_URL;
+    s.dataset.mpBundle = '1';
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('无法加载 micropython.bundle.js，请确认它与本页面位于同一目录（可运行 make_bundle.py 生成）'));
+    document.head.appendChild(s);
+  });
+  const b = await waitBundle(window);
+  return {
+    mod: { default: b.default, loadMicroPython: b.loadMicroPython },
+    wasmURL: URL.createObjectURL(new Blob([wB64ToBytes(b.wasmBase64)], { type: 'application/wasm' }))
+  };
+}
+
+/* ---------------- 本地持久化（localStorage 优先，Cookie 回退） ----------------
+ * file:// 下浏览器禁用 Cookie（path=/ 也无效），必须用 localStorage 才能保存配置；
+ * 因此统一走存储层：优先 localStorage，不可用时回退 Cookie（兼容 HTTP 旧环境）。
+ * 读取时若 localStorage 无值，会回退读旧 Cookie，保证历史配置平滑迁移。
+ * 编辑器代码可能较长，仍按块存放：
+ *   mp_code_n    块数
+ *   mp_code_0..  代码块（Base64URL 编码，每块 COOKIE_CHUNK 字符）
+ * 其余参数：mp_theme / mp_split（比例）/ mp_orient（上下 v / 左右 h）/ mp_font
+ */
+const COOKIE_MAX_AGE = 31536000; // 1 年（仅 Cookie 回退时用）
+const COOKIE_CHUNK = 3000;
+const COOKIE_MAX_CHUNKS = 20;    // 约 45 KB 源码上限
+
+// 探测 localStorage 是否真正可写（隐私模式 / 部分 file:// 环境可能抛异常）
+const LS_OK = (function () {
+  try {
+    const k = '__mp_store_probe__';
+    localStorage.setItem(k, '1');
+    localStorage.removeItem(k);
+    return true;
+  } catch (_) { return false; }
+})();
+
+function cookieGet(name) {
+  if (LS_OK) {
+    try {
+      const v = localStorage.getItem(name);
+      if (v !== null) return v;
+    } catch (_) {}
+  }
+  // 回退：读旧 Cookie（兼容 localStorage 不可用时，或历史数据迁移）
+  const m = document.cookie.match(new RegExp('(?:^|;\\s*)' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function cookieSet(name, value, maxAge = COOKIE_MAX_AGE) {
+  if (LS_OK) {
+    try { localStorage.setItem(name, String(value)); return; } catch (_) {}
+  }
+  document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; max-age=' + maxAge + '; SameSite=Lax';
+}
+
+function cookieDel(name) {
+  if (LS_OK) {
+    try { localStorage.removeItem(name); } catch (_) {}
+  }
+  document.cookie = name + '=; path=/; max-age=0; SameSite=Lax';
+}
+
+/* Base64URL 编解码（UTF-8 安全，分片避免超长参数栈溢出） */
+function b64urlEncode(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function b64urlDecode(s) {
+  let b64 = s.replace(/-/g, '+').replace(/_/g, '/');
+  while (b64.length % 4) b64 += '=';
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+function saveCodeCookie(code) {
+  const oldCount = parseInt(cookieGet('mp_code_n') || '0', 10) || 0;
+  const enc = b64urlEncode(code);
+  const chunks = [];
+  for (let i = 0; i < enc.length; i += COOKIE_CHUNK) chunks.push(enc.slice(i, i + COOKIE_CHUNK));
+  if (chunks.length > COOKIE_MAX_CHUNKS) {
+    console.warn('[playground] 代码过长（' + code.length + ' 字符），超出 cookie 容量，本次未保存。');
+    if (!saveCodeCookie.warned) {
+      saveCodeCookie.warned = true;
+      writeLine('代码过长，超出 Cookie 存储上限（约 45 KB），本次改动未保存到浏览器。', 'err');
+    }
+    return false;
+  }
+  chunks.forEach((c, i) => cookieSet('mp_code_' + i, c));
+  for (let i = chunks.length; i < oldCount; i++) cookieDel('mp_code_' + i);
+  cookieSet('mp_code_n', String(chunks.length));
+  return true;
+}
+
+function loadCodeCookie() {
+  const n = parseInt(cookieGet('mp_code_n') || '0', 10) || 0;
+  if (!n) return null;
+  let enc = '';
+  for (let i = 0; i < n; i++) enc += cookieGet('mp_code_' + i) || '';
+  if (!enc) return null;
+  try { return b64urlDecode(enc); } catch (_) { return null; }
+}
+
+
+/* ---------------- DOM ---------------- */
+const $ = (id) => document.getElementById(id);
+
+/* 下拉框：仅在选中具体项目后显示前缀符号（下拉选项本身保持纯文字） */
+function syncSelIcon(sel) {
+  const wrap = sel && sel.parentElement;
+  if (wrap && wrap.classList.contains('sel-wrap')) {
+    wrap.classList.toggle('has-value', sel.value !== '');
+  }
+}
+const codeEl = $('code');
+const hlEl = $('hl');
+const gutterInner = $('gutterInner');
+const gutterEl = $('gutter');
+const termEl = $('term');
+const outEl = $('out');
+const inputLineEl = $('inputLine');
+const replEl = $('repl');
+const runBtn = $('runBtn');
+const stopBtn = $('stopBtn');
+const clearBtn = $('clearBtn');
+const resetBtn = $('resetBtn');
+const samplesEl = $('samples');
+const sampleCatEl = $('sampleCat');
+const statusEl = $('status');
+const statusText = $('statusText');
+const workEl = $('work');
+const splitterEl = $('splitter');
+const layoutBtn = $('layoutBtn');
+
+/* ---------------- 状态 ---------------- */
+const state = {
+  kernel: null,
+  mode: null,        // 'worker' | 'main'
+  ready: false,
+  running: false,
+  history: [],
+  histIndex: -1,
+};
+
+/* ---------------- 终端输出 ---------------- */
+let stickToBottom = true;
+const MAX_LINES = 800;
+
+termEl.addEventListener('scroll', () => {
+  stickToBottom = termEl.scrollHeight - termEl.scrollTop - termEl.clientHeight < 28;
+});
+
+function scrollTerm() {
+  if (stickToBottom) termEl.scrollTop = termEl.scrollHeight;
+}
+
+function writeLine(text, cls = 'out') {
+  const div = document.createElement('div');
+  div.className = 'line ' + cls;
+  div.textContent = text === '' ? '\u00a0' : text;
+  outEl.appendChild(div);
+  while (outEl.childElementCount > MAX_LINES) outEl.removeChild(outEl.firstElementChild);
+  scrollTerm();
+}
+
+function writeRaw(text, cls = 'out') {
+  if (text === undefined || text === null) return;
+  const parts = String(text).split('\n');
+  // 末尾换行产生的空串不单独成行
+  if (parts.length && parts[parts.length - 1] === '') parts.pop();
+  for (const p of parts) writeLine(p, cls);
+}
+
+function writeBanner(html) {
+  const div = document.createElement('div');
+  div.className = 'line banner';
+  div.innerHTML = html;
+  outEl.appendChild(div);
+  scrollTerm();
+}
+
+/* REPL 模式下精简 traceback：去掉 __repl_eval 包装帧，只留用户代码的调用栈 */
+function cleanReplTraceback(text) {
+  const lines = String(text).split('\n');
+  const out = [];
+  let justAfterTraceback = false;
+  for (const ln of lines) {
+    if (/^Traceback \(most recent call last\):/.test(ln)) {
+      out.push(ln);
+      justAfterTraceback = true;
+      continue;
+    }
+    // 包装函数的调用点（第 1 行）
+    if (justAfterTraceback && /^\s+File "<stdin>", line 1, in <module>\s*$/.test(ln)) {
+      justAfterTraceback = false;
+      continue;
+    }
+    justAfterTraceback = false;
+    // 辅助函数自身的帧
+    if (/^\s+File "<stdin>", line \d+, in __repl_eval\s*$/.test(ln)) continue;
+    out.push(ln);
+  }
+  // 若过滤后只剩 "Traceback ..." 一行，则该行也无意义
+  if (out.length === 2 && /^Traceback/.test(out[0])) out.shift();
+  return out;
+}
+
+/* 让输入行始终出现在可视区域，并把焦点交给它 */
+function focusInput(forceScroll) {
+  if (replEl.disabled) return;
+  const lineBottom = inputLineEl.offsetTop + inputLineEl.offsetHeight;
+  const viewBottom = termEl.scrollTop + termEl.clientHeight;
+  if (forceScroll || lineBottom > viewBottom - 4) {
+    stickToBottom = true;
+    termEl.scrollTop = termEl.scrollHeight;
+  }
+  replEl.focus();
+}
+
+/* 点击输出区任意位置（未选中文本时）即可开始输入命令 */
+termEl.addEventListener('click', (e) => {
+  if (e.target === replEl) return;
+  const sel = window.getSelection();
+  const selected = String(sel || '');
+  if (selected.length > 0) return;          // 用户正在选择文本，不打断
+  if (sel && sel.rangeCount > 0) sel.removeAllRanges();  // 清除点击造成的空选区
+  focusInput();
+});
+
+/* 输入框随内容自动增高 */
+function autosizeInput() {
+  replEl.style.height = 'auto';
+  const h = Math.min(replEl.scrollHeight, 106);
+  replEl.style.height = h + 'px';
+  replEl.style.overflowY = replEl.scrollHeight > 106 ? 'auto' : 'hidden';
+}
+
+/* ---------------- 状态显示 ---------------- */
+function setStatus(kind, text) {
+  statusEl.dataset.state = kind;
+  statusText.textContent = text;
+}
+
+function setRunning(on) {
+  state.running = on;
+  runBtn.disabled = on || !state.ready;
+  resetBtn.disabled = on;
+  replEl.disabled = on || !state.ready;
+  stopBtn.disabled = !on || state.mode !== 'worker';
+  if (on) setStatus('running', '运行中…');
+  else if (state.ready) setStatus('ready', '就绪');
+}
+
+/* ---------------- 内核：Worker 模式 ---------------- */
+/* REPL 语义：先按单表达式求值，失败再按语句执行 —— 与 CPython 交互式解释器一致 */
+const REPL_HELPER_SRC = [
+  'def __repl_eval(src):',
+  '    try:',
+  '        __c = compile(src, "<stdin>", "eval")',
+  '    except SyntaxError:',
+  '        exec(compile(src, "<stdin>", "exec"), globals())',
+  '        return',
+  '    __v = eval(__c, globals())',
+  '    if __v is not None:',
+  '        print(repr(__v))',
+  '',
+  '# Tab 补全：输出以 \\x1e 开头、\\x1f 分隔的名字列表，供前端解析',
+  'def __repl_names():',
+  '    __ns = set(globals().keys())',
+  '    try:',
+  '        import builtins',
+  '        __ns |= set(dir(builtins))',
+  '    except Exception:',
+  '        pass',
+  '    print("\\x1e" + "\\x1f".join(sorted(n for n in __ns if not n.startswith("_"))))',
+  '',
+  'def __repl_attrs(expr):',
+  '    try:',
+  '        __o = eval(expr, globals())',
+  '        __ns = [a for a in dir(__o) if not a.startswith("_")]',
+  '        print("\\x1e" + "\\x1f".join(sorted(__ns)))',
+  '    except Exception:',
+  '        print("\\x1e")',
+  '',
+  '# 实际版本号：优先 sys.implementation.version，失败时退回 sys.version',
+  'def __repl_version():',
+  '    import sys',
+  '    __s = ""',
+  '    try:',
+  '        __s = ".".join(str(n) for n in sys.implementation.version[:3])',
+  '    except Exception:',
+  '        pass',
+  '    if not __s:',
+  '        __s = str(getattr(sys, "version", ""))',
+  '    print("\\x1e" + __s)',
+  ''
+].join('\n');
+
+function wrapReplCode(code) {
+  return '__repl_eval(' + JSON.stringify(code) + ')';
+}
+
+/* 补全查询期间静音 stdout：输出行收集到 captureSink，不写终端 */
+let captureSink = null;
+function emitOutput(text, cls) {
+  if (captureSink) { captureSink.push(text); return; }
+  writeRaw(text, cls);
+}
+
+const WORKER_SRC = `
+const MP_MJS = ${JSON.stringify(MP_MJS_URL)};
+const MP_WASM = ${JSON.stringify(MP_WASM_URL)};
+const BUNDLE_URL = ${JSON.stringify(MP_BUNDLE_URL)};
+const IS_FILE = ${JSON.stringify(IS_FILE_PROTOCOL)};
+const REPL_HELPER = ${JSON.stringify(REPL_HELPER_SRC)};
+let mp = null;
+let bootError = null;
+
+function wB64ToBytes(b64) {
+  const bin = atob(b64);
+  const u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+async function wWaitBundle() {
+  const t0 = Date.now();
+  while (!self.__MP_BUNDLE__ && !self.__MP_BUNDLE_ERR__) {
+    if (Date.now() - t0 > 30000) throw new Error('内核包初始化超时');
+    await new Promise(r => setTimeout(r, 20));
+  }
+  if (self.__MP_BUNDLE_ERR__) throw new Error('内核包初始化失败：' + self.__MP_BUNDLE_ERR__);
+  return self.__MP_BUNDLE__;
+}
+
+self.onmessage = async (event) => {
+  const msg = event.data || {};
+
+  if (msg.type === 'boot') {
+    try {
+      let mod, wasmURL = MP_WASM;
+      if (IS_FILE) {
+        // 经典 Worker 用 importScripts 加载外置 bundle，不受 file:// 模块 CORS 限制
+        importScripts(BUNDLE_URL);
+        const b = await wWaitBundle();
+        mod = { default: b.default, loadMicroPython: b.loadMicroPython };
+        wasmURL = URL.createObjectURL(new Blob([wB64ToBytes(b.wasmBase64)], { type: 'application/wasm' }));
+      } else {
+        mod = await import(MP_MJS);
+      }
+      mp = await mod.loadMicroPython({
+        url: wasmURL,
+        heapsize: 8 * 1024 * 1024,
+        pystack: 16 * 1024,
+        linebuffer: true,
+        stdout: (line) => self.postMessage({ type: 'out', stream: 'stdout', text: line }),
+        stderr: (line) => self.postMessage({ type: 'out', stream: 'stderr', text: line })
+      });
+      await mp.runPython(REPL_HELPER);
+      self.postMessage({ type: 'ready' });
+    } catch (err) {
+      bootError = (err && (err.message || err.toString())) || 'unknown error';
+      self.postMessage({ type: 'fatal', message: bootError });
+    }
+    return;
+  }
+
+  if (msg.type === 'run') {
+    if (!mp) {
+      self.postMessage({ type: 'done', ok: false, message: bootError || '内核尚未就绪' });
+      return;
+    }
+    const t0 = performance.now();
+    try {
+      await mp.runPythonAsync(msg.code);
+      self.postMessage({ type: 'done', ok: true, ms: performance.now() - t0 });
+    } catch (err) {
+      self.postMessage({
+        type: 'done',
+        ok: false,
+        ms: performance.now() - t0,
+        message: (err && (err.message || err.toString())) || 'unknown error'
+      });
+    }
+  }
+};
+`;
+
+function createWorkerKernel() {
+  return new Promise((resolve, reject) => {
+    let workerUrl = null;
+    let worker = null;
+    let settled = false;
+    let activeRun = null;
+
+    const fail = (err) => {
+      if (!settled) {
+        settled = true;
+        clearTimeout(timer);
+        try { worker && worker.terminate(); } catch (_) {}
+        if (workerUrl) URL.revokeObjectURL(workerUrl);
+        reject(err);
+      }
+    };
+
+    const timer = setTimeout(() => fail(new Error('内核初始化超时')), 45000);
+
+    try {
+      const blob = new Blob([WORKER_SRC], { type: 'text/javascript' });
+      workerUrl = URL.createObjectURL(blob);
+      // file:// 下用经典 Worker（内部 importScripts 加载 bundle）；http 下用 module Worker（动态 import）
+      worker = IS_FILE_PROTOCOL ? new Worker(workerUrl) : new Worker(workerUrl, { type: 'module' });
+    } catch (err) {
+      fail(err);
+      return;
+    }
+
+    const api = {
+      mode: 'worker',
+      run(code) {
+        return new Promise((res) => {
+          activeRun = res;
+          worker.postMessage({ type: 'run', code });
+        });
+      },
+      stop() {
+        try { worker.terminate(); } catch (_) {}
+        if (workerUrl) URL.revokeObjectURL(workerUrl);
+        worker = null;
+        if (activeRun) {
+          const res = activeRun;
+          activeRun = null;
+          res({ ok: false, aborted: true, message: '已被用户中断' });
+        }
+      },
+      get alive() { return !!worker; }
+    };
+
+    worker.onmessage = (ev) => {
+      const m = ev.data || {};
+      if (m.type === 'ready') {
+        if (!settled) { settled = true; clearTimeout(timer); resolve(api); }
+        return;
+      }
+      if (m.type === 'fatal') {
+        if (!settled) fail(new Error(m.message));
+        else writeLine('内核错误：' + m.message, 'err');
+        return;
+      }
+      if (m.type === 'out') {
+        emitOutput(m.text, m.stream === 'stderr' ? 'err' : 'out');
+        return;
+      }
+      if (m.type === 'done') {
+        const res = activeRun;
+        activeRun = null;
+        if (res) res(m);
+      }
+    };
+
+    worker.onerror = (ev) => {
+      const msg = (ev && ev.message) || 'Worker 运行时错误';
+      if (!settled) { fail(new Error(msg)); return; }
+      writeLine('Worker 错误：' + msg, 'err');
+      if (activeRun) { const res = activeRun; activeRun = null; res({ ok: false, message: msg }); }
+    };
+
+    worker.onmessageerror = () => writeLine('Worker 消息解析失败', 'err');
+
+    worker.postMessage({ type: 'boot' });
+  });
+}
+
+/* ---------------- 内核：主线程回退模式 ---------------- */
+async function createMainKernel() {
+  const { mod, wasmURL } = await loadKernelModule();
+  const mp = await mod.loadMicroPython({
+    url: wasmURL,
+    heapsize: 8 * 1024 * 1024,
+    pystack: 16 * 1024,
+    linebuffer: true,
+    stdout: (line) => emitOutput(line, 'out'),
+    stderr: (line) => emitOutput(line, 'err'),
+  });
+
+  await mp.runPython(REPL_HELPER_SRC);
+
+  return {
+    mode: 'main',
+    async run(code) {
+      const t0 = performance.now();
+      try {
+        await mp.runPythonAsync(code);
+        return { ok: true, ms: performance.now() - t0 };
+      } catch (err) {
+        return { ok: false, ms: performance.now() - t0, message: (err && (err.message || String(err))) || 'unknown error' };
+      }
+    },
+    stop() {
+      throw new Error('主线程模式无法中断');
+    },
+    get alive() { return true; }
+  };
+}
+
+/* ---------------- 启动 / 重启 ---------------- */
+async function boot() {
+  state.ready = false;
+  versionFetched = false;   // 每次（重新）启动内核后重新读取实际版本
+  setStatus('loading', '正在加载内核…');
+  runBtn.disabled = true;
+  replEl.disabled = true;
+  resetBtn.disabled = true;
+
+  try {
+    state.kernel = await createWorkerKernel();
+    state.mode = 'worker';
+  } catch (wErr) {
+    console.warn('[playground] Worker 模式不可用，回退主线程：', wErr);
+    try {
+      state.kernel = await createMainKernel();
+      state.mode = 'main';
+      writeLine('注意：当前浏览器不支持 Worker 模式，已在主线程运行 —— 死循环会阻塞页面，无法中断。', 'sys');
+    } catch (err) {
+      setStatus('error', '内核加载失败');
+      writeLine('无法加载 MicroPython 内核：' + (err && (err.message || String(err))), 'err');
+      writeLine('请确认 micropython.mjs 与 micropython.wasm 与本页面位于同一目录：' + MP_BASE, 'sys');
+      if (IS_FILE_PROTOCOL) {
+        writeLine('file:// 模式下未找到可用的内核包。请确认同目录存在 micropython.bundle.js 且完整；若内核文件有更新，请在本目录运行 python3 make_bundle.py 重新生成后再刷新。', 'sys');
+      } else {
+        writeLine('并确认两个文件未被服务器拦截（.wasm 需返回 application/wasm）。', 'sys');
+      }
+      return;
+    }
+  }
+
+  state.ready = true;
+  statusEl.title = '运行模式：' + (state.mode === 'worker' ? 'Worker 隔离' : '主线程');
+  setStatus('ready', '就绪');
+  runBtn.disabled = false;
+  resetBtn.disabled = false;
+  replEl.disabled = false;
+  stopBtn.disabled = true;
+  termMeta().textContent = 'microPython · 本地 wasm';
+  refreshVersion();
+}
+
+function termMeta() { return document.getElementById('termMeta'); }
+
+async function restartKernel(reason) {
+  if (state.kernel) {
+    try { state.kernel.stop(); } catch (_) {}
+    state.kernel = null;
+  }
+  state.mode = null;
+  if (reason) writeLine(reason, 'sys');
+  await boot();
+}
+
+/* ---------------- 运行 ---------------- */
+async function runCode(code, label, opts = {}) {
+  const quiet = !!opts.quiet;
+  if (!state.ready || state.running) return;
+  if (!code.trim()) {
+    writeLine('（代码为空）', 'sys');
+    return;
+  }
+
+  setRunning(true);
+  if (!quiet) writeLine('▶ ' + label + ' · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false }), 'sys');
+  resetReplBuffer();
+
+  let result;
+  const src = opts.repl ? wrapReplCode(code) : code;
+  try {
+    result = await state.kernel.run(src);
+  } catch (err) {
+    result = { ok: false, message: (err && (err.message || String(err))) || 'unknown error' };
+  }
+
+  setRunning(false);
+  clearCompleteCache();   // 变量/导入可能变化，补全候选需重新采集
+
+  if (result.aborted) {
+    writeLine('⏹ ' + result.message, 'sys');
+    if (state.kernel && !state.kernel.alive) {
+      writeLine('正在重启内核…', 'sys');
+      state.kernel = null;
+      await boot();
+    }
+    return;
+  }
+
+  if (!result.ok) {
+    // Python 异常由 JS 侧抛出（不经过 stderr），这里把完整消息原样打印
+    const raw = String(result.message == null || result.message === '' ? '未知错误' : result.message).trim();
+    const lines = opts.repl ? cleanReplTraceback(raw) : raw.split('\n');
+    for (const ln of lines) writeLine(ln, 'err');
+    writeLine('✕ 运行失败' + (result.ms != null ? ' · ' + result.ms.toFixed(1) + ' ms' : ''), 'sys');
+  } else if (!quiet) {
+    writeLine('✓ 执行完成 · ' + (result.ms != null ? result.ms.toFixed(1) : '0') + ' ms', 'ok');
+  }
+}
+
+function runEditor() {
+  runCode(codeEl.value, '运行 main.py');
+}
+
+/* ---------------- 编辑器：语法高亮 ---------------- */
+const PY_KEYWORDS = new Set([
+  'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class',
+  'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global',
+  'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise',
+  'return', 'try', 'while', 'with', 'yield'
+]);
+
+const PY_BUILTINS = new Set([
+  'abs', 'all', 'any', 'bin', 'bool', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod',
+  'compile', 'complex', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'filter',
+  'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash', 'hex', 'id',
+  'input', 'int', 'isinstance', 'issubclass', 'iter', 'len', 'list', 'locals', 'map',
+  'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print',
+  'property', 'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted',
+  'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip', '__import__',
+  'Exception', 'BaseException', 'ValueError', 'TypeError', 'KeyError', 'IndexError',
+  'StopIteration', 'RuntimeError', 'AttributeError', 'ImportError', 'ZeroDivisionError',
+  'SyntaxError', 'NameError', 'NotImplementedError', 'OSError', 'AssertionError'
+]);
+
+const RE_IDENT = /[A-Za-z_][A-Za-z0-9_]*/y;
+const RE_WS = /[ \t\r\n]+/y;
+const RE_NUM = /(?:0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|(?:\d[\d_]*(?:\.[\d_]*)?|\.\d[\d_]*)(?:[eE][+-]?\d+)?)/y;
+const RE_DECORATOR = /@[A-Za-z_][A-Za-z0-9_.]*/y;
+
+function escapeHtml(s) {
+  return s.replace(/[&<>]/g, (c) => (c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;'));
+}
+
+/* 从引号位置开始扫描一个字符串字面量，返回结束位置（不含） */
+function scanString(src, qPos) {
+  const q = src[qPos];
+  const n = src.length;
+  const triple = src.startsWith(q + q + q, qPos);
+  if (triple) {
+    const end = src.indexOf(q + q + q, qPos + 3);
+    return end < 0 ? n : end + 3;
+  }
+  let j = qPos + 1;
+  while (j < n) {
+    const ch = src[j];
+    if (ch === '\\') { j += 2; continue; }
+    if (ch === q) return j + 1;
+    if (ch === '\n') return j;
+    j++;
+  }
+  return n;
+}
+
+/* 轻量 Python 词法着色 */
+function highlightPython(src) {
+  const out = [];
+  const n = src.length;
+  let i = 0;
+  let expectName = false;
+
+  const emit = (cls, text) => {
+    out.push(cls ? '<span class="tok-' + cls + '">' + escapeHtml(text) + '</span>' : escapeHtml(text));
+  };
+
+  while (i < n) {
+    const c = src[i];
+
+    // 空白
+    RE_WS.lastIndex = i;
+    if (RE_WS.test(src)) {
+      const j = RE_WS.lastIndex;
+      emit('', src.slice(i, j));
+      i = j;
+      continue;
+    }
+
+    // 注释
+    if (c === '#') {
+      let j = src.indexOf('\n', i);
+      if (j < 0) j = n;
+      emit('com', src.slice(i, j));
+      i = j;
+      continue;
+    }
+
+    // 字符串（无前缀）
+    if (c === '"' || c === "'") {
+      const end = scanString(src, i);
+      emit('str', src.slice(i, end));
+      i = end;
+      continue;
+    }
+
+    // 数字
+    if ((c >= '0' && c <= '9') || (c === '.' && /[0-9]/.test(src[i + 1] || ''))) {
+      RE_NUM.lastIndex = i;
+      const m = RE_NUM.exec(src);
+      const end = m ? RE_NUM.lastIndex : i + 1;
+      emit('num', src.slice(i, end));
+      i = end;
+      continue;
+    }
+
+    // 标识符 / 关键字
+    if (/[A-Za-z_]/.test(c)) {
+      RE_IDENT.lastIndex = i;
+      RE_IDENT.test(src);
+      const end = RE_IDENT.lastIndex;
+      const word = src.slice(i, end);
+
+      // 字符串前缀：r"", b'', f""" 等
+      if (word.length <= 3 && /^[rRbBuUfF]+$/.test(word) && (src[end] === '"' || src[end] === "'")) {
+        const strEnd = scanString(src, end);
+        emit('str', src.slice(i, strEnd));
+        i = strEnd;
+        continue;
+      }
+
+      if (word === 'def' || word === 'class') {
+        emit('kw', word);
+        expectName = true;
+        i = end;
+        continue;
+      }
+
+      if (expectName) {
+        expectName = false;
+        emit('fn', word);
+        i = end;
+        continue;
+      }
+
+      if (PY_KEYWORDS.has(word)) emit('kw', word);
+      else if (PY_BUILTINS.has(word)) emit('bi', word);
+      else emit('', word);
+      i = end;
+      continue;
+    }
+
+    // 装饰器 @name
+    if (c === '@' && /[A-Za-z_]/.test(src[i + 1] || '')) {
+      RE_DECORATOR.lastIndex = i;
+      RE_DECORATOR.test(src);
+      const end = RE_DECORATOR.lastIndex;
+      emit('dec', src.slice(i, end));
+      i = end;
+      continue;
+    }
+
+    emit('', c);
+    i++;
+  }
+
+  return out.join('');
+}
+
+function renderHighlight() {
+  const src = codeEl.value;
+  // 末尾换行时补一个空格，保证高亮层与 textarea 的行数一致
+  hlEl.innerHTML = highlightPython(src) + (src.endsWith('\n') ? '\n ' : '');
+}
+
+/* 大文件（>20000 字符）用 requestAnimationFrame 合并重渲染，避免连续输入卡顿 */
+let rafPending = false;
+function scheduleHighlight() {
+  if (rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(() => {
+    rafPending = false;
+    renderHighlight();
+  });
+}
+
+/* 高亮层、行号与 textarea 的滚动同步 */
+function syncScroll() {
+  const x = -codeEl.scrollLeft;
+  const y = -codeEl.scrollTop;
+  hlEl.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+  gutterInner.style.transform = 'translateY(' + y + 'px)';
+}
+
+/* ---------------- 编辑器：行号与编辑体验 ---------------- */
+function syncGutter() {
+  const lines = codeEl.value.split('\n').length;
+  const digits = String(lines).length;
+  gutterEl.style.width = digits * 8 + 24 + 'px';
+  if (gutterInner.childElementCount !== lines) {
+    let html = '';
+    for (let i = 1; i <= lines; i++) html += '<div>' + i + '</div>';
+    gutterInner.innerHTML = html;
+  }
+  syncScroll();
+}
+
+/* 重新渲染编辑器（内容变化后调用） */
+function refreshEditor() {
+  syncGutter();
+  if (codeEl.value.length > 20000) scheduleHighlight();
+  else renderHighlight();
+  syncScroll();
+}
+
+codeEl.addEventListener('scroll', syncScroll);
+
+codeEl.addEventListener('input', () => {
+  refreshEditor();
+  saveCode();
+});
+
+function indentSelection(outdent) {
+  const start = codeEl.selectionStart;
+  const end = codeEl.selectionEnd;
+  const value = codeEl.value;
+  const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+  const block = value.slice(lineStart, end);
+  const lines = block.split('\n');
+  const changed = lines.map((ln) => {
+    if (outdent) {
+      if (ln.startsWith('    ')) return ln.slice(4);
+      if (ln.startsWith('\t')) return ln.slice(1);
+      return ln;
+    }
+    return '    ' + ln;
+  }).join('\n');
+
+  codeEl.setRangeText(changed, lineStart, end, 'select');
+  // 保持选区相对位置大致不变
+  const delta = changed.length - block.length;
+  codeEl.selectionStart = Math.max(lineStart, start + (outdent ? -4 : 4));
+  codeEl.selectionEnd = Math.max(codeEl.selectionStart, end + delta);
+  refreshEditor();
+  saveCode();
+}
+
+codeEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const multi = codeEl.selectionStart !== codeEl.selectionEnd || e.shiftKey;
+    if (multi) {
+      indentSelection(e.shiftKey);
+    } else {
+      codeEl.setRangeText('    ', codeEl.selectionStart, codeEl.selectionEnd, 'end');
+      refreshEditor();
+      saveCode();
+    }
+    return;
+  }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    runEditor();
+    return;
+  }
+  if (e.key === 'Enter') {
+    // 自动保持缩进
+    const start = codeEl.selectionStart;
+    const before = codeEl.value.slice(0, start);
+    const line = before.slice(before.lastIndexOf('\n') + 1);
+    const m = line.match(/^[ \t]*/);
+    const indent = m ? m[0] : '';
+    const extra = /[:([{]\s*$/.test(line) ? '    ' : '';
+    if (indent || extra) {
+      e.preventDefault();
+      const ins = '\n' + indent + extra;
+      codeEl.setRangeText(ins, start, codeEl.selectionEnd, 'end');
+      refreshEditor();
+      saveCode();
+    }
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && document.activeElement !== replEl) {
+    e.preventDefault();
+    runEditor();
+  }
+});
+
+/* ---------------- 代码持久化（Cookie） ---------------- */
+let saveTimer = null;
+function saveCode() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try { saveCodeCookie(codeEl.value); } catch (_) {}
+  }, 400);
+}
+
+/* ---------------- 示例 ---------------- */
+/* 示例配置已统一移至文件末尾「配置区」，方便集中修改。 */
+
+/* 两级示例菜单：一级类别 → 二级该类下的示例 */
+/* 类别菜单填充已移至文件末尾配置区。 */
+/* 选择类别：填充二级菜单 */
+sampleCatEl.addEventListener('change', () => {
+  const gi = sampleCatEl.value;
+  syncSelIcon(sampleCatEl);
+  samplesEl.innerHTML = '';
+  if (gi === '') {
+    const ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = '请先选类别';
+    samplesEl.appendChild(ph);
+    samplesEl.disabled = true;
+    syncSelIcon(samplesEl);
+    return;
+  }
+  const group = SAMPLE_GROUPS[Number(gi)];
+  samplesEl.disabled = false;
+  const ph = document.createElement('option');
+  ph.value = '';
+  ph.textContent = '选择示例…';
+  samplesEl.appendChild(ph);
+  group.items.forEach((s, j) => {
+    const opt = document.createElement('option');
+    opt.value = String(j);
+    opt.textContent = s.name;
+    samplesEl.appendChild(opt);
+  });
+  syncSelIcon(samplesEl);
+});
+
+/* 选择示例：载入代码 */
+samplesEl.addEventListener('change', () => {
+  const gi = sampleCatEl.value;
+  const si = samplesEl.value;
+  syncSelIcon(samplesEl);
+  if (gi === '' || si === '') return;
+  const sample = SAMPLE_GROUPS[Number(gi)].items[Number(si)];
+  if (sample) {
+    codeEl.value = sample.code;
+    refreshEditor();
+    saveCode();
+    codeEl.focus();
+    codeEl.setSelectionRange(0, 0);
+    codeEl.scrollTop = 0;
+    syncScroll();
+  }
+});
+
+/* ---------------- REPL 命令行（位于输出区内部） ---------------- */
+const replPrompt = $('replPrompt');
+let replBuffer = [];   // 复合语句（for/def/if…）的待完成行
+
+function echoCommand(code) {
+  const lines = code.split('\n');
+  lines.forEach((ln, i) => writeLine((i === 0 ? '>>> ' : '... ') + ln, 'echo'));
+}
+
+function updatePrompt() {
+  replPrompt.textContent = replBuffer.length ? '... ' : '>>> ';
+}
+
+async function submitRepl() {
+  let raw = replEl.value.replace(/\s+$/, '');
+  replEl.value = '';
+  autosizeInput();
+
+  if (!state.ready || state.running) return;
+  if (!raw.trim() && !replBuffer.length) { focusInput(true); return; }
+
+  // 块内自动缩进：沿用上一行缩进；上一行以冒号结尾则加一层；else/elif/except/finally 保持顶格
+  if (replBuffer.length && raw.trim() && !/^[ \t]/.test(raw)) {
+    const prev = replBuffer[replBuffer.length - 1];
+    const base = (prev.match(/^[ \t]*/) || [''])[0];
+    const dedent = /^(else\b|elif\b|except\b|finally\b)/.test(raw);
+    if (!dedent) raw = (/:\s*$/.test(prev) ? base + '    ' : base) + raw;
+  }
+
+  // 回显：首行 >>>，块内行 ...
+  if (!replBuffer.length) echoCommand(raw);
+  else for (const ln of raw.split('\n')) writeLine('... ' + ln, 'echo');
+
+  const inBlock = replBuffer.length > 0;
+  if (inBlock ? raw.trim() !== '' : /:\s*$/.test(raw)) {
+    // 以冒号开头进入复合语句块；块内非空行继续收集，空行结束
+    replBuffer.push(raw);
+    updatePrompt();
+    focusInput(true);
+    return;
+  }
+
+  let code = raw;
+  if (inBlock) {
+    replBuffer.push(raw);
+    code = replBuffer.join('\n');
+    replBuffer = [];
+  }
+  updatePrompt();
+
+  if (!code.trim()) { focusInput(true); return; }
+
+  state.history.push(code);
+  state.histIndex = state.history.length;
+
+  await runCode(code, 'REPL', { quiet: true, repl: true });
+  focusInput(true);
+}
+
+function resetReplBuffer() {
+  if (replBuffer.length) {
+    replBuffer = [];
+    updatePrompt();
+    writeLine('（未完成的复合语句已放弃）', 'sys');
+  }
+}
+
+/* ---------------- REPL Tab 补全 ---------------- */
+const completeCache = new Map();   // '' => 全局名；'os' => os 的属性名
+let completing = false;
+
+function clearCompleteCache() { completeCache.clear(); }
+
+/* 静音执行一段 Python，返回它在 stdout 上打印的行（不写入终端） */
+async function evalSilently(code) {
+  if (!state.ready || !state.kernel) return [];
+  captureSink = [];
+  try {
+    await state.kernel.run(code);
+    return captureSink || [];
+  } catch (_) {
+    return captureSink || [];
+  } finally {
+    captureSink = null;
+  }
+}
+
+/* 从内核读取实际版本号（sys.implementation.version）并显示 */
+let versionFetched = false;
+let currentVersion = '';  // 当前内核的实际版本 x.y.z，用于更新检查
+async function refreshVersion() {
+  if (versionFetched || !state.ready || !state.kernel) return;
+  const lines = await evalSilently('__repl_version()');
+  const hit = lines.find((ln) => typeof ln === 'string' && ln.charAt(0) === '\x1e');
+  if (!hit) return;
+  const ver = hit.slice(1).trim();
+  if (!ver) return;
+  currentVersion = ver;
+  termMeta().textContent = 'microPython ' + ver + ' · 本地 wasm';
+  versionFetched = true;
+}
+
+async function fetchNames(expr) {
+  const key = expr || '';
+  if (completeCache.has(key)) return completeCache.get(key);
+  if (!state.ready || !state.kernel) return [];
+
+  const lines = await evalSilently(expr ? '__repl_attrs(' + JSON.stringify(expr) + ')' : '__repl_names()');
+  let names = [];
+  for (const ln of lines) {
+    if (typeof ln === 'string' && ln.charAt(0) === '\x1e') {
+      names = ln.slice(1).split('\x1f').filter(Boolean);
+      break;
+    }
+  }
+  completeCache.set(key, names);
+  return names;
+}
+
+function commonPrefix(list) {
+  if (!list.length) return '';
+  let p = list[0];
+  for (const s of list) {
+    while (p && s.slice(0, p.length) !== p) p = p.slice(0, -1);
+    if (!p) return '';
+  }
+  return p;
+}
+
+/* 把补全结果写到终端（不影响输入框内容） */
+function showCandidates(cands, prefix) {
+  const MAX = 60;
+  const shown = cands.slice(0, MAX).map((c) => c).join('  ');
+  writeLine(shown + (cands.length > MAX ? '  …' : ''), 'sys');
+  if (cands.length > MAX) writeLine('（共 ' + cands.length + ' 个候选，继续输入以缩小范围）', 'sys');
+}
+
+async function completeAtCursor() {
+  if (completing) return;
+  const pos = replEl.selectionStart;
+  if (pos !== replEl.selectionEnd) return;
+
+  const left = replEl.value.slice(0, pos);
+  const mAttr = left.match(/([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.(\w*)$/);
+  let base = '', prefix = '';
+  if (mAttr) {
+    base = mAttr[1];
+    prefix = mAttr[2];
+  } else {
+    const m = left.match(/(\w*)$/);
+    prefix = m ? m[1] : '';
+  }
+
+  completing = true;
+  let pool;
+  try {
+    pool = base ? await fetchNames(base) : (await fetchNames('')).concat(Array.from(PY_BUILTINS), Array.from(PY_KEYWORDS));
+  } finally {
+    completing = false;
+  }
+
+  const cands = Array.from(new Set(pool.filter((n) => n.indexOf(prefix) === 0 && n !== prefix)));
+  if (!cands.length) return;
+
+  if (cands.length === 1) {
+    replEl.setRangeText(cands[0].slice(prefix.length), pos, pos, 'end');
+    autosizeInput();
+    return;
+  }
+
+  const lcp = commonPrefix(cands);
+  if (lcp.length > prefix.length) {
+    replEl.setRangeText(lcp.slice(prefix.length), pos, pos, 'end');
+    autosizeInput();
+    return;
+  }
+  // 空前缀直接列出全部名字会刷屏，改为提示先输入几个字符
+  if (!prefix && cands.length > 20) {
+    writeLine('（共 ' + cands.length + ' 个候选，先输入几个字符再按 Tab 缩小范围）', 'sys');
+    return;
+  }
+  showCandidates(cands, prefix);
+}
+
+replEl.addEventListener('keydown', async (e) => {
+  if (e.key === 'Tab' && !e.isComposing) {
+    e.preventDefault();
+    if (!state.ready || state.running) return;
+    await completeAtCursor();
+    return;
+  }
+
+  if (e.key === 'Enter' && !e.isComposing) {
+    if (e.shiftKey) return;               // Shift+Enter 换行（多行命令）
+    e.preventDefault();
+    await submitRepl();
+    return;
+  }
+
+  if (e.key === 'ArrowUp' && (replEl.value === '' || replEl.selectionStart === 0)) {
+    if (!state.history.length) return;
+    e.preventDefault();
+    resetReplBuffer();
+    state.histIndex = Math.max(0, (state.histIndex < 0 ? state.history.length : state.histIndex) - 1);
+    replEl.value = state.history[state.histIndex] || '';
+    autosizeInput();
+    replEl.setSelectionRange(replEl.value.length, replEl.value.length);
+    return;
+  }
+
+  if (e.key === 'ArrowDown' && state.histIndex < state.history.length) {
+    if (replEl.selectionStart !== replEl.value.length) return;
+    e.preventDefault();
+    state.histIndex = Math.min(state.history.length, state.histIndex + 1);
+    replEl.value = state.history[state.histIndex] || '';
+    autosizeInput();
+    replEl.setSelectionRange(replEl.value.length, replEl.value.length);
+    return;
+  }
+});
+
+replEl.addEventListener('input', autosizeInput);
+
+/* 粘贴多行代码时自动展开高度 */
+replEl.addEventListener('paste', () => setTimeout(autosizeInput, 0));
+
+/* ---------------- 主题切换 ---------------- */
+const themeBtn = $('themeBtn');
+
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function applyTheme(theme, persist) {
+  document.documentElement.setAttribute('data-theme', theme);
+  // 按钮仅显示图标，用 title / aria-label 说明切换目标
+  const tip = '切换到' + (theme === 'light' ? '暗色' : '亮色') + '主题（Ctrl/⌘ + J）';
+  themeBtn.title = tip;
+  themeBtn.setAttribute('aria-label', tip);
+  if (persist) {
+    try { cookieSet('mp_theme', theme); } catch (_) {}
+  }
+}
+
+themeBtn.addEventListener('click', () => {
+  applyTheme(currentTheme() === 'light' ? 'dark' : 'light', true);
+  applyIcons(currentTheme());
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 'j' || e.key === 'J')) {
+    e.preventDefault();
+    themeBtn.click();
+  }
+});
+
+applyTheme(currentTheme(), false);
+
+/* ---------------- 主题化图标 ----------------
+ * 亮色 / 暗色图标均内联为 data URI（单文件模式可用）；
+ * 同时更新标签页 favicon 与顶栏品牌区图标。
+ */
+const faviconEl = $('favicon');
+const brandIconEl = $('brandIcon');
+const aboutIconEl = $('aboutIcon');
+
+function iconFor(theme) {
+  // 内联 data URI：file:// 单文件模式下同目录无 .ico 也能显示
+  return window.MP_ICONS[theme === 'light' ? 'light' : 'dark'];
+}
+
+function applyIcons(theme) {
+  const src = iconFor(theme);
+  if (faviconEl.getAttribute('href') !== src) faviconEl.setAttribute('href', src);
+  if (brandIconEl && brandIconEl.getAttribute('src') !== src) brandIconEl.setAttribute('src', src);
+  if (aboutIconEl && aboutIconEl.getAttribute('src') !== src) aboutIconEl.setAttribute('src', src);
+}
+
+applyIcons(currentTheme());
+
+/* ---------------- 按钮 ---------------- */
+runBtn.addEventListener('click', runEditor);
+
+clearBtn.addEventListener('click', () => {
+  outEl.innerHTML = '';
+  replEl.value = '';
+  autosizeInput();
+  stickToBottom = true;
+  writeLine('（输出已清空）', 'sys');
+  focusInput(true);
+});
+
+stopBtn.addEventListener('click', () => {
+  if (!state.kernel || state.mode !== 'worker') return;
+  state.kernel.stop();
+});
+
+resetBtn.addEventListener('click', async () => {
+  if (state.running) return;
+  await restartKernel('↻ 内核已重置，Python 全局状态已清空。');
+});
+
+/* ---------------- 分区方向切换 + 拖动分割条 ----------------
+ * 上下 / 左右两种布局共用 --split 变量；方向保存在 mp_orient
+ * --------------------------------------------------------------- */
+(function initSplitter() {
+  let dragging = false;
+  const isH = () => document.body.dataset.orient === 'horizontal';
+  const firstPane = () => codeEl.closest('.pane');
+
+  // 同步方向相关的界面状态
+  const syncOrientUI = () => {
+    const h = isH();
+    workEl.dataset.orient = h ? 'horizontal' : 'vertical';
+    splitterEl.setAttribute('aria-orientation', h ? 'vertical' : 'horizontal');
+    splitterEl.setAttribute('aria-label', h ? '调整左右区域宽度' : '调整上下区域高度');
+    layoutBtn.title = h ? '切换为上下分区' : '切换为左右分区';
+    const hint = document.querySelector('.editor-pane .kbd-hint');
+    if (hint) hint.textContent = 'Ctrl / ⌘ + Enter 运行 · Tab 缩进 · 拖动中间' +
+      (h ? '竖' : '横') + '条调整' + (h ? '宽度' : '高度');
+  };
+
+  // 以百分比保存，窗口尺寸变化时比例保持合理
+  const saveSplit = () => {
+    const rect = workEl.getBoundingClientRect();
+    const pane = firstPane().getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const pct = isH()
+      ? (pane.width / rect.width) * 100
+      : (pane.height / rect.height) * 100;
+    if (pct <= 0 || pct >= 100) return;
+    try { cookieSet('mp_split', pct.toFixed(1)); } catch (_) {}
+  };
+
+  // 恢复方向（默认上下），再恢复分割比例
+  let savedOrient = '';
+  let savedPct = '';
+  try { savedOrient = cookieGet('mp_orient') || ''; savedPct = cookieGet('mp_split') || ''; } catch (_) {}
+  document.body.dataset.orient = savedOrient === 'h' ? 'horizontal' : 'vertical';
+  syncOrientUI();
+  const pct = parseFloat(savedPct);
+  if (pct > 0 && pct < 100) workEl.style.setProperty('--split', pct + '%');
+
+  // 小按钮：切换上下 / 左右
+  layoutBtn.addEventListener('click', () => {
+    // 先按当前方向算出比例，切换后沿用（55% 附近比较合理）
+    const rect = workEl.getBoundingClientRect();
+    const pane = firstPane().getBoundingClientRect();
+    let ratio = 0.55;
+    if (rect.width && rect.height) {
+      const cur = isH() ? pane.width / rect.width : pane.height / rect.height;
+      if (cur > 0.05 && cur < 0.95) ratio = cur;
+    }
+    document.body.dataset.orient = isH() ? 'vertical' : 'horizontal';
+    workEl.style.setProperty('--split', (ratio * 100).toFixed(1) + '%');
+    syncOrientUI();
+    try {
+      cookieSet('mp_orient', isH() ? 'h' : 'v');
+      cookieSet('mp_split', (ratio * 100).toFixed(1));
+    } catch (_) {}
+    requestAnimationFrame(() => { try { refreshEditor(); } catch (_) {} });
+  });
+
+  // 拖动（按方向取横坐标或纵坐标）
+  const applySplit = (clientPos) => {
+    const rect = workEl.getBoundingClientRect();
+    const min = 140;
+    if (isH()) {
+      let w = clientPos - rect.left;
+      w = Math.max(min, Math.min(rect.width - min, w));
+      workEl.style.setProperty('--split', w + 'px');
+    } else {
+      let h = clientPos - rect.top;
+      h = Math.max(110, Math.min(rect.height - 110, h));
+      workEl.style.setProperty('--split', h + 'px');
+    }
+  };
+
+  splitterEl.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    dragging = true;
+    splitterEl.classList.add('dragging');
+    document.body.classList.add('dragging');
+    splitterEl.setPointerCapture(e.pointerId);
+    // 把百分比切换为像素，避免拖动时跳动
+    const pane = firstPane().getBoundingClientRect();
+    workEl.style.setProperty('--split', (isH() ? pane.width : pane.height) + 'px');
+    e.preventDefault();
+  });
+
+  splitterEl.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    applySplit(isH() ? e.clientX : e.clientY);
+  });
+
+  const endDrag = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    splitterEl.classList.remove('dragging');
+    document.body.classList.remove('dragging');
+    try { splitterEl.releasePointerCapture(e.pointerId); } catch (_) {}
+    saveSplit();
+  };
+
+  splitterEl.addEventListener('pointerup', endDrag);
+  splitterEl.addEventListener('pointercancel', endDrag);
+
+  splitterEl.addEventListener('dblclick', () => {
+    workEl.style.setProperty('--split', '55%');
+    saveSplit();
+  });
+
+  splitterEl.addEventListener('keydown', (e) => {
+    const keys = isH() ? ['ArrowLeft', 'ArrowRight'] : ['ArrowUp', 'ArrowDown'];
+    if (keys.indexOf(e.key) < 0) return;
+    e.preventDefault();
+    const rect = workEl.getBoundingClientRect();
+    const pane = firstPane().getBoundingClientRect();
+    const delta = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 24 : -24;
+    if (isH()) {
+      const next = pane.width + delta;
+      workEl.style.setProperty('--split', Math.max(140, Math.min(rect.width - 140, next)) + 'px');
+    } else {
+      const next = pane.height + delta;
+      workEl.style.setProperty('--split', Math.max(110, Math.min(rect.height - 110, next)) + 'px');
+    }
+    saveSplit();
+  });
+})();
+
+/* ---------------- 检查 / 下载内核更新 ----------------
+ * 版本源与下载源均提供多个镜像，逐个尝试，全部失败才报错
+ * 下载 wasm + mjs 两个配套文件，放到本页面同目录覆盖即可完成更新
+ * --------------------------------------------------- */
+const PKG = '@micropython/micropython-webassembly-pyscript';
+// 版本检查源（返回 JSON，含 version 字段）
+const UPDATE_REGISTRIES = [
+  'https://registry.npmjs.org/' + PKG + '/latest',
+  'https://registry.npmmirror.com/' + PKG + '/latest',
+  'https://cdn.jsdelivr.net/npm/' + PKG + '/package.json'
+];
+// 文件下载源模板：{v}=版本 {f}=文件名（均支持 CORS）
+const UPDATE_CDNS = [
+  { name: 'jsdelivr',  url: (v, f) => 'https://cdn.jsdelivr.net/npm/' + PKG + '@' + v + '/' + f },
+  { name: 'fastly',    url: (v, f) => 'https://fastly.jsdelivr.net/npm/' + PKG + '@' + v + '/' + f },
+  { name: 'unpkg',     url: (v, f) => 'https://unpkg.com/' + PKG + '@' + v + '/' + f },
+  { name: 'jsdmirror', url: (v, f) => 'https://cdn.jsdmirror.com/npm/' + PKG + '@' + v + '/' + f }
+];
+const updateBtn = $('updateBtn');
+const updateDot = $('updateDot');
+const phpUpdateBtn = $('phpUpdateBtn');
+const phpUpdateLabel = $('phpUpdateLabel');
+const updateToast = $('updateToast');
+const utTitle = $('utTitle');
+const utBody = $('utBody');
+const utActions = $('utActions');
+const utClose = $('utClose');
+let latestVersion = '';   // npm 上的最新版本原始串，如 1.29.0-6
+let updateChecking = false;
+let updateAvailable = false;   // 是否存在新版本（决定更新按钮是否可用）
+
+/* 以 file:// 打开时没有 PHP 服务器，update.php 不可用：改用浏览器「下载文件」方式，
+ * 让用户下载内核文件后手动覆盖同目录文件。 */
+const isFileMode = location.protocol === 'file:';
+const UPDATE_BTN_TEXT = isFileMode ? '下载更新' : '更新到本地';
+if (isFileMode) {
+  phpUpdateLabel.textContent = UPDATE_BTN_TEXT;
+  // file:// 下无需先「检查更新」：CDN 用 @latest 兜底，按钮始终可点
+  phpUpdateBtn.disabled = false;
+  phpUpdateBtn.title = '下载最新版内核文件到本地，请手动覆盖同目录文件（无需先检查更新）';
+}
+
+/* 设置更新按钮的启用状态：无新版本时灰色禁用 */
+function setPhpUpdateEnabled(enabled) {
+  updateAvailable = !!enabled;
+  // file:// 下「下载更新」恒可用，不依赖版本检测是否成功
+  phpUpdateBtn.disabled = isFileMode ? false : !updateAvailable;
+  phpUpdateLabel.textContent = UPDATE_BTN_TEXT;
+  if (isFileMode) {
+    phpUpdateBtn.title = (updateAvailable && latestVersion)
+      ? ('有新版本 ' + latestVersion + '：下载内核文件到本地，请手动覆盖同目录文件')
+      : '下载最新版内核文件到本地，请手动覆盖同目录文件（无需先检查更新）';
+  } else {
+    phpUpdateBtn.title = updateAvailable
+      ? (currentVersion
+          ? ('有新版本 ' + latestVersion + '：由服务器 update.php 下载并覆盖到本地目录')
+          : ('未检测到本地内核版本，点击安装最新 ' + latestVersion))
+      : '无可用更新（点击「检查更新」可重新检测）';
+  }
+}
+
+/* 规范化为 x.y.z，忽略 -6 之类的构建后缀与末尾非数字 */
+function normalizeVer(v) {
+  const m = String(v || '').match(/(\d+)\.(\d+)\.(\d+)/);
+  return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : null;
+}
+/* 比较版本：a > b 返回 1，a < b 返回 -1，相等返回 0；无法解析返回 null */
+function compareVer(a, b) {
+  const pa = normalizeVer(a), pb = normalizeVer(b);
+  if (!pa || !pb) return null;
+  for (let i = 0; i < 3; i++) {
+    if (pa[i] > pb[i]) return 1;
+    if (pa[i] < pb[i]) return -1;
+  }
+  return 0;
+}
+function baseVer(v) {
+  const p = normalizeVer(v);
+  return p ? p.join('.') : String(v || '');
+}
+/* 版本检测失败时下载通道使用 @latest，界面上显示为「最新版」 */
+function verLabel(v) { return v === 'latest' ? '最新版' : baseVer(v); }
+
+/* 是否允许更新（决定「更新到本地」按钮是否可用）：
+ * - 本地版本读不到（缺少 micropython.wasm / 内核加载失败 / 版本解析失败）→ 允许，
+ *   避免“没有内核 → 不能更新 → 永远装不上内核”的死锁；
+ * - 本地版本 < 最新版本 → 允许；
+ * - 本地版本 >= 最新版本 → 不允许。 */
+function shouldAllowUpdate() {
+  if (!latestVersion || !normalizeVer(latestVersion)) return false;
+  if (!currentVersion || !normalizeVer(currentVersion)) return true; // 版本未知：放行
+  return compareVer(latestVersion, currentVersion) > 0;
+}
+
+/* 依次尝试多个源，返回第一个成功的 Response；全部失败抛出带失败清单的错误
+ * sources: [{name, url}...]（url 为最终地址）；onTry(name) 可选回调用于更新 UI */
+async function tryFetchFirst(sources, onTry) {
+  const failed = [];
+  let lastErr;
+  for (const s of sources) {
+    if (onTry) { try { onTry(s.name); } catch (_) {} }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000); // 单源超时 15 秒
+    try {
+      const resp = await fetch(s.url, { cache: 'no-store', signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return { resp, source: s.name };
+    } catch (e) {
+      clearTimeout(timer);
+      lastErr = e;
+      failed.push(s.name + '（' + (e && e.message ? e.message : String(e)) + '）');
+    }
+  }
+  const err = new Error('全部源均失败：' + failed.join('；'));
+  err.failed = failed;
+  err.cause = lastErr;
+  throw err;
+}
+
+/* 手动下载链接：列出各 CDN 的 wasm / mjs，供自动下载被拦截时手动获取 */
+function manualLinksHTML(v) {
+  const rows = UPDATE_CDNS.map((c) => {
+    const wasm = c.url(v, 'micropython.wasm');
+    const mjs = c.url(v, 'micropython.mjs');
+    return c.name + '：<a href="' + wasm + '" target="_blank" rel="noopener">wasm</a> · ' +
+           '<a href="' + mjs + '" target="_blank" rel="noopener">mjs</a>';
+  }).join('<br>');
+  return '<div class="ut-note">若浏览器拦截了自动下载，可任选一个源手动获取：<br>' + rows + '</div>';
+}
+
+function showToast(title, bodyHTML, actions) {
+  utTitle.textContent = title;
+  utBody.innerHTML = bodyHTML;
+  utActions.innerHTML = '';
+  (actions || []).forEach((a) => {
+    const b = document.createElement('button');
+    b.className = 'btn' + (a.primary ? ' btn-primary' : '');
+    b.textContent = a.label;
+    b.addEventListener('click', a.onClick);
+    if (a.id) b.id = a.id;
+    utActions.appendChild(b);
+  });
+  updateToast.hidden = false;
+}
+function hideToast() { updateToast.hidden = true; }
+utClose.addEventListener('click', hideToast);
+
+async function checkForUpdate() {
+  if (updateChecking) return;
+  updateChecking = true;
+  // 若内核已就绪但版本尚未读到，先补读一次
+  if (!currentVersion && state.ready && !versionFetched) {
+    try { await refreshVersion(); } catch (_) {}
+  }
+  const oldLabel = updateBtn.querySelector('span:not(.update-dot)');
+  updateBtn.disabled = true;
+  const origText = oldLabel ? oldLabel.textContent : '';
+  if (oldLabel) oldLabel.textContent = '检查中…';
+  try {
+    const regSources = UPDATE_REGISTRIES.map((u, i) => ({ name: ['npm', 'npm镜像', 'jsdelivr'][i] || ('源' + i), url: u }));
+    const { resp } = await tryFetchFirst(regSources);
+    const data = await resp.json();
+    latestVersion = data.version || '';
+    if (!latestVersion) throw new Error('未获取到版本号');
+
+    const cmp = compareVer(latestVersion, currentVersion);
+    if (cmp === null) {
+      // 本地版本读不到（无 wasm / 内核加载失败）——仍允许更新，避免死锁
+      updateDot.hidden = false;
+      updateBtn.title = '未检测到本地内核版本，点击下载最新版本 ' + latestVersion;
+      setPhpUpdateEnabled(true);
+      const why = currentVersion
+        ? ('本地版本 <b>' + currentVersion + '</b> 无法解析')
+        : '未检测到本地内核（缺少 <b>micropython.wasm</b> 或内核未能加载）';
+      const body =
+        '<p>' + why + '，可安装最新版本 <span class="ver-new">' +
+        baseVer(latestVersion) + '</span>（npm ' + latestVersion + '）。</p>' +
+        '<p>工具栏「<b>' + UPDATE_BTN_TEXT + '</b>」按钮已启用：' +
+        (isFileMode
+          ? '当前以文件方式打开，点击后将下载内核文件，请手动覆盖同目录文件；'
+          : '由服务器下载并覆盖内核文件；') +
+        '也可用下方按钮直接下载文件手动放置。</p>' +
+        manualLinksHTML(latestVersion);
+      showToast('可安装内核 ↥', body, [
+        { label: '稍后', onClick: hideToast },
+        { label: '下载更新 ' + baseVer(latestVersion), primary: true, onClick: downloadUpdate, id: 'utDlBtn' }
+      ]);
+      return;
+    }
+    if (cmp > 0) {
+      updateDot.hidden = false;
+      updateBtn.title = '发现新版本 ' + latestVersion + '，点击下载';
+      setPhpUpdateEnabled(true);   // 有新版本：启用「更新到本地」按钮
+      const body =
+        '<p>发现 MicroPython 内核新版本。<br>' +
+        '当前：<span class="ver-old">' + (currentVersion || '未知') + '</span> → ' +
+        '最新：<span class="ver-new">' + baseVer(latestVersion) + '</span>（npm ' + latestVersion + '）</p>' +
+        '<p>点击下方按钮下载配套的 <b>micropython.wasm</b> 与 <b>micropython.mjs</b>，' +
+        '下载后请把两个文件放到本页面所在目录覆盖原文件，再刷新页面即可生效。</p>' +
+        manualLinksHTML(latestVersion);
+      showToast('发现新版本 ↥', body, [
+        { label: '稍后', onClick: hideToast },
+        { label: '下载更新 ' + baseVer(latestVersion), primary: true, onClick: downloadUpdate, id: 'utDlBtn' }
+      ]);
+    } else {
+      updateDot.hidden = true;
+      updateBtn.title = '当前已是最新版本';
+      setPhpUpdateEnabled(false);  // 已是最新：禁用「更新到本地」按钮
+      showToast('已是最新版本', '<p>当前内核 <b>' + (currentVersion || baseVer(latestVersion)) +
+        '</b>，已是最新（npm ' + latestVersion + '）。</p>', [
+        { label: '知道了', onClick: hideToast }
+      ]);
+    }
+  } catch (err) {
+    showToast('检查更新失败', '<p>' + (err && err.message ? err.message : String(err)) +
+      '</p><p class="ut-note">这不影响本地使用。请确认网络可访问 npm registry。</p>', [
+      { label: '关闭', onClick: hideToast }
+    ]);
+  } finally {
+    updateChecking = false;
+    updateBtn.disabled = false;
+    if (oldLabel) oldLabel.textContent = origText;
+  }
+}
+
+/* 触发浏览器下载：从多个 CDN 逐个尝试，成功即触发 <a download>；全部失败才抛出 */
+async function downloadFile(v, filename) {
+  const sources = UPDATE_CDNS.map((c) => ({ name: c.name, url: c.url(v, filename) }));
+  const { resp, source } = await tryFetchFirst(sources, (name) => setDlProgress(filename, name));
+  const blob = await resp.blob();
+  if (!blob || blob.size < 1000) throw new Error('文件内容异常（' + (blob ? blob.size : 0) + ' 字节）');
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = href;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(href), 60000);
+  return source;
+}
+
+/* 更新下载按钮文字，提示正在尝试的源 */
+function setDlProgress(filename, sourceName) {
+  const b = document.getElementById('utDlBtn');
+  if (b) b.textContent = '下载 ' + filename + ' · ' + sourceName + '…';
+}
+
+async function downloadUpdate() {
+  // 版本检测失败时（尤其 file:// 下 registry 不可达），用 CDN 的 @latest 兜底，
+  // 保证点击「下载更新」一定有动作，而不是静默返回。
+  const v = latestVersion || 'latest';
+  const files = ['micropython.wasm', 'micropython.mjs'];
+  const dlBtn = document.getElementById('utDlBtn');
+  if (dlBtn) { dlBtn.disabled = true; dlBtn.textContent = '准备下载…'; }
+  const okFiles = [];
+  const errors = [];
+  for (const f of files) {
+    try {
+      const src = await downloadFile(v, f);
+      okFiles.push(f + '（' + src + '）');
+    } catch (e) {
+      errors.push(f + '：' + (e && e.message ? e.message : String(e)));
+      writeLine('下载 ' + f + ' 失败：' + (e && e.message ? e.message : String(e)), 'err');
+    }
+  }
+  if (errors.length === 0) {
+    showToast('下载完成', '<p>已下载 <b>micropython.wasm</b> 与 <b>micropython.mjs</b>（' +
+      verLabel(v) + '）。<br>来源：' + okFiles.join('，') + '。</p>' +
+      '<p>请把这两个文件放到本页面所在目录覆盖原文件，然后点击「刷新页面」加载新版本' +
+      '（页面已自动绕过内核缓存，无需手动清空缓存）。</p>', [
+      { label: '刷新页面', primary: true, onClick: () => location.reload() },
+      { label: '知道了', onClick: hideToast }
+    ]);
+    updateDot.hidden = true;
+  } else {
+    const detail = errors.map((e) => '· ' + e).join('<br>');
+    showToast('自动下载失败', '<p>' + okFiles.length + ' / ' + files.length +
+      ' 个文件成功，以下失败（已尝试全部 CDN）：</p><p class="ut-note">' + detail +
+      '</p>' + (isFileMode
+        ? '<p class="ut-note">当前以 <b>file://</b> 方式打开，部分浏览器会拦截本地页面对 CDN 的跨域请求。' +
+          '请点「改用直接下载」由浏览器直接打开下载链接。</p>'
+        : '<p class="ut-note">可检查网络后重试，或使用下方任一源手动下载。</p>') +
+      manualLinksHTML(v), [
+      { label: '改用直接下载', primary: true, onClick: () => directDownloadFiles(files, v) },
+      { label: '重试', onClick: downloadUpdate, id: 'utDlBtn' },
+      { label: '关闭', onClick: hideToast }
+    ]);
+  }
+}
+
+/* 不依赖 fetch 的兜底通道：直接用 <a download> 指向 CDN。
+ * 跨域时浏览器可能忽略 download 属性而改为打开新标签，
+ * 但用户仍可在新标签里「另存为」，保证 file:// 下总能拿到内核文件。 */
+function directDownloadFiles(files, v) {
+  const cdn = UPDATE_CDNS[0];
+  const open = (f) => {
+    const a = document.createElement('a');
+    a.href = cdn.url(v, f);
+    a.download = f;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+  files.forEach((f, i) => { if (i === 0) open(f); else setTimeout(() => open(f), i * 400); });
+  showToast('已发起直接下载',
+    '<p>已直接打开 <b>' + cdn.name + '</b> 上的两个内核文件（' + verLabel(v) + '）。</p>' +
+    '<p class="ut-note">若浏览器只是显示了文件内容而没有下载，请在新标签页中右键选择「另存为」，' +
+    '分别保存为 <b>micropython.wasm</b> / <b>micropython.mjs</b>，放到本页面同目录覆盖原文件后刷新页面。</p>' +
+    manualLinksHTML(v), [
+    { label: '知道了', primary: true, onClick: hideToast }
+  ]);
+}
+
+/* 通过服务器端 update.php 下载新内核并直接覆盖到本地目录。
+ * 逐文件请求（file 参数）以获得真实进度：wasm → mjs，每个文件内部由 PHP 多 CDN 回退。
+ * 以 file:// 打开时无 PHP 服务器，直接转用浏览器下载文件方式。 */
+async function phpUpdateLocal() {
+  if (isFileMode) { downloadUpdate(); return; }
+  if (!updateAvailable || !latestVersion) return;
+  const oldText = phpUpdateLabel.textContent;
+  phpUpdateBtn.disabled = true;
+  phpUpdateLabel.textContent = '更新中…';
+
+  const files = ['micropython.wasm', 'micropython.mjs'];
+
+  // 进度面板：先渲染 0%，再随每个文件推进
+  showToast('正在更新内核',
+    '<div class="up-progress">' +
+      '<div class="up-bar"><div class="up-bar-fill" id="upBarFill"></div></div>' +
+      '<div class="up-status"><span class="up-step" id="upStep">0/' + files.length + '</span>' +
+      '<span id="upStatus">正在连接服务器…</span></div>' +
+    '</div>', []);
+  await new Promise((r) => setTimeout(r, 60)); // 让 0% 状态先绘制出来
+  const setProgress = (pct, step, html) => {
+    const fill = document.getElementById('upBarFill');
+    const stepEl = document.getElementById('upStep');
+    const st = document.getElementById('upStatus');
+    if (fill) fill.style.width = pct + '%';
+    if (stepEl) stepEl.textContent = step;
+    if (st) st.innerHTML = html;
+  };
+
+  const results = {};
+  let allOk = true;
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      setProgress(Math.round(i * 100 / files.length), (i + 1) + '/' + files.length,
+        '正在下载 <b>' + f + '</b>…（可能尝试多个源）');
+      const resp = await fetch('update.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'version=' + encodeURIComponent(latestVersion) + '&file=' + encodeURIComponent(f)
+      });
+      const ct = resp.headers.get('content-type') || '';
+      if (!resp.ok) throw new Error('服务器返回 HTTP ' + resp.status);
+      if (ct.indexOf('json') === -1) {
+        throw new Error('响应不是 JSON（请确认通过 PHP 服务器打开本页面，而非 file://）');
+      }
+      const data = await resp.json();
+      if (data.error && !data.results) throw new Error(data.error);
+      Object.assign(results, data.results || {});
+      const oneOk = !!(data.ok && data.results && data.results[f] && data.results[f].ok);
+      if (!oneOk) allOk = false;
+      setProgress(Math.round((i + 1) * 100 / files.length), (i + 1) + '/' + files.length,
+        '<b>' + f + '</b> ' + (oneOk
+          ? '<span class="ok">✓ 完成</span>'
+          : '<span class="fail">✗ 失败</span>：' + (data.results && data.results[f] ? (data.results[f].error || '') : '')));
+      await new Promise((r) => setTimeout(r, 220)); // 让用户看清每一步的完成状态
+    }
+
+    const rows = Object.keys(results).map((f) => {
+      const r = results[f];
+      if (r && r.ok) {
+        return '<b>' + f + '</b> · ' + (r.source || '?') + ' · ' + (r.bytes || 0) +
+               ' 字节<br><span style="opacity:.8">备份：' + (r.backup || '无') + '</span>';
+      }
+      return '<b>' + f + '</b> · <span style="color:var(--err)">失败</span>：' +
+             (r && r.error ? r.error : '未知错误');
+    }).join('<br>');
+
+    if (allOk) {
+      showToast('已更新到本地 ✓',
+        '<p>新内核 <span class="ver-new">' + baseVer(latestVersion) +
+        '</span> 已由服务器写入本地目录（原文件已备份为 .bak）：</p><p class="ut-note">' + rows +
+        '</p><p>点击下方按钮刷新页面即可加载新内核 —— 页面已自动绕过缓存，无需手动清空缓存。</p>', [
+        { label: '刷新页面', primary: true, onClick: () => location.reload() },
+        { label: '稍后', onClick: hideToast }
+      ]);
+      updateDot.hidden = true;
+      updateBtn.title = '当前已是最新版本';
+      setPhpUpdateEnabled(false);  // 已更新到本地，按钮恢复灰色
+    } else {
+      showToast('部分文件更新失败', '<p>内核未能全部更新，详情：</p><p class="ut-note">' + rows +
+        '</p><p class="ut-note">请确认：① 通过 PHP 服务器打开；② update.php 与页面同目录；' +
+        '③ PHP 可联网且目录可写。原有「下载文件」方式仍可正常使用。</p>', [
+        { label: '重试', primary: true, onClick: phpUpdateLocal },
+        { label: '关闭', onClick: hideToast }
+      ]);
+    }
+  } catch (err) {
+    showToast('更新到本地失败', '<p>' + (err && err.message ? err.message : String(err)) +
+      '</p><p class="ut-note">请确认：① 通过 PHP 服务器打开本页面；② update.php 与本页面在同一目录；' +
+      '③ PHP 有网络访问且目录可写。原有「下载文件」方式仍可正常使用。</p>', [
+      { label: '关闭', onClick: hideToast }
+    ]);
+  } finally {
+    phpUpdateLabel.textContent = oldText;
+    if (updateAvailable) phpUpdateBtn.disabled = false;
+  }
+}
+
+phpUpdateBtn.addEventListener('click', phpUpdateLocal);
+
+updateBtn.addEventListener('click', checkForUpdate);
+/* 内核就绪后自动在后台检查一次（静默，仅在有新版本时显示红点） */
+async function autoCheckUpdate() {
+  if (updateChecking) return;
+  updateChecking = true;
+  try {
+    const regSources = UPDATE_REGISTRIES.map((u, i) => ({ name: ['npm', 'npm镜像', 'jsdelivr'][i] || ('源' + i), url: u }));
+    const { resp } = await tryFetchFirst(regSources);
+    const data = await resp.json();
+    latestVersion = data.version || '';
+    if (shouldAllowUpdate()) {
+      updateDot.hidden = false;
+      updateBtn.title = currentVersion
+        ? ('发现新版本 ' + latestVersion + '，点击下载')
+        : ('未检测到本地内核版本，点击安装 ' + latestVersion);
+      setPhpUpdateEnabled(true);
+    } else {
+      updateDot.hidden = true;
+      setPhpUpdateEnabled(false);
+    }
+  } catch (_) { /* 静默失败：保持按钮禁用状态 */ }
+  finally { updateChecking = false; }
+}
+setTimeout(autoCheckUpdate, 1500);
+
+/* Cookie 恢复已移至文件末尾配置区。 */
+
+/* ============================================================
+ * 配置区（放在文件末尾，方便集中修改）
+ *  - APP_VERSION  ：程序版本号
+ *  - SAMPLE_GROUPS：示例菜单，两级结构（类别 → 示例）
+ *  - USEFUL_LINKS ：常用链接下拉菜单
+ * 修改本区后刷新页面即可生效，无需改动其它代码。
+ * ============================================================ */
+
+/* 程序版本号：从 1.1.10 开始。
+ * 【约定】以后每次修改默认自动递增最后一位（除非特别说明），
+ * 只改本常量一处即可，显示在「关于」信息框正文。
+ * 历史：1.1.10 → 1.1.11 → 1.1.12 → 1.1.13 → 1.1.14 → 1.1.15 → 1.1.16 → 1.1.17 → 1.1.19 */
+const APP_VERSION = '1.1.41';
+
+const SAMPLE_GROUPS = [
+  {
+    cat: '语法基础',
+    items: [
+      { name: '基础：变量 / 循环 / 函数', code: `# MicroPython 基础演示
+import sys
+
+print("Hello, MicroPython!")
+print("实现:", sys.implementation.name, sys.implementation.version)
+
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+print("fib(30) =", fib(30))
+
+for i in range(5):
+    print("  第", i, "项 -> 平方", i * i)
+` },
+      { name: '数据结构与异常处理', code: `# 列表 / 字典 / 推导式 / 异常
+data = [3, 1, 4, 1, 5, 9, 2, 6]
+
+print("原始:", data)
+print("排序:", sorted(data))
+print("奇数平方:", [x * x for x in data if x % 2])
+
+info = {"name": "MicroPython", "lang": "C", "runtime": "wasm"}
+for k, v in info.items():
+    print("  {:8} = {}".format(k, v))
+
+try:
+    1 / 0
+except ZeroDivisionError as e:
+    print("捕获异常:", e)
+` },
+      { name: '类 / 生成器 / 递归', code: `# 面向对象与生成器
+class Counter:
+    def __init__(self, limit):
+        self.limit = limit
+        self.n = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.n >= self.limit:
+            raise StopIteration
+        self.n += 1
+        return self.n
+
+
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+
+
+print("Counter:", [x for x in Counter(5)])
+print("倒计时:", list(countdown(5)))
+print("递归阶乘:", __import__("math").factorial(10))
+` },
+      { name: '语法特性：f-string / 海象 / 装饰器', code: `# 现代 Python 语法（MicroPython 同样支持）
+name = "MicroPython"
+ver = 1.29
+print(f"{name} {ver} -> {ver * 100}")
+
+# 海象运算符 :=（表达式内赋值）
+nums = [n := 3, n + 1, n + 2]
+print("walrus:", nums, "n =", n)
+
+# 链式比较 + 三元表达式
+x = 5
+print("1 < x < 10:", 1 < x < 10, "|", "偶数" if x % 2 == 0 else "奇数")
+
+# lambda 匿名函数
+square = lambda v: v * v
+print("lambda square(7):", square(7))
+
+# 装饰器
+def bold(fn):
+    def wrap(*a):
+        return "**" + fn(*a) + "**"
+    return wrap
+
+@bold
+def greet(who):
+    return "hello " + who
+
+print("decorator:", greet("wasm"))
+
+# zip / enumerate / 推导式
+print("zip:", list(zip([1, 2, 3], "abc")))
+print("enumerate:", list(enumerate(["a", "b"])))
+print("comp:", [i * i for i in range(6) if i % 2 == 0])
+
+# 字符串处理
+print("str:", "  Hello,World  ".strip().lower().replace(",", " ").split())
+` },
+      { name: '调试：assert 断言', code: `# 断言与调试（assert）
+def area(w, h):
+    assert w > 0 and h > 0, "宽和高必须为正数"
+    return w * h
+
+print("area(3,4) =", area(3, 4))
+
+try:
+    area(-1, 5)             # 触发断言
+except AssertionError as e:
+    print("捕获断言:", e)
+
+# 用断言自检
+values = [1, 2, 3]
+assert all(v > 0 for v in values), "存在非正数"
+print("自检通过:", values)
+` },
+      { name: '字符串：切片 / 方法 / 格式化', code: `# 字符串常用操作
+s = "MicroPython"
+print("原串:", s)
+print("长度:", len(s))
+print("切片 s[0:5]:", s[0:5], " s[-3:]:", s[-3:])
+print("小写:", s.lower(), " 大写:", s.upper())
+print("查找 Python:", s.find("Python"))
+print("替换:", s.replace("Python", "Pyo"))
+print("分割:", "a,b,c".split(","))
+print("连接:", "-".join(["2026", "08", "25"]))
+print("格式化: {:05d} | {:.2f} | {:>8}".format(42, 3.14159, "ok"))
+print("成员: 'Micro' in s ->", "Micro" in s)
+print("(str * 2):", "ab" * 2)
+` },
+      { name: '列表推导式与生成器表达式', code: `# 推导式：简洁地构造序列
+nums = list(range(1, 11))
+print("原数据:", nums)
+print("平方列表:", [x * x for x in nums])
+print("偶数集合:", [x for x in nums if x % 2 == 0])
+pairs = [(x, x * x) for x in range(1, 5)]
+print("二元组列表:", pairs)
+# 生成器表达式：惰性求值
+total = sum(x * x for x in nums)
+print("平方和:", total)
+print("全部偶数:", all(x % 2 == 0 for x in [2, 4, 6]))
+print("存在大于8:", any(x > 8 for x in nums))
+` },
+      { name: '字典：增删改查 / 视图 / 嵌套', code: `# 字典操作
+d = {"name": "MicroPython", "year": 2026}
+d["lang"] = "C"              # 增
+d["year"] = 2025             # 改
+print("字典:", d)
+print("键:", list(d.keys()))
+print("值:", list(d.values()))
+print("项:", list(d.items()))
+print("get 不存在:", d.get("missing", "默认值"))
+print("pop:", d.pop("lang"), "剩余:", d)
+nested = {"a": {"b": [1, 2, 3]}}
+print("嵌套取值:", nested["a"]["b"][1])
+print("推导式:", {k: v * 2 for k, v in {"x": 1, "y": 2}.items()})
+` },
+      { name: '集合 set：去重 / 交并差', code: `# 集合：无序不重复
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print("a:", a, " b:", b)
+print("去重:", set([1, 1, 2, 2, 3]))
+print("并集 a | b:", a | b)
+print("交集 a & b:", a & b)
+print("差集 a - b:", a - b)
+print("对称差 a ^ b:", a ^ b)
+print("3 在 a 中:", 3 in a)
+a.add(10)
+a.discard(1)
+print("更新后 a:", a)
+` },
+      { name: '函数参数：默认 / 关键字 / 可变', code: `# 函数参数形态
+def greet(name, greeting="Hello", *args, **kwargs):
+    print(greeting, name, "位置参数:", args, "关键字:", kwargs)
+
+greet("MicroPython")
+greet("Bob", greeting="Hi")
+greet("Tom", 1, 2, lang="C", year=2026)
+
+def calc(a, b, c=3, d=4):
+    return a + b + c + d
+
+print("calc(1,2):", calc(1, 2))
+print("calc(1,2,c=10,d=20):", calc(1, 2, c=10, d=20))
+` },
+      { name: 'lambda 与 sorted key', code: `# lambda 匿名函数与排序键
+square = lambda x: x * x
+print("square(7):", square(7))
+data = [("banana", 3), ("apple", 1), ("pear", 2)]
+print("按名字:", sorted(data, key=lambda t: t[0]))
+print("按数量:", sorted(data, key=lambda t: t[1]))
+print("反向:", sorted([5, 2, 8, 1], reverse=True))
+add = lambda a, b: a + b
+print("lambda 相加:", add(3, 4))
+` },
+      { name: '闭包与装饰器进阶', code: `# 闭包与装饰器
+def make_counter(start=0):
+    n = [start]                 # 用列表保存可变状态
+    def counter():
+        n[0] += 1
+        return n[0]
+    return counter
+
+c = make_counter(10)
+print("闭包计数:", c(), c(), c())
+
+def log_call(fn):
+    def wrapper(*args, **kwargs):
+        print("[调用]", fn.__name__, args)
+        return fn(*args, **kwargs)
+    return wrapper
+
+@log_call
+def add(a, b):
+    return a + b
+
+print("结果:", add(2, 3))
+` },
+      { name: '异常处理：try / except / finally / raise', code: `# 完整异常处理流程
+def divide(a, b):
+    try:
+        if b == 0:
+            raise ZeroDivisionError("除数不能为 0")
+        return a / b
+    except ZeroDivisionError as e:
+        print("除零错误:", e)
+        return None
+    finally:
+        print("  finally 总会执行")
+
+print("结果:", divide(10, 2))
+print("结果:", divide(10, 0))
+` },
+      { name: '内置函数：map / filter / zip / enumerate', code: `# 常用内置高阶函数
+nums = [1, 2, 3, 4, 5]
+print("map(str):", list(map(str, nums)))
+print("filter 偶数:", list(filter(lambda x: x % 2 == 0, nums)))
+print("zip:", list(zip(nums, ["a", "b", "c"])))
+for i, v in enumerate(nums):
+    print(" ", i, "->", v)
+print("any/all:", any(x > 4 for x in nums), all(x > 0 for x in nums))
+` }
+    ]
+  },
+  {
+    cat: '数学与时间',
+    items: [
+      { name: '数学：math 模块', code: `# 数学运算（math）
+import math
+
+print("pi:", round(math.pi, 4))
+print("sqrt(2):", round(math.sqrt(2), 4))
+print("floor/ceil:", math.floor(2.9), math.ceil(2.1))
+print("pow(2,10):", math.pow(2, 10))
+print("log2(8):", round(math.log(8, 2), 2))
+print("exp(1):", round(math.exp(1), 4))
+
+# 三角函数（角度转弧度）
+for deg in (0, 30, 45, 90):
+    r = math.radians(deg)
+    print("sin/cos", deg, "=", round(math.sin(r), 3), round(math.cos(r), 3))
+
+# 求圆面积
+r = 5
+print("圆面积(r=5):", round(math.pi * r * r, 2))
+` },
+      { name: '时间：time 与 ticks', code: `# 时间与计时（time）
+import time
+
+print("time.time():", time.time())
+print("localtime():", time.localtime()[:6])
+
+# 用 ticks 做精确计时（嵌入式推荐用法）
+t0 = time.ticks_ms()
+time.sleep_ms(50)
+dt = time.ticks_diff(time.ticks_ms(), t0)
+print("sleep 50ms 实测:", dt, "ms")
+
+# ticks_add 计算截止时间
+deadline = time.ticks_add(time.ticks_ms(), 30)
+n = 0
+while time.ticks_diff(deadline, time.ticks_ms()) > 0:
+    n += 1
+print("30ms 内空转次数:", n)
+
+# 日期
+t = time.localtime()
+print("日期:", t[0], t[1], t[2])
+` },
+      { name: '随机：random 模块', code: `# 随机数（random）
+import random
+
+random.seed(42)                 # 固定种子，结果可复现
+print("random() :", round(random.random(), 3))
+print("uniform  :", round(random.uniform(1, 10), 3))
+print("randint  :", [random.randint(1, 6) for _ in range(5)])
+print("randrange:", random.randrange(10, 20, 3))
+print("choice   :", random.choice(["red", "green", "blue"]))
+
+# 借助随机数排序实现洗牌（此构建无 shuffle）
+deck = list(range(1, 6))
+deck.sort(key=lambda _: random.random())
+print("shuffled :", deck)
+` },
+      { name: '数学进阶：三角 / 对数 / 幂', code: `# math 进阶函数
+import math
+print("pi =", math.pi, " e =", math.e, " tau =", math.tau)
+for deg in (0, 30, 45, 60, 90):
+    r = math.radians(deg)
+    print("{:2d}° sin={:.3f} cos={:.3f}".format(deg, math.sin(r), math.cos(r)))
+print("sqrt(2) =", math.sqrt(2))
+print("log(100) =", math.log(100), " log10(1000) =", math.log10(1000))
+print("exp(1) =", math.exp(1))
+print("pow(2,10) =", math.pow(2, 10))
+print("floor/ceil:", math.floor(2.7), math.ceil(2.1))
+print("hypot(3,4) =", math.sqrt(3 * 3 + 4 * 4))
+` },
+      { name: '数学进阶：圆周率计算', code: `
+def pi_calc(p):
+    iter = p
+    extra = 8
+    one = 10 ** (iter+extra)
+    t, c, n, na, d, da = 3*one, 3*one, 1, 0, 0, 24
+
+    while t > 1:
+        n, na, d, da = n+na, na+8, d+da, da+32
+        t = t * n // d
+        c += t
+    return c // (10 ** extra)
+
+for d in [10,100,1000]:
+    print(f'计算圆周率{d}位：{pi_calc(d)}')
+` },
+      { name: '数学进阶：分形计算', code: `
+DOTS = '    .,-:;=+|i([{rsaw0XA253hMHGS#9B&@'
+def mandelbrot(p):
+    iter = p
+    def in_set(c):
+        z = 0
+        for i in range(iter):
+            z = z * z + c
+            if abs(z) > 4:
+                return i
+        return iter
+
+    r = ''
+    for v in range(31):
+        for u in range(81):
+            d = in_set((u / 30 - 2) + (v / 15 - 1) * 1j)
+            r += DOTS[d%len(DOTS)]
+        r += '\\n'
+    print(r)
+
+print(f'mandelbrot 分形')
+mandelbrot(52)
+` },
+      { name: 'time：时间戳 / 本地时间 / sleep', code: `# 时间：epoch 与 sleep
+import time
+t = time.time()
+print("时间戳:", t)
+lt = time.localtime(t)
+print("本地时间 tuple:", lt[:6])
+print("格式化: {}-{}-{} {:02d}:{:02d}:{:02d}".format(*lt[:6]))
+print("strftime:", time.strftime("%Y-%m-%d %H:%M:%S", lt))
+print("ticks_ms:", time.ticks_ms())
+print("sleep 100ms 开始")
+time.sleep_ms(100)
+print("sleep 结束，耗时约 100ms")
+` },
+      { name: 'cmath：复数运算', code: `# 复数与 cmath
+import cmath
+z = 3 + 4j
+print("复数 z:", z, " 实部:", z.real, " 虚部:", z.imag)
+print("模:", abs(z), " 相位(cmath.phase):", cmath.phase(z))
+print("cmath.polar:", cmath.polar(z))
+print("复数加法:", (1 + 2j) + (3 - 1j))
+print("复数乘法:", (1 + 2j) * (3 - 1j))
+print("i*i =", 1j * 1j)
+` },
+      { name: '计时基准：ticks 精确测速', code: `# 用 ticks 做毫秒级计时
+import time
+
+def workload(n):
+    s = 0
+    for i in range(n):
+        s += i * i
+    return s
+
+t0 = time.ticks_ms()
+r = workload(20000)
+dt = time.ticks_diff(time.ticks_ms(), t0)
+print("结果:", r, " 耗时:", dt, "ms")
+print("每秒约可完成:", 20000 * 1000 // max(dt, 1), "次循环")
+print("ticks_add 示例:", time.ticks_add(t0, 500))
+` },
+      { name: 'random：种子与随机分布', code: `# 随机：种子 / uniform / choice / shuffle 替代
+import random
+random.seed(42)                 # 固定种子便于复现
+print("random():", random.random())
+print("uniform(1,10):", random.uniform(1, 10))
+print("randrange(1,100):", random.randrange(1, 100))
+print("choice:", random.choice(["a", "b", "c", "d"]))
+nums = list(range(10))
+random.shuffle(nums) if hasattr(random, "shuffle") else None
+print("打乱:", nums)
+# 兼容无 shuffle 的实现：用 sorted + key=random
+print("排序随机:", sorted(range(10), key=lambda _: random.random()))
+` },
+      { name: '统计：均值 / 方差 / 中位数', code: `# 基础统计（不依赖第三方模块）
+data = [4, 1, 7, 2, 9, 3, 6]
+n = len(data)
+mean = sum(data) / n
+var = sum((x - mean) ** 2 for x in data) / n
+sd = var ** 0.5
+s = sorted(data)
+mid = s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2
+print("数据:", data)
+print("均值:", round(mean, 3), " 方差:", round(var, 3), " 标准差:", round(sd, 3))
+print("中位数:", mid, " 范围:", min(data), "~", max(data))
+` },
+      { name: '时间：mktime 与 gmtime', code: `# 时间结构互转
+import time
+t = (2026, 8, 25, 12, 30, 0, 0, 0)
+ts = time.mktime(t)
+print("mktime:", ts)
+print("localtime:", time.localtime(ts)[:6])
+print("gmtime:", time.gmtime(ts)[:6])
+print("time_ns:", time.time_ns())
+` }
+    ]
+  },
+  {
+    cat: '异步与并发',
+    items: [
+      { name: '异步：asyncio 并发任务', code: `# 异步并发（asyncio，由 JS 事件循环驱动）
+import asyncio
+
+async def worker(name, times):
+    for i in range(times):
+        print("[" + name + "] step", i)
+        await asyncio.sleep_ms(20)
+    print("[" + name + "] done")
+
+print("启动两个并发任务：")
+asyncio.create_task(worker("A", 3))
+asyncio.create_task(worker("B", 2))
+print("（任务在主程序运行结束后继续交替执行）")
+` },
+      { name: '异步：gather 并发聚合', code: `# 并发聚合多个协程（asyncio.gather）
+import asyncio
+
+async def square(x):
+    await asyncio.sleep_ms(10)
+    return x * x
+
+async def main():
+    print("开始并发…")
+    results = await asyncio.gather(square(2), square(3), square(4))
+    print("聚合结果:", results)
+    print("求和:", sum(results))
+
+asyncio.create_task(main())
+print("（主程序结束，任务继续在事件循环中执行）")
+` },
+      { name: 'select：多路复用与超时', code: `# I/O 多路复用（select）
+import select, time
+
+# 非阻塞查询
+print("非阻塞 select:", select.select([], [], [], 0))
+
+# 带超时的等待（约 100ms）
+t = time.ticks_ms()
+r, w, e = select.select([], [], [], 0.1)
+print("等待耗时:", time.ticks_diff(time.ticks_ms(), t), "ms")
+print("就绪 fd:", r, w, e)
+
+# 轮询式延时：反复 select 直到累计 200ms
+deadline = time.ticks_add(time.ticks_ms(), 200)
+rounds = 0
+while time.ticks_diff(deadline, time.ticks_ms()) > 0:
+    select.select([], [], [], 0.02)
+    rounds += 1
+print("轮询轮次:", rounds)
+` },
+      { name: 'async/await：协程入门', code: `# 协程基础（由 JS 事件循环驱动）
+import asyncio
+
+async def hello(name, times):
+    for i in range(times):
+        print("Hello", name, i)
+        await asyncio.sleep_ms(50)
+
+async def main():
+    print("协程开始")
+    await hello("MicroPython", 3)
+    print("协程结束")
+
+asyncio.create_task(main())
+print("（主程序结束，任务继续在事件循环中执行）")
+` },
+      { name: 'asyncio.sleep 与任务调度', code: `# asyncio.sleep：非阻塞等待
+import asyncio
+
+async def worker(n):
+    for i in range(3):
+        print("worker", n, "step", i)
+        await asyncio.sleep(0.1)
+
+async def main():
+    await asyncio.gather(worker(1), worker(2))
+    print("全部完成")
+
+asyncio.create_task(main())
+print("（并发任务已启动）")
+` },
+      { name: '任务：创建 / 等待 / 取消', code: `# 任务的创建与取消
+import asyncio
+
+async def forever():
+    while True:
+        print("tick")
+        await asyncio.sleep_ms(200)
+
+async def main():
+    task = asyncio.create_task(forever())
+    await asyncio.sleep_ms(500)
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        print("任务已取消")
+    print("main 结束")
+
+asyncio.create_task(main())
+print("（主程序结束，任务继续在事件循环中执行）")
+` },
+      { name: 'asyncio：Event 事件同步', code: `# Event：一个任务通知另一个
+import asyncio
+
+async def waiter(ev):
+    print("等待事件…")
+    await ev.wait()
+    print("事件已触发")
+
+async def setter(ev):
+    await asyncio.sleep_ms(100)
+    print("触发事件")
+    ev.set()
+
+async def main():
+    ev = asyncio.Event()
+    asyncio.create_task(setter(ev))
+    await waiter(ev)
+    print("同步完成")
+
+asyncio.create_task(main())
+` }
+    ]
+  },
+  {
+    cat: '数据与序列化',
+    items: [
+      { name: 'json：序列化与解析', code: `# JSON 编解码（json）
+import json
+
+data = {
+    "name": "MicroPython",
+    "version": [1, 29, 0],
+    "features": {"wasm": True, "asyncio": True},
+    "scores": [98, 76, 88],
+}
+
+s = json.dumps(data)
+print("dumps:", s)
+
+obj = json.loads(s)
+print("loads name:", obj["name"], "| version:", obj["version"])
+print("scores 往返一致:", obj["scores"] == data["scores"])
+
+# 列表与混合类型
+print("list:", json.dumps([1, "two", None, True]))
+
+# 解析字符串
+print("parse:", json.loads('{"x": 1, "y": 2}'))
+` },
+      { name: 'struct：二进制打包/解包', code: `# 二进制结构体（struct）
+import struct
+
+# 小端：无符号int、无符号int、有符号short
+data = struct.pack("<IIh", 0x12345678, 42, -7)
+print("packed:", len(data), "bytes")
+print("unpack:", struct.unpack("<IIh", data))
+
+# 浮点数
+f = struct.unpack("<f", struct.pack("<f", 3.14))[0]
+print("float round-trip:", round(f, 3))
+
+# 解析二进制协议头
+header = struct.pack("<HH", 0xABCD, 128)
+msg_type, length = struct.unpack("<HH", header)
+print("协议头: type =", hex(msg_type), "len =", length)
+
+# 大端打包
+print("big-endian:", list(struct.pack(">I", 1)))
+` },
+      { name: '综合：random / re / array / hashlib', code: `# 常用工具模块综合演示
+import random, re, array, binascii, hashlib, gc
+
+# random 随机数
+random.seed(7)
+print("randint:", [random.randint(1, 6) for _ in range(5)])
+print("choice:", random.choice(["red", "green", "blue"]))
+
+# re 正则
+m = re.match("([a-z]+)@([a-z]+)", "alice@example")
+if m:
+    print("re groups:", m.group(1), "/", m.group(2))
+
+# array 定长数组
+a = array.array("i", [1, 2, 3])
+a.append(4)
+print("array:", list(a), "len =", len(a))
+
+# binascii 十六进制
+print("hexlify:", binascii.hexlify(b"MP"))
+
+# hashlib（此构建提供 sha256，输出原始 digest）
+h = hashlib.sha256(b"abc")
+print("sha256[:8]:", binascii.hexlify(h.digest()[:8]))
+
+# gc 内存
+print("gc free:", gc.mem_free(), "bytes")
+` },
+      { name: 'json：嵌套结构与紧凑输出', code: `# json：嵌套数据与 dumps/loads
+import json
+data = {
+    "name": "MicroPython",
+    "ver": [1, 29, 0],
+    "features": {"async": True, "wasm": True, "gc": True},
+}
+s = json.dumps(data)
+print("dumps:", s)
+print("长度:", len(s))
+obj = json.loads(s)
+print("loads name:", obj["name"])
+print("嵌套:", obj["features"]["async"], obj["ver"][1])
+print("紧凑:", json.dumps([1, 2, 3], separators=(",", ":")) if False else json.dumps([1, 2, 3]))
+` },
+      { name: 're：正则表达式匹配与替换', code: `# re：正则
+import re
+m = re.match(r"ab+", "abbbc", 0)
+print("match:", m.group(0))
+m = re.search(r"(\d+)-(\d+)", "abc 123-456 def", 0)
+print("search groups:", m.group(1), m.group(2))
+print("sub:", re.sub(r"\d+", "#", "a1b22c333"))
+print("str.split:", "a, b  c".replace(" ", "").split(","))
+print("group(0) 完整匹配:", m.group(0))
+` },
+      { name: 'hashlib：md5 / sha1 / sha256', code: `# 哈希摘要（此内核仅提供 sha256）
+import hashlib, binascii
+data = b"MicroPython"
+print("sha256:", binascii.hexlify(hashlib.sha256(data).digest()))
+h = hashlib.sha256()
+h.update(b"Micro")
+h.update(b"Python")
+print("分块 sha256:", binascii.hexlify(h.digest()))
+` },
+      { name: 'bisect：有序序列二分插入', code: `# 二分查找与插入（MicroPython 无 bisect 模块）
+def bisect_left(a, x):
+    lo, hi = 0, len(a)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if a[mid] < x:
+            lo = mid + 1
+        else:
+            hi = mid
+    return lo
+
+a = [1, 3, 5, 7, 9]
+for x in (0, 4, 8, 10):
+    i = bisect_left(a, x)
+    a.insert(i, x)
+    print("插入", x, "位置", i, "->", a)
+print("最终:", a)
+` },
+      { name: 'heapq：堆与优先队列', code: `# heapq：最小堆
+import heapq
+h = [5, 2, 9, 1, 7]
+heapq.heapify(h)
+print("heapify:", h)
+heapq.heappush(h, 3)
+print("push 3:", h)
+print("pop:", heapq.heappop(h))
+print("pop:", heapq.heappop(h))
+print("剩余:", h)
+print("最大三个:", sorted([4, 1, 8, 3])[-3:])
+` },
+      { name: 're：编译正则与分组', code: `# re.compile：复用编译结果
+import re
+pat = re.compile(r"(\w+)@(\w+)\.com", 0)
+m = pat.search("mail: hello@micropython.com end", 0)
+print("search:", m.group(0))
+print("用户:", m.group(1), " 域名:", m.group(2))
+num = re.compile(r"\d+", 0)
+print("sub:", num.sub("#", "a1b22c333"))
+` },
+      { name: 'json：类型映射与嵌套编码', code: `# json：Python 与 JSON 类型对应
+import json
+obj = {"s": "文本", "i": 42, "f": 1.5, "b": True, "n": None, "l": [1, 2], "d": {"k": "v"}}
+s = json.dumps(obj)
+print("编码:", s)
+back = json.loads(s)
+for k in back:
+    print("  ", k, "->", repr(back[k]), type(back[k]).__name__)
+` }
+    ]
+  },
+  {
+    cat: '内存与底层',
+    items: [
+      { name: 'uctypes：类 C 内存结构体', code: `# 直接操作内存布局（uctypes）
+import uctypes
+
+# 用描述符定义结构体：各字段的偏移量
+LAYOUT = {
+    "magic": uctypes.UINT32 | 0,   # 偏移 0，4 字节
+    "count": uctypes.UINT32 | 4,   # 偏移 4，4 字节
+}
+
+buf = bytearray(8)
+st = uctypes.struct(uctypes.addressof(buf), LAYOUT, uctypes.LITTLE_ENDIAN)
+st.magic = 0x12345678
+st.count = 42
+
+print("magic:", hex(st.magic))
+print("count:", st.count)
+print("原始字节:", list(buf))
+
+# 修改底层缓冲区，结构体字段同步变化
+buf[0] = 0x78
+print("改字节后 magic:", hex(st.magic))
+` },
+      { name: '底层：memoryview 零拷贝', code: `# 内存视图：零拷贝访问缓冲区（memoryview）
+buf = bytearray(b"ABCD")
+print("原始:", bytes(buf))
+
+mv = memoryview(buf)        # 与 buf 共享同一块内存
+print("视图:", mv[0], "长度", len(mv))
+print("切片:", bytes(mv[1:3]))
+
+# 通过视图修改，底层缓冲区同步变化
+mv[0] = ord("Z")
+print("改后:", bytes(buf))
+
+# bytearray 常用操作
+buf.extend(b"EF")
+print("extend:", bytes(buf))
+` },
+      { name: 'gc：垃圾回收与内存统计', code: `# 垃圾回收
+import gc
+print("已分配:", gc.mem_alloc(), "字节")
+print("空闲:", gc.mem_free(), "字节")
+gc.collect()
+print("collect 后空闲:", gc.mem_free(), "字节")
+gc.enable()
+print("启用自动回收:", gc.isenabled())
+` },
+      { name: 'micropython：mem_info / qstr_info / const', code: `# MicroPython 专有功能
+import micropython
+micropython.mem_info()
+print("-- qstr_info --")
+micropython.qstr_info(5)
+K = micropython.const(42)
+print("const:", K)
+try:
+    micropython.alloc_emergency_exception_buf(100)
+    print("emergency buf 已设置")
+except Exception as e:
+    print("emergency buf 不可用:", e)
+` },
+      { name: 'struct 进阶：字节序与格式', code: `# struct：二进制布局
+import struct
+print("native size 'i':", struct.calcsize("i"))
+print("大端 >I:", struct.pack(">I", 0x12345678))
+print("解包:", struct.unpack(">I", b"\x12\x34\x56\x78"))
+print("小端 <I:", struct.pack("<I", 0x12345678))
+print("两个短整型 >2h:", struct.pack(">2h", 1, -2))
+print("解包:", struct.unpack(">2h", b"\x00\x01\xff\xfe"))
+print("三个 float <3f:", struct.pack("<3f", 1.5, 2.5, 3.5))
+` },
+      { name: '字节序与整数转换', code: `# int.from_bytes / to_bytes
+print("byteorder:", __import__("sys").byteorder)
+b = b"\x01\x02\x03\x04"
+print("大端 int:", int.from_bytes(b, "big"))
+print("小端 int:", int.from_bytes(b, "little"))
+print("to_bytes big:", (0x1234).to_bytes(4, "big"))
+print("to_bytes little:", (0x1234).to_bytes(4, "little"))
+print("位运算: 0xF0 & 0x3C =", hex(0xF0 & 0x3C), " | =", hex(0xF0 | 0x3C))
+` },
+      { name: 'gc：回收阈值与统计', code: `# gc：手动与自动回收
+import gc
+print("自动回收:", gc.isenabled())
+print("阈值:", gc.threshold())
+before = gc.mem_free()
+data = [str(i) for i in range(500)]
+print("分配 500 字符串后空闲:", gc.mem_free())
+del data
+gc.collect()
+print("collect 后空闲:", gc.mem_free())
+print("本次回收释放:", gc.mem_free() - before, "字节（近似）")
+` }
+    ]
+  },
+  {
+    cat: '文件与系统',
+    items: [
+      { name: 'io：BytesIO / StringIO 内存流', code: `# 内存流读写（io）
+import io
+
+# BytesIO：内存中的二进制流
+bio = io.BytesIO()
+bio.write(b"MicroPython")
+bio.write(b" IO")
+bio.seek(0)
+print("BytesIO read:", bio.read())
+bio.seek(0)
+print("BytesIO read(4):", bio.read(4))
+
+# StringIO：内存中的文本流
+sio = io.StringIO()
+sio.write("hello" + chr(10) + "world")
+sio.seek(0)
+print("StringIO:", sio.read())
+
+# 以流的方式逐行处理
+sio.seek(0)
+for line in sio:
+    print("  行:", line.strip())
+` },
+      { name: 'vfs：虚拟文件系统', code: `# 虚拟文件系统（VfsPosix）
+import os
+
+print("cwd:", os.getcwd())
+print("根目录:", os.listdir("/"))
+
+# 创建目录并写入文件
+try:
+    os.mkdir("/data")
+except OSError:
+    pass
+
+lines = ["theme=dark", "host=localhost"]
+with open("/data/config.txt", "w") as f:
+    for ln in lines:
+        f.write(ln + chr(10))
+
+with open("/data/config.txt") as f:
+    print("config 内容:", f.read().strip())
+
+print("目录列表:", os.listdir("/data"))
+
+# statvfs：文件系统容量信息
+v = os.statvfs("/")
+print("块大小:", v[0], "总块数:", v[2], "可用块:", v[3])
+print("挂载类型:", type(v).__name__)
+` },
+      { name: 'os：系统接口与文件管理', code: `# 操作系统接口（os / sys）
+import os, sys
+
+print("实现:", sys.implementation.name, sys.implementation.version)
+print("cwd:", os.getcwd())
+
+# 目录与文件管理
+for d in ("/work", "/work/sub"):
+    try:
+        os.mkdir(d)
+    except OSError:
+        pass
+
+with open("/work/demo.txt", "w") as f:
+    for word in ("one", "two", "three"):
+        f.write(word + chr(10))
+
+print("stat 大小:", os.stat("/work/demo.txt")[6])
+os.rename("/work/demo.txt", "/work/renamed.txt")
+print("重命名后:", os.listdir("/work"))
+os.remove("/work/renamed.txt")
+print("删除后:", os.listdir("/work"))
+` },
+      { name: 'os：目录遍历与 stat', code: `# os：目录与文件信息
+import os
+try:
+    os.mkdir("/work")
+except OSError:
+    pass
+with open("/work/a.txt", "w") as f:
+    f.write("hello")
+print("listdir:", os.listdir("/work"))
+st = os.stat("/work/a.txt")
+print("stat:", st)
+print("大小:", st[6], " 是文件:", (st[0] & 0x8000) != 0)
+print("getcwd:", os.getcwd())
+os.remove("/work/a.txt")
+print("删除后:", os.listdir("/work"))
+` },
+      { name: 'io：字节流读写与 seek', code: `# io.BytesIO：内存中的二进制流
+import io
+buf = io.BytesIO()
+buf.write(b"MicroPython")
+buf.write(b"\x00\x01\x02")
+buf.seek(0)
+print("read(4):", buf.read(4))
+print("tell:", buf.tell())
+buf.seek(-3, 2)
+print("末尾3字节:", buf.read())
+print("getvalue:", buf.getvalue())
+` },
+      { name: '文件：CSV 风格读写', code: `# 用文件模拟 CSV
+import os
+try:
+    os.mkdir("/work")
+except OSError:
+    pass
+path = "/work/data.csv"
+rows = [("name", "score"), ("alice", "90"), ("bob", "85")]
+with open(path, "w") as f:
+    for row in rows:
+        f.write(",".join(row) + "\n")
+print("内容:")
+with open(path) as f:
+    for line in f:
+        print("  ", line.strip())
+with open(path, "a") as f:
+    f.write("carol,77\n")
+print("追加后行数:", sum(1 for _ in open(path)))
+os.remove(path)
+` },
+      { name: 'os：环境变量 uname 与终端', code: `# os 杂项与系统信息
+import os, sys
+print("sys.platform:", sys.platform)
+print("sys.implementation:", sys.implementation)
+print("getcwd:", os.getcwd())
+print("listdir /:", os.listdir("/"))
+` },
+      { name: 'os：重命名与目录清理', code: `# os：文件生命周期管理
+import os
+try:
+    os.mkdir("/work")
+except OSError:
+    pass
+with open("/work/a.txt", "w") as f:
+    f.write("hello")
+os.rename("/work/a.txt", "/work/b.txt")
+print("重命名后:", os.listdir("/work"))
+with open("/work/b.txt") as f:
+    print("内容:", f.read())
+os.remove("/work/b.txt")
+print("清理后:", os.listdir("/work"))
+` }
+    ]
+  },
+  {
+    cat: '列表 / 元组',
+    items: [
+      { name: 'list：增删改查全解', code: `# 列表常用方法
+a = [1, 2, 3]
+a.append(4); print("append:", a)
+a.extend([5, 6]); print("extend:", a)
+a.insert(0, 0); print("insert:", a)
+print("pop() ->", a.pop(), a)
+print("pop(0) ->", a.pop(0), a)
+a.remove(3); print("remove(3):", a)
+print("index(4):", a.index(4))
+print("count(2):", a.count(2))
+a.reverse(); print("reverse:", a)
+b = a.copy(); b.clear(); print("copy/clear:", a, b)
+` },
+      { name: 'list：排序与反转', code: `# 排序
+nums = [5, 2, 9, 1, 5, 6]
+nums.sort()
+print("sort 升序:", nums)
+nums.sort(reverse=True)
+print("sort 降序:", nums)
+words = ["banana", "apple", "cherry"]
+words.sort(key=len)
+print("按长度:", words)
+print("sorted 新列表:", sorted([3, 1, 2]))
+print("reverse():", [1, 2, 3][::-1])
+` },
+      { name: 'tuple：不可变与解包', code: `# 元组
+t = (1, 2, 3)
+print("元组:", t, " 长度:", len(t))
+print("索引:", t[0], " 切片:", t[1:])
+a, b, c = t
+print("解包:", a, b, c)
+first, *rest = t
+print("星号解包:", first, rest)
+def multi():
+    return "ok", 42
+x, y = multi()
+print("多返回值:", x, y)
+print("单元素元组:", (5,), type((5,)).__name__)
+` },
+      { name: '切片与拷贝：浅拷贝陷阱', code: `# 切片与拷贝
+a = list(range(10))
+print("a[2:8:2]:", a[2:8:2])
+print("a[::-1]:", a[::-1])
+print("a[-3:]:", a[-3:])
+shallow = [a, a]
+a.append(99)
+print("浅拷贝共享引用:", shallow[0] is shallow[1], shallow[0][-1])
+import array
+deep = [row[:] for row in [[1, 2], [3, 4]]]
+deep[0][0] = 9
+print("独立拷贝:", deep)
+` },
+      { name: '二维表：转置与拉平', code: `# 二维列表操作
+m = [[1, 2, 3], [4, 5, 6]]
+print("原矩阵:", m)
+trans = [[row[i] for row in m] for i in range(len(m[0]))]
+print("转置:", trans)
+flat = [x for row in m for x in row]
+print("拉平:", flat)
+print("各行和:", [sum(row) for row in m])
+print("列和:", [sum(col) for col in trans])
+` },
+      { name: '元组：作为字典键与集合元素', code: `# 元组不可变，可作哈希键
+d = {}
+d[(1, 2)] = "A"
+d[(3, 4)] = "B"
+print("字典:", d)
+print("查 (1,2):", d.get((1, 2)))
+s = {(1, 2), (3, 4), (1, 2)}
+print("集合:", s)
+print("坐标距离:", ((1, 2)[0] - (4, 6)[0]) ** 2 + ((1, 2)[1] - (4, 6)[1]) ** 2)
+` }
+    ]
+  },
+  {
+    cat: 'framebuf',
+    items: [
+      { name: 'FrameBuffer：创建 / fill / pixel', code: `# framebuf：帧缓冲基础
+import framebuf
+W = H = 8
+buf = bytearray(W * H * 2)          # RGB565 每像素 2 字节
+fb = framebuf.FrameBuffer(buf, W, H, framebuf.RGB565)
+fb.fill(0x0000)                     # 黑
+fb.pixel(0, 0, 0xF800)              # 红
+fb.pixel(7, 7, 0x07E0)              # 绿
+print("缓冲区字节:", len(buf))
+print("(0,0) 像素值:", hex((buf[1] << 8) | buf[0]))
+print("(7,7) 像素值:", hex((buf[(7*W+7)*2+1] << 8) | buf[(7*W+7)*2]))
+` },
+      { name: 'framebuf：line / rect / ellipse', code: `# framebuf：绘图原语
+import framebuf
+buf = bytearray(16 * 16 * 2)
+fb = framebuf.FrameBuffer(buf, 16, 16, framebuf.RGB565)
+fb.fill(0x0001)
+fb.line(0, 0, 15, 15, 0xF800)       # 对角线
+fb.rect(2, 2, 10, 8, 0x07E0)        # 矩形框
+fb.fill_rect(4, 4, 3, 3, 0x001F)    # 实心蓝块
+fb.ellipse(8, 8, 6, 4, 0xFFFF)      # 椭圆
+print("绘制完成，缓冲区:", len(buf), "字节")
+nonzero = sum(1 for b in buf if b)
+print("非零字节数:", nonzero)
+` },
+      { name: 'framebuf：text 文本绘制', code: `# framebuf：内置 5x7 字体
+import framebuf
+buf = bytearray(32 * 8 * 2)
+fb = framebuf.FrameBuffer(buf, 32, 8, framebuf.RGB565)
+fb.fill(0)
+fb.text("Hi", 2, 0, 0xFFFF)
+fb.text("MP", 18, 0, 0x07E0)
+print("文本已绘制")
+print("前 16 字节:", [hex(b) for b in buf[:16]])
+` },
+      { name: 'framebuf：scroll 与 blit', code: `# framebuf：滚动与块拷贝
+import framebuf
+src = bytearray(8 * 8 * 2)
+s = framebuf.FrameBuffer(src, 8, 8, framebuf.RGB565)
+s.fill(0)
+s.fill_rect(0, 0, 4, 8, 0xF800)
+
+dst = bytearray(16 * 8 * 2)
+d = framebuf.FrameBuffer(dst, 16, 8, framebuf.RGB565)
+d.fill(0)
+d.blit(s, 0, 0)
+d.blit(s, 8, 0)
+print("blit 后非零:", sum(1 for b in dst if b))
+d.scroll(0, 2)
+print("scroll 后非零:", sum(1 for b in dst if b))
+` },
+      { name: 'framebuf：图案与填充率', code: `# framebuf：绘制重复图案
+import framebuf
+W = H = 16
+buf = bytearray(W * H * 2)
+fb = framebuf.FrameBuffer(buf, W, H, framebuf.RGB565)
+fb.fill(0)
+for x in range(0, W, 4):
+    fb.fill_rect(x, 0, 2, H, 0x07E0)
+for y in range(0, H, 4):
+    fb.fill_rect(0, y, W, 2, 0x001F)
+print("缓冲区:", len(buf), "字节")
+print("非零字节:", sum(1 for b in buf if b))
+print("填充率: %.1f%%" % (sum(1 for b in buf if b) * 100 / len(buf)))
+` }
+    ]
+  },
+  {
+    cat: 'array',
+    items: [
+      { name: 'array：创建与索引', code: `# array：紧凑数值数组
+import array
+a = array.array("i", [1, 2, 3, 4, 5])
+print("数组:", a, " 长度:", len(a))
+print("首元素:", a[0], " 末元素:", a[-1])
+a[2] = 99
+print("修改后:", a)
+a.append(6)
+print("append 后:", a)
+` },
+      { name: 'array：append / extend / 转 bytes', code: `# array 的动态操作与字节转换
+import array
+a = array.array("H", [1, 2])
+a.append(3)
+a.extend([4, 5])
+print("扩展后:", a)
+b = bytes(a)
+print("bytes(a):", b, " 长度:", len(b))
+print("按字节查看:", list(b))
+c = array.array("H", [b[0] | (b[1] << 8)])
+print("从字节重建首元素:", c[0])
+print("列表转换:", list(a))
+` },
+      { name: 'array：数值统计与内存视图', code: `# array 统计
+import array
+a = array.array("i", range(1, 11))
+print("总和:", sum(a), " 最大:", max(a), " 最小:", min(a))
+print("均值:", sum(a) / len(a))
+mv = memoryview(a)
+print("memoryview 长度:", len(mv))
+mv[0] = 100
+print("通过视图修改:", a[0])
+print("memoryview 转 bytes:", bytes(mv))
+` },
+      { name: 'array：类型码一览', code: `# array 支持的类型码
+import array
+codes = [("b", -128), ("B", 255), ("h", -32768), ("H", 65535),
+         ("i", -2), ("I", 4294967295), ("f", 1.5), ("d", 2.5)]
+for code, val in codes:
+    try:
+        a = array.array(code, [val])
+        print(code, "->", a, " size:", a.itemsize)
+    except Exception as e:
+        print(code, "不可用:", e)
+` },
+      { name: 'array：滑动平均与差分', code: `# array 上的数值处理
+import array
+a = array.array("i", [2, 4, 6, 8, 10])
+diff = [a[i + 1] - a[i] for i in range(len(a) - 1)]
+print("原数组:", a)
+print("差分:", diff)
+avg = [sum(a[i:i + 3]) / 3 for i in range(len(a) - 2)]
+print("3 点滑动平均:", [round(x, 2) for x in avg])
+` }
+    ]
+  },
+  {
+    cat: 'sys',
+    items: [
+      { name: 'sys：版本与实现信息', code: `# sys：运行环境
+import sys
+print("version:", sys.version)
+print("implementation:", sys.implementation.name, sys.implementation.version)
+print("platform:", sys.platform)
+print("maxsize:", sys.maxsize)
+print("byteorder:", sys.byteorder)
+print("path:", sys.path)
+` },
+      { name: 'sys：getsizeof / 模块与路径', code: `# sys：对象大小与模块
+import sys
+for obj in (1, 1000000, "hello", [1, 2, 3], {"a": 1}):
+    try:
+        print(type(obj).__name__, "getsizeof:", sys.getsizeof(obj))
+    except Exception as e:
+        print("getsizeof 不可用:", e)
+print("已加载模块数:", len(sys.modules))
+print("json 已加载:", "json" in sys.modules)
+` },
+      { name: 'sys：stdout / stderr 输出', code: `# sys：标准输出重定向
+import sys
+print("原始 stdout 类型:", type(sys.stdout).__name__)
+sys.stdout.write("通过 sys.stdout.write 输出\n")
+sys.stderr.write("通过 sys.stderr.write 输出\n")
+print("stdin 存在:", hasattr(sys, "stdin"))
+print("argv:", getattr(sys, "argv", "无"))
+` },
+      { name: 'sys：退出码与最后异常', code: `# sys：状态信息
+import sys
+print("last_value:", getattr(sys, "last_value", "无"))
+try:
+    1 / 0
+except Exception as e:
+    print("捕获后 last_value:", getattr(sys, "last_value", "无"))
+print("version_info:", sys.version_info)
+# 注意：sys.exit() 会终止程序，此处仅演示检测
+print("有 exit 方法:", hasattr(sys, "exit"))
+` },
+      { name: 'sys：实现信息与异常状态', code: `# sys：运行时细节
+import sys
+imp = sys.implementation
+print("name:", imp.name)
+print("version:", imp.version)
+print("machine:", imp._machine)
+print("build:", imp._build)
+print("modules:", len(sys.modules))
+print("last_value 可用:", hasattr(sys, "last_value"))
+print("exit 可用:", hasattr(sys, "exit"))
+` }
+    ]
+  },
+  {
+    cat: 'platform',
+    items: [
+      { name: 'platform：系统与机器信息', code: `# platform：平台识别
+import platform, sys
+print("platform.platform():", platform.platform())
+print("platform.python_compiler():", platform.python_compiler())
+print("platform.libc_ver():", platform.libc_ver())
+print("sys.platform:", sys.platform)
+print("sys.implementation:", sys.implementation)
+` },
+      { name: 'platform.uname 与架构', code: `# platform：编译器与实现信息
+import platform, sys
+print("python_compiler:", platform.python_compiler())
+print("libc_ver:", platform.libc_ver())
+imp = sys.implementation
+print("实现名:", imp.name)
+print("版本:", imp.version)
+print("机器:", imp._machine)
+print("构建:", imp._build)
+` },
+      { name: 'platform：内存与运行频率', code: `# platform：运行时信息
+import platform, gc, time
+print("platform:", platform.platform())
+print("mem_alloc:", gc.mem_alloc(), " mem_free:", gc.mem_free())
+print("ticks_ms:", time.ticks_ms())
+print("当前时间:", time.time())
+` }
+    ]
+  },
+  {
+    cat: 'binascii',
+    items: [
+      { name: 'binascii：hexlify / unhexlify', code: `# 十六进制编解码
+import binascii
+raw = b"MicroPython"
+hexs = binascii.hexlify(raw)
+print("hexlify:", hexs)
+print("unhexlify:", binascii.unhexlify(hexs))
+print("大写:", binascii.hexlify(raw).upper())
+print("a2b_hex:", binascii.a2b_hex(b"414243"))
+` },
+      { name: 'binascii：base64 编解码', code: `# Base64 编解码
+import binascii
+raw = b"Hello MicroPython!"
+enc = binascii.b2a_base64(raw)
+print("b2a_base64:", enc)
+print("解码:", binascii.a2b_base64(enc))
+raw2 = b"a" * 5
+enc2 = binascii.b2a_base64(raw2)
+print("5字节编码:", enc2, "->", binascii.a2b_base64(enc2))
+` },
+      { name: 'binascii：crc32 校验', code: `# CRC32 校验
+import binascii
+data = b"123456789"
+print("crc32:", hex(binascii.crc32(data)))
+print("crc32 带初值:", hex(binascii.crc32(data, 0)))
+h = binascii.crc32(b"hello")
+h = binascii.crc32(b" world", h)
+print("分块 crc32:", hex(h))
+` },
+      { name: 'binascii：编码往返综合', code: `# 多种编码往返
+import binascii
+original = bytes(range(16))
+hexed = binascii.hexlify(original)
+b64 = binascii.b2a_base64(original)
+print("原始:", original)
+print("hex 往返:", binascii.unhexlify(hexed) == original)
+print("b64 往返:", binascii.a2b_base64(b64) == original)
+print("crc32:", hex(binascii.crc32(original)))
+` },
+      { name: 'binascii：Hex / Base64 混合流水线', code: `# 多种编码组合使用
+import binascii
+raw = b"MicroPython 1.29"
+hexed = binascii.hexlify(raw)
+b64 = binascii.b2a_base64(raw)
+print("原始:", raw)
+print("Hex:", hexed)
+print("Base64:", b64)
+print("Hex 还原:", binascii.unhexlify(hexed) == raw)
+print("Base64 还原:", binascii.a2b_base64(b64) == raw)
+print("CRC32:", hex(binascii.crc32(raw)))
+` }
+    ]
+  },
+  {
+    cat: 'collections',
+    items: [
+      { name: 'collections：namedtuple', code: `# 命名元组
+import collections
+Point = collections.namedtuple("Point", "x y")
+p = Point(3, 4)
+print("点:", p, " x:", p.x, " y:", p.y)
+print("索引访问:", p[0], p[1])
+print("解包:", tuple(p))
+print("类型名:", type(p).__name__)
+` },
+      { name: 'collections：deque 双端队列', code: `# deque：双端队列（需指定 maxlen）
+import collections
+dq = collections.deque([1, 2, 3], 10)
+dq.append(4)
+dq.appendleft(0)
+print("双端添加:", dq)
+print("pop:", dq.pop(), " popleft:", dq.popleft())
+dq.extend([5, 6])
+print("extend:", dq)
+print("索引:", dq[0], " 长度:", len(dq))
+` },
+      { name: 'collections：defaultdict', code: `# defaultdict：默认值字典
+import collections
+dd = collections.defaultdict(list)
+for k, v in [("a", 1), ("b", 2), ("a", 3)]:
+    dd[k].append(v)
+print("分组结果:", list(dd.items()))
+dd2 = collections.defaultdict(int)
+dd2["x"] = 10
+dd2["y"] += 1
+print("计数式:", list(dd2.items()))
+` },
+      { name: 'collections：OrderedDict', code: `# OrderedDict：有序字典
+import collections
+od = collections.OrderedDict()
+od["z"] = 1
+od["a"] = 2
+od["m"] = 3
+print("顺序:", list(od.keys()))
+v = od.pop("z")
+od["z"] = v
+print("移到末尾:", list(od.items()))
+od.popitem()
+print("popitem 后:", list(od.items()))
+` },
+      { name: 'collections：计数统计（Counter 替代）', code: `# 用 defaultdict 实现词频统计
+import collections
+words = ["apple", "banana", "apple", "pear", "banana", "apple"]
+cnt = collections.defaultdict(int)
+for w in words:
+    cnt[w] += 1
+items = list(cnt.items())
+print("计数:", items)
+print("最多:", max(items, key=lambda t: t[1]))
+print("不同词数:", len(items))
+` }
+    ]
+  },
+  {
+    cat: 'uctypes',
+    items: [
+      { name: 'uctypes：结构体布局与偏移', code: `# uctypes：描述 C 结构体
+import uctypes
+# struct point { int x; int y; };
+DESC = {"x": uctypes.INT32 | 0, "y": uctypes.INT32 | 4}
+buf = bytearray(8)
+s = uctypes.struct(uctypes.addressof(buf), DESC)
+s.x = 10
+s.y = 20
+print("结构体大小:", uctypes.sizeof(DESC))
+print("x:", s.x, " y:", s.y)
+print("缓冲区:", buf)
+` },
+      { name: 'uctypes：字段读写与嵌套', code: `# uctypes：字段操作
+import uctypes
+DESC = {
+    "a": uctypes.UINT8 | 0,
+    "b": uctypes.UINT16 | 2,
+    "c": uctypes.UINT32 | 4,
+}
+buf = bytearray(8)
+s = uctypes.struct(uctypes.addressof(buf), DESC)
+s.a = 0x12; s.b = 0x3456; s.c = 0x789ABCDE
+print("字段:", s.a, hex(s.b), hex(s.c))
+print("buf:", binascii.hexlify(buf) if False else [hex(x) for x in buf])
+print("sizeof:", uctypes.sizeof(DESC))
+` },
+      { name: 'uctypes：数组布局', code: `# uctypes：数组描述符
+import uctypes
+# 4 个 int32 的数组
+DESC = (uctypes.INT32, 4)
+buf = bytearray(16)
+arr = uctypes.struct(uctypes.addressof(buf), DESC)
+for i in range(4):
+    arr[i] = (i + 1) * 10
+print("数组:", [arr[i] for i in range(4)])
+print("sizeof:", uctypes.sizeof(DESC))
+print("addressof:", uctypes.addressof(buf) != 0)
+` },
+      { name: 'uctypes：NATIVE 与字节序', code: `# uctypes：布局标志
+import uctypes
+print("NATIVE:", uctypes.NATIVE)
+print("LITTLE_ENDIAN:", uctypes.LITTLE_ENDIAN)
+print("BIG_ENDIAN:", uctypes.BIG_ENDIAN)
+DESC = {"v": uctypes.UINT32 | 0}
+buf = bytearray(4)
+s = uctypes.struct(uctypes.addressof(buf), DESC, uctypes.BIG_ENDIAN)
+s.v = 0x01020304
+print("大端写入:", [hex(x) for x in buf])
+print("读回:", hex(s.v))
+` }
+    ]
+  },
+  {
+    cat: '算法',
+    items: [
+      { name: '排序三法：冒泡 / 选择 / 插入', code: `# 三种基础排序算法
+def bubble(a):
+    a = a[:]
+    n = len(a)
+    for i in range(n):
+        for j in range(n - 1 - i):
+            if a[j] > a[j + 1]:
+                a[j], a[j + 1] = a[j + 1], a[j]
+    return a
+
+def selection(a):
+    a = a[:]
+    n = len(a)
+    for i in range(n):
+        m = i
+        for j in range(i + 1, n):
+            if a[j] < a[m]:
+                m = j
+        a[i], a[m] = a[m], a[i]
+    return a
+
+def insertion(a):
+    a = a[:]
+    for i in range(1, len(a)):
+        key = a[i]
+        j = i - 1
+        while j >= 0 and a[j] > key:
+            a[j + 1] = a[j]
+            j -= 1
+        a[j + 1] = key
+    return a
+
+data = [5, 2, 9, 1, 5, 6]
+print("原始:", data)
+print("冒泡:", bubble(data))
+print("选择:", selection(data))
+print("插入:", insertion(data))
+print("内置 sorted:", sorted(data))
+` },
+      { name: '分治：快速排序', code: `# 快速排序：以首元素为基准
+def quick(a):
+    if len(a) <= 1:
+        return a[:]
+    p = a[0]
+    left = [x for x in a[1:] if x < p]
+    equal = [x for x in a[1:] if x == p]
+    right = [x for x in a[1:] if x > p]
+    return quick(left) + [p] + equal + quick(right)
+
+data = [5, 3, 8, 1, 9, 3, 7, 2]
+print("原始:", data)
+print("快排:", quick(data))
+print("验证:", quick(data) == sorted(data))
+` },
+      { name: '分治：归并排序', code: `# 归并排序：稳定排序
+def merge(left, right):
+    out = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            out.append(left[i]); i += 1
+        else:
+            out.append(right[j]); j += 1
+    out.extend(left[i:])
+    out.extend(right[j:])
+    return out
+
+def merge_sort(a):
+    if len(a) <= 1:
+        return a[:]
+    mid = len(a) // 2
+    return merge(merge_sort(a[:mid]), merge_sort(a[mid:]))
+
+data = [6, 2, 7, 1, 4, 2, 9]
+print("原始:", data)
+print("归并:", merge_sort(data))
+` },
+      { name: '递归：汉诺塔', code: `# 汉诺塔：递归搬移步骤
+def hanoi(n, src, aux, dst):
+    if n == 1:
+        print(" ", src, "->", dst)
+        return
+    hanoi(n - 1, src, dst, aux)
+    print(" ", src, "->", dst)
+    hanoi(n - 1, aux, src, dst)
+
+for n in (1, 2, 3):
+    print("n =", n, " 共", 2 ** n - 1, "步")
+    hanoi(n, "A", "B", "C")
+` },
+      { name: '动态规划：斐波那契与背包', code: `# DP：自底向上斐波那契 + 0/1 背包
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+print("fib(30) =", fib(30))
+
+weights = [1, 3, 4, 5]
+values = [1, 4, 5, 7]
+cap = 8
+dp = [[0] * (cap + 1) for _ in range(len(weights) + 1)]
+for i in range(1, len(weights) + 1):
+    w, v = weights[i - 1], values[i - 1]
+    for c in range(cap + 1):
+        dp[i][c] = dp[i - 1][c]
+        if c >= w:
+            take = dp[i - 1][c - w] + v
+            if take > dp[i][c]:
+                dp[i][c] = take
+print("容量", cap, "最大价值:", dp[len(weights)][cap])
+` },
+      { name: '贪心：找零钱', code: `# 贪心算法：最少硬币数（币值 1/2/5/10）
+def change(amount, coins):
+    coins = sorted(coins, reverse=True)
+    result = []
+    left = amount
+    for c in coins:
+        while left >= c:
+            result.append(c)
+            left -= c
+    return result, left
+
+for amount in (17, 28, 99):
+    coins, rest = change(amount, [1, 2, 5, 10, 25])
+    print(amount, "->", coins, " 共", len(coins), "枚，余", rest)
+` },
+      { name: '回溯：四皇后', code: `# 回溯法：4 皇后所有解
+def solve(n):
+    ans = []
+    def dfs(row, cols):
+        if row == n:
+            ans.append(cols[:])
+            return
+        for c in range(n):
+            ok = True
+            for r, cc in enumerate(cols):
+                if cc == c or abs(cc - c) == row - r:
+                    ok = False
+                    break
+            if ok:
+                cols.append(c)
+                dfs(row + 1, cols)
+                cols.pop()
+    dfs(0, [])
+    return ans
+
+sols = solve(4)
+print("4 皇后解数:", len(sols))
+for s in sols:
+    print(" ", s)
+` },
+      { name: '数论：素数筛与最大公约数', code: `# 埃氏筛 + 欧几里得算法
+def primes(n):
+    flag = [True] * (n + 1)
+    if n >= 0: flag[0] = False
+    if n >= 1: flag[1] = False
+    i = 2
+    while i * i <= n:
+        if flag[i]:
+            for j in range(i * i, n + 1, i):
+                flag[j] = False
+        i += 1
+    return [i for i in range(n + 1) if flag[i]]
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def lcm(a, b):
+    return a // gcd(a, b) * b
+
+p = primes(50)
+print("50 以内素数:", p)
+print("个数:", len(p))
+print("gcd(48,18) =", gcd(48, 18), " lcm(48,18) =", lcm(48, 18))
+` }
+    ]
+  }
+];
+
+const USEFUL_LINKS = [
+  { name: 'MicroPython 官方网站', url: 'https://micropython.org/' },
+  { name: 'MicroPython 文档', url: 'https://docs.micropython.org/' },
+  { name: 'MicroPython 固件下载', url: 'https://micropython.org/download/' },
+  { name: 'GitHub 源码', url: 'https://github.com/micropython/micropython' },
+  { name: 'MicroPython 里程碑', url: 'https://github.com/micropython/micropython/milestones' },
+  { name: 'micropython.org 在线 IDE', url: 'https://micropython.org/unicorn/' },
+  { name: 'circuitpython 官网', url: 'http://circuitpython.org/' },
+  { name: 'MicroPython 中文资源🇨🇳', url: 'https://gitee.com/shaoziyang/micropython-chinese-resources' },
+  { name: 'MicroPython 中文社区微信订阅号', url: 'https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=1344271743048957953' },
+
+];
+
+/* ---- 两级示例菜单：一级类别 → 二级该类下的示例 ---- */
+SAMPLE_GROUPS.forEach((g, i) => {
+  const opt = document.createElement('option');
+  opt.value = String(i);
+  opt.textContent = g.cat;
+  sampleCatEl.appendChild(opt);
+});
+
+/* ---- 常用链接菜单 ---- */
+const linksEl = $('links');
+USEFUL_LINKS.forEach((link, i) => {
+  const opt = document.createElement('option');
+  opt.value = String(i);
+  opt.textContent = link.name;
+  linksEl.appendChild(opt);
+});
+linksEl.addEventListener('change', () => {
+  const i = linksEl.value;
+  syncSelIcon(linksEl);
+  if (i === '') return;
+  const link = USEFUL_LINKS[Number(i)];
+  if (link && link.url) window.open(link.url, '_blank', 'noopener,noreferrer');
+});
+
+/* ---- 初始化（从 Cookie 恢复） ---- */
+(function initCode() {
+  let saved = null;
+  try { saved = loadCodeCookie(); } catch (_) {}
+  // 兼容早期使用 localStorage 的版本：一次性迁移后清除
+  if (saved === null) {
+    try {
+      const legacy = localStorage.getItem('mp-playground-code-v1');
+      if (legacy) {
+        saved = legacy;
+        saveCodeCookie(legacy);
+        localStorage.removeItem('mp-playground-code-v1');
+      }
+    } catch (_) {}
+  }
+  codeEl.value = saved || SAMPLE_GROUPS[0].items[0].code;
+  refreshEditor();
+})();
+
+/* ---------------- 关于信息框 + 贪吃蛇特效 ---------------- */
+(function initAbout() {
+  const btn = $('aboutBtn');
+  const back = $('aboutBackdrop');
+  const verEl = $('aboutVersion');
+  if (!btn || !back) return;
+  // 程序版本号统一取自配置区的 APP_VERSION（单一修改点）
+  const appBodyEl = $('appVersionBody');
+  if (appBodyEl) appBodyEl.textContent = 'v' + APP_VERSION;
+
+  /* ---- PHP 版本探测 ----
+   * http(s) 下向配套 update.php 发轻量探测请求（不下载、不写入）；
+   * file:// 本地文件模式没有 PHP 服务器，直接标注不可用。结果缓存避免重复请求。 */
+  const phpEl = $('aboutPhpVersion');
+  let phpVersionText = null;
+  async function loadPhpVersion() {
+    if (!phpEl) return;
+    if (phpVersionText !== null) { phpEl.textContent = phpVersionText; return; }
+    if (location.protocol === 'file:') {
+      phpVersionText = '不可用（本地文件模式）';
+      phpEl.textContent = phpVersionText;
+      return;
+    }
+    phpEl.textContent = '检测中…';
+    try {
+      const resp = await fetch('update.php?probe=php', { cache: 'no-store' });
+      let data = null;
+      try { data = await resp.json(); } catch (_) {}
+      let v = (data && data.php) ? String(data.php) : '';
+      // 兜底：部分服务器通过 X-Powered-By 响应头暴露 PHP 版本
+      if (!v) {
+        const m = (resp.headers.get('X-Powered-By') || '').match(/PHP\/?\s*([\d.]+)/i);
+        if (m) v = m[1];
+      }
+      phpVersionText = v ? ('v' + v) : '未检测到（需配套 update.php）';
+    } catch (_) {
+      phpVersionText = '未检测到（需 PHP 服务器）';
+    }
+    phpEl.textContent = phpVersionText;
+  }
+
+  /* ---- 贪吃蛇特效（canvas，仅弹窗打开时运行） ---- */
+  const canvas = $('snakeCanvas');
+  const scoreEl = $('snakeScore');
+  const manualScoreEl = $('snakeManualScore');
+  const autoScoreEl = $('snakeAutoScore');
+  const ctx = canvas ? canvas.getContext('2d') : null;
+  const BASE_CELL = 12;          // 初始每格像素（小屏）
+  const MIN_CELL = 6;            // 每格像素下限（小屏）
+  const CELL_MAX_MODE = 10;      // 大屏摸鱼模式：格宽固定为 10，不随蛇身动态变化
+  let CELL = BASE_CELL;          // 当前每格像素：小屏随蛇身增长而减小，大屏固定 10
+  // 每增长 3 格缩小 1px；初始长度 3 时保持 12px，吃到约 18 个食物后达到下限 6px
+  const cellForLength = (len) =>
+    Math.max(MIN_CELL, BASE_CELL - Math.floor(Math.max(0, len - 3) / 3));
+  const SPEED_DEFAULT = 130;     // 默认每步毫秒
+  const SPEED_MIN = 60;          // 最快：每步 60ms
+  const SPEED_MAX = 300;         // 最慢：每步 300ms
+  const SPEED_STEP = 20;         // 每次加速/减速调整的步长
+  let speed = SPEED_DEFAULT;     // 当前每步毫秒（值越小越快）
+  const FOOD_MIN = 2, FOOD_MAX = 3;   // 初始食物数量范围（每局随机 2~3 个）
+  const FOOD_INTERVAL = 5000;    // 每隔多少毫秒自动增加一个食物
+  const FOOD_CAP_SMALL = 6;      // 小屏食物数量上限
+  const FOOD_CAP_MAX = 12;       // 大屏（摸鱼模式）食物数量上限
+  const foodCap = () => snakeMax ? FOOD_CAP_MAX : FOOD_CAP_SMALL;
+  let snakeMax = false;          // 是否处于大屏摸鱼模式（提前声明，供 foodCap 读取）
+  const FOOD_PER_TICK = 2;       // 定时器每次触发增加的食物数量
+  const USER_IDLE_SMALL = 2000;  // 小屏：手动操作后多久无操作转回自动模式
+  const USER_IDLE_MAX = 5000;    // 大屏摸鱼模式：延长到 5 秒，便于手动操控
+  const userIdleMs = () => snakeMax ? USER_IDLE_MAX : USER_IDLE_SMALL;
+  let cols = 0, rows = 0, snake = [], dir = { x: 1, y: 0 }, foods = [];
+  let score = 0, manualScore = 0, alive = true, running = false, raf = 0, acc = 0, lastTs = 0;
+  let foodNextAt = 0;            // 下一次增加食物的绝对时间（performance.now 基准，独立于 rAF）
+  let foodTimer = 0;             // 独立定时器句柄
+  let userControl = false;       // 是否被方向键接管
+  let lastUserInputAt = 0;       // 最后一次手动操作的时间（performance.now 基准）
+
+  const cssVar = (n, fb) => (getComputedStyle(document.documentElement).getPropertyValue(n).trim() || fb);
+
+  function sizeCanvas() {
+    if (!canvas || !ctx) return;
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.max(6, Math.floor(w / CELL));
+    rows = Math.max(4, Math.floor(h / CELL));
+  }
+
+  // 在所有空格中挑一个不与蛇身、其它食物重叠的位置
+  function randomFreeCell() {
+    const occupied = (x, y) =>
+      snake.some(s => s.x === x && s.y === y) || foods.some(f => f.x === x && f.y === y);
+    const free = [];
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < cols; x++)
+        if (!occupied(x, y)) free.push({ x, y });
+    return free.length ? free[Math.floor(Math.random() * free.length)] : null;
+  }
+  function addFood() {
+    const cell = randomFreeCell();
+    if (cell) foods.push(cell);
+    return !!cell;
+  }
+  // 摆放指定数量的食物（撞死后重开时保留原数量、避开新蛇身）
+  function placeFoods(n) {
+    foods = [];
+    for (let i = 0; i < n; i++) if (!addFood()) break; // 空格用尽则停止
+  }
+
+  // 分数 HUD：手动分 : 自动分，颜色由主题变量控制（见 .about-snake-score 子 span）
+  // 自动分 = 总分 − 手动分（总分计入所有模式吃到的食物）
+  function updateScore() {
+    if (manualScoreEl) manualScoreEl.textContent = String(manualScore);
+    if (autoScoreEl) autoScoreEl.textContent = String(score - manualScore);
+  }
+  function resetGame(fullReset) {
+    const keep = foods.length;   // 重摆前记住当前食物数量（撞死后据此保留）
+    if (fullReset) {
+      // 进入信息框：重置全部参数（大屏格宽固定 10 / 小屏回到动态初始值、食物数随机 2~3、计时清零）
+      CELL = snakeMax ? CELL_MAX_MODE : cellForLength(3);
+      speed = SPEED_DEFAULT;     // 完整重开时速度恢复默认
+      foodNextAt = performance.now() + FOOD_INTERVAL;
+    }
+    // 撞死后（fullReset 为假）：保留 CELL 与当前食物数量，不恢复格宽
+    sizeCanvas();
+    snake = [];
+    const cy = Math.floor(rows / 2), cx = Math.floor(cols / 3);
+    snake.push({ x: cx, y: cy }, { x: cx - 1, y: cy }, { x: cx - 2, y: cy });
+    dir = { x: 1, y: 0 };
+    score = 0; manualScore = 0; alive = true; userControl = false; lastUserInputAt = 0;
+    const n = fullReset
+      ? FOOD_MIN + Math.floor(Math.random() * (FOOD_MAX - FOOD_MIN + 1))
+      : Math.min(keep, foodCap());
+    placeFoods(n);
+    updateScore();
+    draw();
+  }
+
+  // 自动巡游：优先不改变方向，避免撞墙/自身；必要时转向食物
+  function safe(nx, ny) {
+    if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) return false;
+    // 尾格下一步会空出，允许进入
+    const body = snake.slice(0, -1);
+    return !body.some(s => s.x === nx && s.y === ny);
+  }
+  function autoDir() {
+    const head = snake[0];
+    const opts = [dir, { x: -dir.y, y: dir.x }, { x: dir.y, y: -dir.x }];
+    const valid = opts.filter(d => safe(head.x + d.x, head.y + d.y));
+    if (!valid.length) return null;
+    // 略微朝食物：在有效方向里选距离最近食物更近的
+    let best = valid[0], bd = Infinity;
+    for (const d of valid) {
+      const nx = head.x + d.x, ny = head.y + d.y;
+      let dist = Infinity;
+      for (const f of foods) {
+        const d1 = Math.abs(nx - f.x) + Math.abs(ny - f.y);
+        if (d1 < dist) dist = d1;
+      }
+      // 保持直行有轻微偏好，避免抖动
+      const biased = dist - (d.x === dir.x && d.y === dir.y ? 0.5 : 0);
+      if (biased < bd) { bd = biased; best = d; }
+    }
+    return best;
+  }
+
+  function step() {
+    if (!alive) { resetGame(false); return; }   // 撞死后重开：保留 CELL 与食物数量
+  // 手动操作后若空闲超时（大屏 5 秒 / 小屏 2 秒）无新操作，自动切回自动巡游
+  if (userControl && performance.now() - lastUserInputAt >= userIdleMs()) userControl = false;
+    const nd = userControl ? dir : autoDir();
+    if (!nd) { alive = false; return; }   // 无路可走 → 下一拍重开
+    dir = nd;
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+    if (!safe(head.x, head.y)) { alive = false; return; }
+    const ateIdx = foods.findIndex(f => f.x === head.x && f.y === head.y);
+    const ate = ateIdx >= 0;
+    snake.unshift(head);
+    if (ate) {
+      score++;                          // 总分：所有模式吃到的都计入
+      if (userControl) manualScore++;   // 手动分：仅手动操控期间吃到的计入
+      updateScore();
+      // 小屏：蛇身变长后适度缩小格子（CELL 单调不增，撞死后不恢复）；大屏固定 10 不参与
+      if (!snakeMax) {
+        const nextCell = Math.min(CELL, cellForLength(snake.length));
+        if (nextCell !== CELL) {
+          CELL = nextCell;
+          sizeCanvas();        // 按新格宽重算 cols/rows（格变小→网格更密，坐标仍有效）
+        }
+      }
+      foods.splice(ateIdx, 1); // 移除被吃掉的那个；不立即补充，食物增加完全由定时器驱动
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+
+  function draw() {
+    if (!ctx || !canvas) return;
+    const w = cols * CELL, h = rows * CELL;
+    ctx.clearRect(0, 0, w, h);
+    // 细网格点
+    ctx.fillStyle = cssVar('--border-soft', '#1a2230');
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < cols; x++)
+        ctx.fillRect(x * CELL + CELL / 2 - 0.5, y * CELL + CELL / 2 - 0.5, 1, 1);
+    // 食物（同时 2~3 个）
+    ctx.fillStyle = cssVar('--warn', '#fbbf24');
+    for (const f of foods) {
+      ctx.beginPath();
+      ctx.arc(f.x * CELL + CELL / 2, f.y * CELL + CELL / 2, CELL * 0.32, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // 蛇身渐变：手动 / 自动两种模式使用不同主题色，便于区分
+    const manual = userControl;
+    const a = cssVar(manual ? '--snake-manual-a' : '--snake-auto-a', manual ? '#818cf8' : '#2dd4bf');
+    const b = cssVar(manual ? '--snake-manual-b' : '--snake-auto-b', manual ? '#6366f1' : '#0d9488');
+    const grad = ctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, a); grad.addColorStop(1, b);
+    ctx.fillStyle = grad;
+    for (let i = snake.length - 1; i >= 0; i--) {
+      const s = snake[i];
+      ctx.globalAlpha = 0.55 + 0.45 * (1 - i / Math.max(1, snake.length));
+      ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2);
+    }
+    ctx.globalAlpha = 1;
+    // 蛇眼（按 CELL 比例绘制，格子缩小后仍居中对齐）
+    const h0 = snake[0];
+    ctx.fillStyle = cssVar('--panel', '#11151d');
+    const ex = h0.x * CELL, ey = h0.y * CELL;
+    const eNear = Math.max(1, Math.round(CELL * 0.25));
+    const eFar  = Math.max(2, Math.round(CELL * 0.58));
+    const eSize = Math.max(1, Math.round(CELL * 0.17));
+    if (dir.x !== 0) {
+      const px = ex + (dir.x > 0 ? eFar : eNear);
+      ctx.fillRect(px, ey + eNear, eSize, eSize);
+      ctx.fillRect(px, ey + eFar,  eSize, eSize);
+    } else {
+      const py = ey + (dir.y > 0 ? eFar : eNear);
+      ctx.fillRect(ex + eNear, py, eSize, eSize);
+      ctx.fillRect(ex + eFar,  py, eSize, eSize);
+    }
+  }
+
+  function frame() {
+    if (!running) return;
+    // 用标准单调时钟 performance.now() 计时：不同浏览器对 rAF 时间戳基准的处理不一致，
+    // 直接累加 rAF 的 ts 可能偏差；单调时钟跨浏览器稳定，且不受系统时间调整影响。
+    const now = performance.now();
+    if (!lastTs) lastTs = now;
+    const dt = now - lastTs;
+    acc += dt; lastTs = now;
+    let guard = 0;
+    while (acc >= speed && guard++ < 4) { acc -= speed; step(); }
+    raf = requestAnimationFrame(frame);
+  }
+  // 食物增加用独立定时器 + 绝对时间戳，不依赖 requestAnimationFrame。
+  // Edge 等浏览器在节能/后台策略下会暂停或降频 rAF，若把计时挂在 frame() 上会不准；
+  // 这里即使 setInterval 被节流到较低频率，也能按真实经过时间一次性补齐错过的间隔。
+  function foodTick() {
+    if (!running) return;
+    const now = performance.now();
+    if (now < foodNextAt) return;
+    const steps = Math.floor((now - foodNextAt) / FOOD_INTERVAL) + 1;
+    foodNextAt += steps * FOOD_INTERVAL;
+    const toAdd = steps * FOOD_PER_TICK;
+    for (let i = 0; i < toAdd && foods.length < foodCap(); i++) {
+      if (!addFood()) break;   // 无空格可放，停止补加
+    }
+  }
+  function snakeStart() {
+    if (running || !ctx) return;
+    running = true; acc = 0; lastTs = 0;
+    resetGame(true);   // 进入信息框：完整重置所有参数（含 foodNextAt）
+    foodTimer = setInterval(foodTick, 100);  // 100ms 轮询，实际间隔由绝对时间控制
+    raf = requestAnimationFrame(frame);
+  }
+  function snakeStop() {
+    running = false;
+    if (foodTimer) clearInterval(foodTimer);
+    foodTimer = 0;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+  }
+
+  // 摸鱼模式：点击画布在「铺满关于窗体 / 还原小窗」之间切换。
+  // 每次切换都完整重置参数并重新开始游戏（等价于一次干净的 snakeStart）。
+  const modalEl = back.querySelector('.about-modal');
+  function restartGame() {
+    // 先彻底停掉旧循环，再按当前画布尺寸重新计时并完整重置
+    snakeStop();
+    if (!ctx) return;
+    running = true; acc = 0; lastTs = 0;
+    resetGame(true);   // CELL、食物数量/计时、分数、蛇身全部重置
+    foodTimer = setInterval(foodTick, 100);
+    raf = requestAnimationFrame(frame);
+  }
+  function toggleSnakeMax() {
+    snakeMax = !snakeMax;
+    if (modalEl) modalEl.classList.toggle('snake-max', snakeMax);
+    // 尺寸变化是即时的（画布无高度过渡动画）。读取一次 clientWidth 强制同步布局，
+    // 确保 sizeCanvas() 量到的是切换后的终值，避免缓冲区停在中间尺寸导致蛇体被压窄。
+    if (canvas) void canvas.clientWidth;
+    restartGame();
+  }
+  if (canvas) canvas.addEventListener('click', toggleSnakeMax);
+
+  // 兜底：任何来源导致画布显示尺寸变化后，都校正一次缓冲区分辨率并重绘，
+  // 保证蛇身坐标始终与 CSS 尺寸一一对应（不再依赖"等重绘才正常"）。
+  if (canvas && typeof ResizeObserver !== 'undefined') {
+    let lastW = 0, lastH = 0;
+    new ResizeObserver(() => {
+      if (!ctx || back.hidden) return;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (!w || !h || (w === lastW && h === lastH)) return;
+      lastW = w; lastH = h;
+      sizeCanvas();
+      draw();
+    }).observe(canvas);
+  }
+
+  const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 },
+                 ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 },
+                 w: { x: 0, y: -1 }, s: { x: 0, y: 1 }, a: { x: -1, y: 0 }, d: { x: 1, y: 0 } };
+  document.addEventListener('keydown', (e) => {
+    if (back.hidden || !running) return;
+    const d = DIRS[e.key];
+    if (!d) return;
+    e.preventDefault();
+    userControl = true;
+    lastUserInputAt = performance.now();
+    const same = (d.x === dir.x && d.y === dir.y);       // 同向
+    const opposite = (d.x === -dir.x && d.y === -dir.y); // 反向（180°）
+    if (same) {
+      // 同向按键：加速（每步毫秒减小），下限 SPEED_MIN
+      speed = Math.max(SPEED_MIN, speed - SPEED_STEP);
+    } else if (opposite) {
+      // 反向按键：减速（每步毫秒增大），上限 SPEED_MAX；不掉头
+      speed = Math.min(SPEED_MAX, speed + SPEED_STEP);
+    } else {
+      // 其它方向（垂直转向）：改变方向，速度不变
+      dir = d;
+    }
+  });
+  window.addEventListener('resize', () => { if (running) resetGame(false); });
+
+  const open = () => {
+    if (verEl) verEl.textContent = currentVersion ? ('v' + currentVersion) : '未检测到（内核加载中或不可用）';
+    loadPhpVersion();
+    back.hidden = false;
+    $('aboutOk').focus();
+    snakeStart();
+  };
+  const close = () => {
+    back.hidden = true;
+    snakeStop();
+    // 大屏摸鱼模式下退出：恢复小屏关于窗体，避免下次打开仍停在大屏画面
+    if (snakeMax) {
+      snakeMax = false;
+      if (modalEl) modalEl.classList.remove('snake-max');
+    }
+  };
+  btn.addEventListener('click', open);
+  // 左上角图标 + 标题：点击或键盘 Enter/空格同样打开信息框
+  const brandMain = $('brandMain');
+  if (brandMain) {
+    brandMain.addEventListener('click', open);
+    brandMain.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+  }
+  $('aboutOk').addEventListener('click', close);
+  back.addEventListener('click', (e) => { if (e.target === back) close(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !back.hidden) close();
+  });
+})();
+
+writeBanner('<b>MicroPython</b> 已就绪后，点击「运行」编译并执行上方代码，stdout / stderr 会实时出现在这里。');
+boot();
+</script>
+</body>
+</html>
