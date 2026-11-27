@@ -5473,8 +5473,9 @@ setTimeout(autoCheckUpdate, 1500);
  *       →(较大变更：移除本地 ./lib 映射；文件系统默认挂载到 / 根目录，可浏览/新建；自动创建 /flash、/lib 并加入 sys.path；持久化扩展到整个根目录) 2.7.83
  *       →(普通修改：隐藏根目录虚拟目录 tmp/home/dev/proc + 新建文件夹图标改黄色 + 日历差移回时间差网格两倍宽) 2.7.84
  *       →(普通修改：时间 A/B 前新增 📅 按钮，弹出日历时间选择器，选择后填入输入框) 2.7.85
+ *       →(普通修改：知识库新增分类下拉筛选，含"所有"，只出所选分类题目) 2.7.86
  * build 号始终持续累加，前两位变化时不回零。 */
-const APP_VERSION = '2.7.85';
+const APP_VERSION = '2.7.86';
 
 const SAMPLE_GROUPS = [
   {
@@ -12897,6 +12898,13 @@ boot();
 .kb-header { flex: 0 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .kb-h-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .kb-header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.kb-cat-filter { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--kb-muted); }
+.kb-cat-select {
+  font: 13px var(--ui); color: var(--kb-text); background: var(--kb-card);
+  border: 1px solid var(--kb-border); border-radius: 9px; padding: 6px 26px 6px 10px;
+  cursor: pointer; max-width: clamp(130px, 22vw, 200px);
+}
+.kb-cat-select:hover { border-color: var(--kb-primary); }
 .kb-h1 { font-size: clamp(17px, 2.2vw, 21px); font-weight: 650; margin: 0; color: var(--kb-text); }
 .kb-badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft, #e8ecff); color: var(--kb-primary); }
 .kb-badge.kb-version { background: var(--kb-correct-bg); color: var(--kb-correct); font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -12983,6 +12991,9 @@ boot();
       <span class="kb-source">数据来自 <a href="https://gitee.com/shaoziyang/micropython-chinese-resources" target="_blank" rel="noopener" title="访问 micropython 中文资料仓库">micropython中文资料</a></span>
     </div>
     <div class="kb-header-actions">
+      <label class="kb-cat-filter" for="kbCategorySelect">分类
+        <select class="kb-cat-select" id="kbCategorySelect" title="只出所选分类的题目"></select>
+      </label>
       <button class="kb-btn kb-btn-restart" id="kbRestartBtn" title="清空本轮得分与答题数（累计总分保留）">↻ 重新开始</button>
       <button class="kb-btn" id="kbReloadBtn" title="重新载入题库并清空本轮进度">🔄 重新载入题库</button>
     </div>
@@ -13014,12 +13025,63 @@ boot();
 /* 知识库答题系统：IIFE 作用域，避免与主页面变量冲突 */
 (function () {
   const $ = (id) => document.getElementById(id);
-  const qs = () => window.QUIZ_DATA && window.QUIZ_DATA.questions && window.QUIZ_DATA.questions.length ? window.QUIZ_DATA : null;
+  // 将紧凑格式解码为页面所需结构；同时兼容旧的非紧凑格式
+  // 紧凑格式：categories=["通用",...]，questions=[[分类索引,题干,答案,[干扰项]],...]
+  function decodeData(raw) {
+    if (!raw || !raw.questions || !raw.questions.length) return null;
+    const catName = (c) => (c && typeof c === 'object') ? c.name : c;
+    const cats = (raw.categories || []).map(catName);
+    const first = raw.questions[0];
+    // 旧格式：题目是对象 { category, q, answer, wrong }
+    if (!Array.isArray(first)) {
+      return {
+        version: raw.version,
+        categories: (raw.categories || []).map(c => (typeof c === 'string' ? { name: c } : c)),
+        questions: raw.questions.map(q => ({ category: q.category, q: q.q, answer: q.answer, wrong: q.wrong }))
+      };
+    }
+    // 紧凑格式：按分类索引还原 category，干扰项缺省为空数组
+    return {
+      version: raw.version,
+      categories: cats.map(name => ({ name })),
+      questions: raw.questions.map(item => ({
+        category: (cats[item[0]] !== undefined ? cats[item[0]] : '未分类'),
+        q: item[1],
+        answer: item[2],
+        wrong: item[3] || []
+      }))
+    };
+  }
+  const qs = () => decodeData(window.QUIZ_DATA);
   const TOTAL_KEY = 'mp_kb_total_score';
   let totalScore = 0;
   try { totalScore = parseInt(localStorage.getItem(TOTAL_KEY) || '0', 10) || 0; } catch (e) {}
   let DATA = qs(), score = 0, answered = 0, current = null, history = [], doneKeys = new Set(), nextTimer = null;
+  let currentCategory = '__ALL__';   // '__ALL__' 表示所有分类
   const DELAY_CORRECT = 1000, DELAY_WRONG = 4000;   // 答对 1 秒 / 答错 4 秒进入下一题
+  // 按题库实际数据生成分类清单（含"所有"），并为每个分类统计题数
+  function buildCategories() {
+    const sel = $('kbCategorySelect');
+    if (!sel) return;
+    const counts = {};
+    (DATA ? DATA.questions : []).forEach(q => { const c = q.category || '未分类'; counts[c] = (counts[c] || 0) + 1; });
+    const total = DATA ? DATA.questions.length : 0;
+    let html = `<option value="__ALL__">所有（${total}）</option>`;
+    // 优先用题库声明的分类顺序，再补上数据中实际出现但未被声明的分类
+    const order = [];
+    ((DATA && DATA.categories) || []).forEach(c => { if (counts[c.name] !== undefined && order.indexOf(c.name) < 0) order.push(c.name); });
+    Object.keys(counts).forEach(c => { if (order.indexOf(c) < 0) order.push(c); });
+    order.forEach(c => { html += `<option value="${esc(c)}">${esc(c)}（${counts[c]}）</option>`; });
+    sel.innerHTML = html;
+    if (!Array.from(sel.options).some(o => o.value === currentCategory)) currentCategory = '__ALL__';
+    sel.value = currentCategory;
+  }
+  // 当前分类下的题目集合
+  function poolQuestions() {
+    if (!DATA) return [];
+    if (currentCategory === '__ALL__') return DATA.questions;
+    return DATA.questions.filter(q => (q.category || '未分类') === currentCategory);
+  }
   // 累计总分首次达到 100：ABCD 下方显示解锁横幅，3 秒后消失（跨题持续计时）
   const UNLOCK_AT = 100;
   let unlockBannerUntil = 0, unlockBannerTimer = null, unlockNotified = totalScore >= UNLOCK_AT;
@@ -13046,7 +13108,8 @@ boot();
   }
   function nextQuestion() {
     if (nextTimer) { clearTimeout(nextTimer); nextTimer = null; }
-    const all = DATA.questions;
+    const all = poolQuestions();
+    if (!all.length) { $('kbQuizCard').innerHTML = '<div class="kb-empty">该分类暂无题目</div>'; return; }
     let pool = all.filter(q => !doneKeys.has(q.q));
     if (!pool.length) { doneKeys.clear(); pool = all; }
     const q = pool[Math.floor(Math.random() * pool.length)];
@@ -13136,7 +13199,7 @@ boot();
   function reload() {
     resetRound();
     $('kbQuizCard').innerHTML = '<div class="kb-empty">正在重新载入…</div>';
-    if (loadData()) nextQuestion();
+    if (loadData()) { buildCategories(); nextQuestion(); }
     else $('kbQuizCard').innerHTML = '<div class="kb-empty">❌ 题库为空或载入失败</div>';
   }
   function restart() {
@@ -13146,14 +13209,29 @@ boot();
   }
   $('kbReloadBtn').addEventListener('click', reload);
   $('kbRestartBtn').addEventListener('click', restart);
+  $('kbCategorySelect').addEventListener('change', (e) => {
+    currentCategory = e.target.value || '__ALL__';
+    // 切换分类后题目集合改变，重置本轮进度并从新分类出题
+    resetRound();
+    nextQuestion();
+  });
   $('kbCollapseBtn').addEventListener('click', () => {
     const collapsed = $('kbHistoryCard').classList.toggle('kb-collapsed');
     $('kbCollapseBtn').textContent = collapsed ? '展开' : '收起';
   });
   renderStats();
-  if (loadData()) { renderHistory(); nextQuestion(); }
+  if (loadData()) { buildCategories(); renderHistory(); nextQuestion(); }
   else $('kbQuizCard').innerHTML = '<div class="kb-empty">❌ 未能载入题库数据</div>';
 
+  // 供自动化测试调用
+  window.__kb = {
+    setCategory: (c) => { const sel = $('kbCategorySelect'); sel.value = c; sel.dispatchEvent(new Event('change')); },
+    getCategory: () => currentCategory,
+    categories: () => Array.from($('kbCategorySelect').options).map(o => o.value),
+    currentQuestion: () => current ? current.q : null,
+    poolCount: () => poolQuestions().length,
+    state: () => ({ score, answered, history: history.length })
+  };
   // 供外部（关于页）查询题库版本：切到知识库页时主动同步
   window.__KB_VERSION_READY__ = true;
 })();
@@ -13479,7 +13557,7 @@ boot();
         <span class="ver-badge"><span class="ver-badge-l">当前内核版本</span><span class="ver-badge-r vb-blue" id="aboutVersion">检测中…</span></span>
         <span class="ver-badge"><span class="ver-badge-l">PHP 版本</span><span class="ver-badge-r vb-orange" id="aboutPhpVersion">检测中…</span></span>
         <span class="ver-badge"><span class="ver-badge-l">知识库版本</span><span class="ver-badge-r vb-purple" id="aboutKbVersion">检测中…</span></span>
-        <span class="ver-badge" id="appVersionBadge"><span class="ver-badge-l">程序版本</span><span class="ver-badge-r" id="appVersionBody">2.7.85</span></span>
+        <span class="ver-badge" id="appVersionBadge"><span class="ver-badge-l">程序版本</span><span class="ver-badge-r" id="appVersionBody">2.7.86</span></span>
       </div>
       <div class="about-ver-row">
         <div class="about-credit-links">
