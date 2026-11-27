@@ -540,7 +540,7 @@
   }
   .file-tab .tab-close:hover { background: var(--err-soft, rgba(220,38,38,.15)); color: var(--err); }
 
-  /* ---------- /flash 文件列表面板 ---------- */
+  /* ---------- 文件系统列表面板 ---------- */
   .file-panel {
     flex: none;
     width: var(--filew, 200px);
@@ -581,6 +581,8 @@
   }
   .file-panel-btn .ico { display: block; flex: none; }
   .file-panel-btn:hover { background: var(--btn-bg-hover); color: var(--accent); border-color: var(--border); }
+  /* 新建文件夹用黄色图标，与新建文件区分（hover 也保持黄色） */
+  #newFolderBtn, #newFolderBtn:hover { color: #e0a308; }
   .file-panel-btn:disabled { opacity: .3; cursor: default; }
   .file-panel-btn:disabled:hover { background: transparent; color: var(--muted); border-color: transparent; }
 
@@ -632,8 +634,18 @@
   .file-item.is-dir .file-ico { color: var(--accent); }
   .file-item.is-dir .file-name { font-weight: 600; }
 
-  /* 编辑框标题栏：文件名 + 纯图标保存按钮（图标严格居中） */
+  /* 编辑框标题栏：文件名 + 纯图标运行/保存按钮（图标严格居中） */
   .pane-head .head-file { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+  .pane-head .btn-run-mini {
+    flex: none; width: 22px; height: 22px; padding: 0;
+    display: grid; place-items: center;
+    border: 1px solid var(--accent-line); border-radius: 5px;
+    background: var(--accent-soft); color: var(--accent);
+    cursor: pointer;
+  }
+  .pane-head .btn-run-mini .ico { display: block; }
+  .pane-head .btn-run-mini:hover:not(:disabled) { background: var(--accent-select); color: var(--accent); }
+  .pane-head .btn-run-mini:disabled { opacity: .4; cursor: default; }
   .pane-head .btn-mini {
     flex: none;
     width: 22px; height: 22px; padding: 0;
@@ -1448,6 +1460,8 @@
     background: var(--kbd-bg); color: var(--muted); border: 1px solid var(--border-soft);
   }
   .opt-row .btn { flex: none; }
+  .opt-checkbox { display: inline-flex; align-items: center; gap: 7px; flex: none; font-size: 12.5px; color: var(--fg-soft); cursor: pointer; }
+  .opt-checkbox input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
   .opt-num {
     width: 84px; flex: none; padding: 7px 9px; font: 13px var(--mono);
     color: var(--fg); background: var(--panel-2, var(--bg)); border: 1px solid var(--border);
@@ -1456,6 +1470,252 @@
   .opt-num:focus { border-color: var(--accent); }
   .opt-num::-webkit-inner-spin-button, .opt-num::-webkit-outer-spin-button { opacity: .5; }
   .opt-note { margin: 16px 2px 0; font-size: 12.5px; color: var(--muted-2); line-height: 1.7; }
+
+  /* ---------- 计算标签页（进制转换 / CRC 校验） ---------- */
+  #tab-calc { overflow: auto; }
+  .calc-wrap { width: 100%; max-width: 820px; margin: 0 auto; padding: 22px 22px 40px; }
+  .calc-title { margin: 0 0 16px; font-size: 20px; font-weight: 650; color: var(--fg); }
+  /* 子标签栏 */
+  .calc-subtabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .calc-subtab {
+    appearance: none; border: 0; border-bottom: 2px solid transparent; background: transparent;
+    color: var(--muted); font: 500 13px var(--ui); padding: 9px 16px; cursor: pointer;
+    border-radius: 6px 6px 0 0; transition: color .15s, border-color .15s, background .15s;
+  }
+  .calc-subtab:hover { color: var(--fg-soft); background: var(--btn-bg-hover); }
+  .calc-subtab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 650; }
+  .calc-subpage[hidden] { display: none; }
+  /* 卡片 / 表单 */
+  .calc-card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 16px;
+  }
+  .calc-card h3 { margin: 0 0 4px; font-size: 14px; font-weight: 650; color: var(--fg); }
+  .calc-desc { margin: 0 0 14px; font-size: 12px; color: var(--muted-2); line-height: 1.6; }
+  .calc-section-title {
+    font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .3px;
+    margin: 16px 0 10px; padding-left: 9px; border-left: 3px solid var(--accent);
+  }
+  .calc-section-title:first-of-type { margin-top: 10px; }
+  .calc-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 14px; }
+  .calc-row:last-child { margin-bottom: 0; }
+  .calc-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .calc-field > label { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .calc-input, .calc-select, .calc-textarea {
+    font: 13px var(--mono); color: var(--fg); background: var(--panel-2, var(--bg));
+    border: 1px solid var(--border); border-radius: 8px; outline: none; padding: 8px 10px;
+  }
+  .calc-input:focus, .calc-select:focus, .calc-textarea:focus { border-color: var(--accent); }
+  .calc-input { width: 120px; }
+  .calc-input.wide { width: 100%; }
+  .calc-select { height: 35px; min-width: 150px; font-family: var(--ui); cursor: pointer; }
+  .calc-textarea { width: 100%; min-height: 74px; resize: vertical; line-height: 1.55; word-break: break-all; }
+  .calc-out {
+    font: 13px/1.6 var(--mono); color: var(--accent); background: var(--panel-2, var(--bg));
+    border: 1px solid var(--border-soft); border-radius: 8px; padding: 10px 12px;
+    min-height: 40px; word-break: break-all; user-select: all;
+  }
+  .calc-out.err { color: var(--err); }
+  .calc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .calc-checks { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .calc-checks label { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--fg-soft); cursor: pointer; }
+  .calc-checks input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+  .calc-radio { display: inline-flex; gap: 12px; align-items: center; }
+  .calc-radio label { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--fg-soft); cursor: pointer; }
+  .calc-radio input[type=radio] { accent-color: var(--accent); cursor: pointer; }
+  .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  /* CRC 参数固定四列一行（位宽 / 多项式 / 初始值 / 结果异或值），窄屏自动折行 */
+  .crc-param-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .crc-param-grid .calc-input { width: 100%; box-sizing: border-box; }
+  @media (max-width: 620px) {
+    .crc-param-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .calc-hint { font-size: 11px; color: var(--muted-2); margin-top: 5px; line-height: 1.5; }
+  .calc-result-big {
+    font: 700 22px/1.4 var(--mono); color: var(--accent); letter-spacing: .5px;
+    background: var(--accent-soft); border: 1px solid var(--accent-line);
+    border-radius: 10px; padding: 14px 16px; word-break: break-all; user-select: all;
+  }
+  .calc-result-big.err { color: var(--err); border-color: var(--err); background: transparent; font-size: 14px; }
+  .calc-swap { align-self: end; }
+  /* 可点击复制的结果框 */
+  .calc-out.copyable, .calc-result-big.copyable { cursor: pointer; position: relative; transition: border-color .15s, background .15s; }
+  .calc-out.copyable:hover, .calc-result-big.copyable:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .calc-out.copyable::after, .calc-result-big.copyable::after {
+    content: "⧉"; float: right; margin-left: 8px; opacity: .45; font-size: .85em;
+  }
+  .calc-out.copied, .calc-result-big.copied { border-color: var(--ok, #2e7d32); }
+  /* 校验和结果网格 */
+  .sum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+  .sum-item {
+    background: var(--panel-2, var(--bg)); border: 1px solid var(--border-soft);
+    border-radius: 8px; padding: 9px 11px; min-width: 0;
+  }
+  .sum-item .sum-name { font-size: 11.5px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+  .sum-item .sum-val {
+    font: 600 13px/1.4 var(--mono); color: var(--fg); word-break: break-all; user-select: all;
+  }
+  /* 文件校验表格 */
+  .hash-drop {
+    display: block; width: 100%; box-sizing: border-box;
+    border: 1.5px dashed var(--border); border-radius: 10px; padding: 18px 16px;
+    text-align: center; color: var(--muted); font-size: 12.5px; cursor: pointer;
+    background: var(--panel-2, var(--bg)); transition: border-color .15s, background .15s;
+  }
+  .hash-drop:hover, .hash-drop.dragover { border-color: var(--accent); background: var(--accent-soft); }
+  .hash-drop b { color: var(--accent); }
+  .hash-pick {
+    display: inline-block; padding: 5px 14px; border-radius: 7px;
+    background: var(--accent); color: var(--bg, #fff); font-weight: 650; font-size: 12.5px;
+  }
+  .hash-drop:hover .hash-pick { filter: brightness(1.08); }
+  .hash-table-wrap { overflow-x: auto; margin-top: 12px; }
+  .hash-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .hash-table th, .hash-table td {
+    border: 1px solid var(--border-soft); padding: 7px 9px; text-align: left; vertical-align: top;
+  }
+  .hash-table th { background: var(--panel-2, var(--bg)); color: var(--muted); font-weight: 650; white-space: nowrap; }
+  .hash-table td.hash-cell { font: 11.5px/1.5 var(--mono); word-break: break-all; cursor: pointer; user-select: all; max-width: 260px; }
+  .hash-table td.hash-cell:hover { color: var(--accent); background: var(--accent-soft); }
+  .hash-table td.fname { font-weight: 600; color: var(--fg); max-width: 180px; word-break: break-all; }
+  .hash-status { font-size: 11.5px; color: var(--muted-2); margin-top: 8px; }
+
+  /* ---------- 时间工具 ---------- */
+  .time-block {
+    border: 1px solid var(--border-soft); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 14px;
+    background: var(--panel-2, var(--bg));
+  }
+  .time-block-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .time-cal-btn {
+    flex: none; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--fg);
+    font-size: 15px; line-height: 1; cursor: pointer; padding: 0;
+  }
+  .time-cal-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .time-tag {
+    font: 700 13px var(--ui); color: var(--accent);
+    background: var(--accent-soft); border: 1px solid var(--accent-line);
+    border-radius: 6px; padding: 3px 10px;
+  }
+  .time-fmt-badge { font-size: 11px; color: var(--muted-2); }
+  .time-input-line { display: flex; gap: 8px; align-items: stretch; }
+  .time-input-line .calc-input { flex: 1 1 auto; width: auto; min-width: 0; }
+  .time-input-line .btn { flex: none; }
+  /* 多格式互转 */
+  .time-fmt-conv { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); }
+  .time-fmt-conv-title { display: flex; justify-content: space-between; gap: 8px; font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+  .time-conv-status { color: var(--accent); font-size: 11px; }
+  .time-conv-status.err { color: var(--err); }
+  .time-fmt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 8px; }
+  .time-fmt-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .time-fmt-field label { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .time-fmt-field input {
+    width: 100%; box-sizing: border-box; font: 12px var(--mono); color: var(--fg);
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 8px; outline: none;
+  }
+  .time-fmt-field input:focus { border-color: var(--accent); }
+  .time-fmt-field input.invalid { border-color: var(--err); }
+  .time-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 8px; margin-top: 12px; }
+  .time-info-item { background: var(--panel); border: 1px solid var(--border-soft); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+  .time-info-item .tk { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+  .time-info-item .tv { font: 600 12.5px/1.45 var(--mono); color: var(--fg); word-break: break-all; user-select: all; cursor: pointer; }
+  .time-info-item .tv:hover { color: var(--accent); }
+  .time-fmt-ref {
+    font-size: 11.5px; color: var(--muted-2); line-height: 1.85;
+    background: var(--panel-2, var(--bg)); border: 1px dashed var(--border-soft);
+    border-radius: 8px; padding: 10px 12px; margin-top: 6px;
+  }
+  .time-fmt-ref code { color: var(--accent); font-family: var(--mono); }
+  .time-diff-big {
+    font: 700 17px/1.5 var(--mono); color: var(--accent);
+    background: var(--accent-soft); border: 1px solid var(--accent-line);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; word-break: break-all;
+  }
+  .time-diff-big.err { color: var(--err); border-color: var(--err); background: transparent; font-size: 13px; }
+  .time-diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(122px, 1fr)); gap: 8px; }
+  .time-diff-grid .time-info-item .tv { font-size: 13px; color: var(--accent); }
+  /* 日历差：与「周末天数」等网格项同款样式，宽度为其 2 倍 */
+  .time-diff-grid .time-info-item.cal-diff-item { grid-column: span 2; }
+
+  /* ---------- 日历时间选择器 ---------- */
+  .cal-pick {
+    position: fixed; z-index: 130; width: 276px; max-width: calc(100vw - 24px);
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.38); padding: 12px; font-family: var(--ui);
+  }
+  .cal-pick[hidden] { display: none; }
+  .cal-pick-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .cal-pick-head .cp-nav {
+    flex: none; width: 26px; height: 26px; padding: 0; border: 1px solid var(--border);
+    border-radius: 6px; background: var(--panel-2, var(--bg)); color: var(--fg);
+    cursor: pointer; font: 15px var(--ui); line-height: 1;
+  }
+  .cal-pick-head .cp-nav:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-pick-head .cp-title { flex: 1; text-align: center; font: 700 13px var(--ui); color: var(--fg); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .cal-grid .cp-wd {
+    text-align: center; font: 600 11px var(--ui); color: var(--muted-2); padding: 4px 0;
+  }
+  .cal-grid .cp-day {
+    aspect-ratio: 1.15; display: flex; align-items: center; justify-content: center;
+    border: 1px solid transparent; border-radius: 6px; background: transparent;
+    color: var(--fg); font: 12px var(--mono); cursor: pointer; padding: 0;
+  }
+  .cal-grid .cp-day:hover:not(:disabled) { background: var(--accent-soft); border-color: var(--accent-line); }
+  .cal-grid .cp-day:disabled { color: var(--muted-2); opacity: .35; cursor: default; }
+  .cal-grid .cp-day.blank { visibility: hidden; }
+  .cal-grid .cp-day.today { color: var(--accent); font-weight: 700; }
+  .cal-grid .cp-day.sel { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cal-pick-time {
+    display: flex; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .cal-pick-time label { font: 11px var(--ui); color: var(--muted); }
+  .cal-pick-time input {
+    width: 42px; text-align: center; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--panel-2, var(--bg)); color: var(--fg); font: 13px var(--mono); padding: 5px 2px;
+  }
+  .cal-pick-time input.wide { width: 56px; }
+  .cal-pick-time .cp-sep { color: var(--muted-2); font: 13px var(--mono); }
+  .cal-pick-foot { display: flex; gap: 8px; margin-top: 10px; }
+  .cal-pick-foot .btn { flex: 1; }
+
+  /* ---------- 代码助手（Alt+/ 或 Ctrl+Space 唤出） ---------- */
+  .snippet-pop {
+    position: fixed; z-index: 120; width: 360px; max-width: calc(100vw - 24px);
+    display: flex; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: 0 10px 34px rgba(0,0,0,.35); overflow: hidden;
+    font-family: var(--ui);
+  }
+  .snippet-pop[hidden] { display: none; }
+  .snippet-search {
+    width: 100%; box-sizing: border-box; border: 0; border-bottom: 1px solid var(--border);
+    background: var(--panel-2, var(--bg)); color: var(--fg);
+    font: 13px var(--mono); padding: 10px 12px; outline: none;
+  }
+  .snippet-list { max-height: 260px; overflow: auto; padding: 4px; }
+  .snippet-item {
+    display: flex; align-items: baseline; gap: 10px; padding: 7px 9px;
+    border-radius: 6px; cursor: pointer;
+  }
+  .snippet-item.sel { background: var(--accent-soft); }
+  .snippet-item:hover { background: var(--btn-bg-hover); }
+  .snippet-key {
+    flex: none; min-width: 62px; font: 600 12px var(--mono); color: var(--accent);
+  }
+  .snippet-label { flex: none; font-size: 12.5px; color: var(--fg); font-weight: 600; }
+  .snippet-preview {
+    font: 11px var(--mono); color: var(--muted-2); white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; margin-left: auto;
+  }
+  .snippet-empty { padding: 14px; text-align: center; color: var(--muted-2); font-size: 12px; }
+  .snippet-foot {
+    border-top: 1px solid var(--border); padding: 6px 10px;
+    font-size: 11px; color: var(--muted-2);
+  }
 
 </style>
 <script>
@@ -1614,12 +1874,12 @@
 </header>
 
 <main class="work" id="work">
-  <aside class="file-panel" id="filePanel" aria-label="/flash 文件列表">
+  <aside class="file-panel" id="filePanel" aria-label="文件系统">
     <div class="file-panel-head">
       <button class="file-panel-btn" id="fileUpBtn" title="返回上级目录" aria-label="返回上级目录" disabled>
         <svg class="ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
       </button>
-      <span class="file-panel-title" id="fileCwdTitle" title="/flash">/flash</span>
+      <span class="file-panel-title" id="fileCwdTitle" title="/">/</span>
       <button class="file-panel-btn" id="newFileBtn" title="新建文件" aria-label="新建文件">
         <svg class="ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6M9 15h6"/></svg>
       </button>
@@ -1641,10 +1901,13 @@
       <div class="pane-head">
         <span class="head-file">
           <span class="tag" id="curFileTag">main.py</span>
-          <button class="btn btn-mini" id="saveCurBtn" disabled title="保存到 /flash（Ctrl/⌘ + S）" aria-label="保存当前文件">
+          <button class="btn btn-mini" id="saveCurBtn" disabled title="保存文件（Ctrl/⌘ + S）" aria-label="保存当前文件">
             <svg class="ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3"/><path d="M8 21v-7h8v7"/>
             </svg>
+          </button>
+          <button class="btn-run-mini" id="runCurBtn" disabled title="运行当前文件（Ctrl/⌘ + Enter）" aria-label="运行当前文件">
+            <svg class="ico" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
           </button>
         </span>
         <span class="kbd-hint">Ctrl / ⌘ + Enter 运行 · Ctrl / ⌘ + S 保存 · Tab 缩进 · 拖动分隔条调整布局</span>
@@ -1761,87 +2024,6 @@ async function loadKernelModule() {
   };
 }
 
-/* ---------------- 本地 ./lib → wasm /lib ----------------
- * 把 index.html 同目录 ./lib 下的模块映射为内核文件系统的 /lib，
- * 使 os.listdir('/lib') 可见、import greeting / from mypkg.utils import … 可用。
- *   http(s)：按 lib/manifest.json 逐个 fetch（改 .py 后刷新即生效，无需重新打包）
- *   file://：fetch 受 CORS 拦截，改由经典脚本 lib.bundle.js 提供（运行 make_lib_bundle.py 生成）
- * 两种来源统一得到 [{path:'/lib/xxx.py', content:'…'}]，注入逻辑见 __mountLocalLib。
- */
-const LIB_MANIFEST_URL = MP_BASE + 'lib/manifest.json' + ASSET_Q;
-const LIB_BUNDLE_URL = MP_BASE + 'lib.bundle.js';
-
-/* 把 lib 文件写入内核 FS（此函数会在 Worker 内以源码形式复用，保持自包含） */
-function __mountLocalLib(mp, files) {
-  try {
-    if (!mp || !mp.FS || !Array.isArray(files) || !files.length) return 0;
-    const FS = mp.FS;
-    try { FS.mkdir('/lib'); } catch (_) {}
-    let n = 0;
-    for (const f of files) {
-      if (!f || !f.path) continue;
-      // 逐级建父目录：/lib/mypkg/__init__.py → 先确保 /lib/mypkg 存在
-      const parts = f.path.split('/').filter(Boolean);
-      parts.pop();
-      let cur = '';
-      for (const seg of parts) { cur += '/' + seg; try { FS.mkdir(cur); } catch (_) {} }
-      let data = f.content;
-      if (typeof data === 'string' && data.indexOf('@b64:') === 0) {
-        const bin = atob(data.slice(5));
-        data = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) data[i] = bin.charCodeAt(i);
-      }
-      try { FS.writeFile(f.path, data); n++; } catch (_) {}
-    }
-    return n;
-  } catch (_) { return 0; }
-}
-
-async function waitLibBundle(scope, timeoutMs = 10000) {
-  const t0 = Date.now();
-  while (!scope.__MP_LIB_BUNDLE__ && !scope.__MP_LIB_BUNDLE_ERR__) {
-    if (Date.now() - t0 > timeoutMs) return null;
-    await new Promise(r => setTimeout(r, 20));
-  }
-  return scope.__MP_LIB_BUNDLE__ || null;
-}
-
-async function loadLocalLibFiles() {
-  if (!IS_FILE_PROTOCOL) {
-    // http(s)：清单驱动，逐文件 fetch（改 .py 后刷新即生效）
-    try {
-      const resp = await fetch(LIB_MANIFEST_URL, { cache: 'no-store' });
-      if (resp.ok) {
-        const man = await resp.json();
-        const list = Array.isArray(man.files) ? man.files : [];
-        const files = [];
-        for (const rel of list) {
-          try {
-            const r = await fetch(MP_BASE + 'lib/' + rel + ASSET_Q, { cache: 'no-store' });
-            if (r.ok) files.push({ path: '/lib/' + rel, content: await r.text() });
-          } catch (_) {}
-        }
-        return files;
-      }
-    } catch (_) {}
-    // 清单缺失则回退 bundle
-  }
-  // file://（或 http 回退）：经典脚本注入，规避 CORS
-  try {
-    await new Promise((resolve, reject) => {
-      if (document.querySelector('script[data-mp-lib-bundle]')) return resolve();
-      const s = document.createElement('script');
-      s.src = LIB_BUNDLE_URL;
-      s.dataset.mpLibBundle = '1';
-      s.onload = () => resolve();
-      s.onerror = () => reject(new Error('lib.bundle.js 不存在'));
-      document.head.appendChild(s);
-    });
-    const arr = await waitLibBundle(window);
-    return Array.isArray(arr) ? arr : [];
-  } catch (_) { return []; }
-}
-
 /* ---------------- 本地持久化（localStorage 优先，Cookie 回退） ----------------
  * file:// 下浏览器禁用 Cookie（path=/ 也无效），必须用 localStorage 才能保存配置；
  * 因此统一走存储层：优先 localStorage，不可用时回退 Cookie（兼容 HTTP 旧环境）。
@@ -1941,12 +2123,13 @@ function saveReplHistory(history, n) {
   return trimmed;
 }
 
-/* ---------------- wasm /flash 持久化到 localStorage ----------------
- * 把内核文件系统 /flash 目录整体序列化后存入 localStorage，重载时自动恢复。
- * Python 中可直接 open('/flash/x.txt', 'w') 读写；子目录、二进制文件均支持。
- * 记录格式：[{ p:'/flash/a/1.txt', d:'base64' }, { p:'/flash/empty', d:null }]
+/* ---------------- wasm 文件系统持久化到 localStorage ----------------
+ * 把内核文件系统根目录 / 整体序列化后存入 localStorage（排除 dev/proc/tmp/home
+ * 等虚拟与临时目录），重载时自动恢复。用户可在 /、/flash、/lib 等任意目录
+ * 读写；子目录、二进制文件均支持。
+ * 记录格式：[{ p:'/flash/a/1.txt', d:'base64' }, { p:'/lib/empty', d:null }]
  *   目录项 d=null；文件项 d 为标准 Base64（二进制安全）。
- * 以下三个函数会在 Worker 内以源码形式复用（见 WORKER_SRC），必须保持自包含。
+ * 以下函数会在 Worker 内以源码形式复用（见 WORKER_SRC），必须保持自包含。
  */
 const FLASH_FS_KEY = 'mp_flash_fs';
 
@@ -1974,18 +2157,20 @@ function __flashB64Decode(b64) {
   return u;
 }
 
-/* 递归快照 /flash；返回可 JSON 序列化的数组 */
+/* 递归快照整个根目录 /（排除 dev/proc/tmp/home 虚拟与临时目录）；返回可 JSON 序列化的数组 */
 function __flashSnapshot(mp) {
   const out = [];
   try {
     const FS = mp && mp.FS;
     if (!FS) return out;
-    try { FS.mkdir('/flash'); } catch (_) {}
+    // 虚拟文件系统与临时目录不纳入持久化
+    const SKIP = { dev: 1, proc: 1, tmp: 1, home: 1 };
     const walk = (dir) => {
       let names = [];
       try { names = FS.readdir(dir) || []; } catch (_) { return; }
       for (const name of names) {
         if (name === '.' || name === '..') continue;
+        if (dir === '/' && SKIP[name]) continue;
         const p = (dir === '/' ? '' : dir) + '/' + name;
         let st = null;
         try { st = FS.stat(p); } catch (_) { continue; }
@@ -2001,20 +2186,25 @@ function __flashSnapshot(mp) {
         }
       }
     };
-    walk('/flash');
+    walk('/');
   } catch (_) {}
   return out;
 }
 
-/* 从快照恢复 /flash；返回写入的文件数 */
+/* 从快照恢复整个文件系统（兼容旧版仅 /flash 的快照）；返回写入的文件数 */
 function __flashRestore(mp, files) {
   let n = 0;
   try {
     const FS = mp && mp.FS;
     if (!FS || !Array.isArray(files)) return 0;
     try { FS.mkdir('/flash'); } catch (_) {}
+    try { FS.mkdir('/lib'); } catch (_) {}
+    const SKIP = { dev: 1, proc: 1, tmp: 1, home: 1 };
     for (const f of files) {
-      if (!f || typeof f.p !== 'string' || f.p.indexOf('/flash/') !== 0) continue;
+      if (!f || typeof f.p !== 'string' || f.p.charAt(0) !== '/') continue;
+      // 排除虚拟/临时目录（含其子孙），避免把设备文件写回
+      const top = f.p.slice(1).split('/')[0];
+      if (SKIP[top]) continue;
       if (f.d === null || f.d === undefined) {
         try { FS.mkdir(f.p); } catch (_) {}
         continue;
@@ -2050,13 +2240,13 @@ function saveFlashFiles(files) {
   } catch (_) {
     if (!flashSaveWarned) {
       flashSaveWarned = true;
-      try { writeLine('警告：/flash 写入 localStorage 失败（可能超出配额），本次改动刷新后将丢失。', 'err'); } catch (_) {}
+      try { writeLine('警告：文件系统写入 localStorage 失败（可能超出配额），本次改动刷新后将丢失。', 'err'); } catch (_) {}
     }
     return false;
   }
 }
 
-/* ---------------- /flash 文件操作（主线程 + Worker 共用，注入 Worker） ----------------
+/* ---------------- 文件系统操作（主线程 + Worker 共用，注入 Worker） ----------------
  * 统一通过 mp.FS（Emscripten FS）操作，返回纯数据，便于跨线程 postMessage。
  * 文本读写走 TextEncoder/TextDecoder（UTF-8 安全），二进制文件由快照机制保留。
  */
@@ -2114,13 +2304,17 @@ function __fsMkdir(mp, path) {
   try { FS.mkdir(path); } catch (_) {}
 }
 
-/* 在内核启动后把工作目录切到 /flash（MicroPython 相对路径默认落在此处） */
-function __fsChdirFlash(mp) {
+/* 内核启动后：默认挂载到 wasm 的 / 根目录，并自动创建 /flash、/lib 两个用户目录
+ * （sys.path 的补充在 REPL_HELPER_SRC 里完成，Worker / 主线程两种模式均会执行） */
+function __fsInitRoot(mp) {
   try {
     mp.FS.mkdir('/flash');
   } catch (_) {}
   try {
-    mp.FS.chdir('/flash');
+    mp.FS.mkdir('/lib');
+  } catch (_) {}
+  try {
+    mp.FS.chdir('/');
   } catch (_) {}
 }
 
@@ -2266,6 +2460,7 @@ const fileCtxMenu = $('fileCtxMenu');
 const editorTabsEl = $('editorTabs');
 const curFileTagEl = $('curFileTag');
 const saveCurBtn = $('saveCurBtn');
+const runCurBtn = $('runCurBtn');
 
 /* ---------------- 状态 ---------------- */
 const state = {
@@ -2276,9 +2471,9 @@ const state = {
   histKeep: loadReplHistN(),          // 保留的 REPL 历史命令条数（选项页可调）
   history: loadReplHistory(),         // 启动时载入持久化的历史命令
   histIndex: -1,
-  docs: [],          // 打开的文档 [{path, content, dirty}]，path 为 /flash/... 或 未保存:xxx
+  docs: [],          // 打开的文档 [{path, content, dirty}]，path 为绝对路径（如 /flash/x.py）或 未保存:xxx
   activeDoc: null,   // 当前文档 path
-  fsCwd: '/flash',   // 文件列表当前所在目录
+  fsCwd: '/',        // 文件列表当前所在目录（默认挂载到 wasm 根目录 /）
   ctxPath: null,     // 右键菜单目标路径
   ctxIsDir: false,   // 右键菜单目标是否为目录
 };
@@ -2386,6 +2581,7 @@ function setStatus(kind, text) {
 function setRunning(on) {
   state.running = on;
   runBtn.disabled = on || !state.ready;
+  if (runCurBtn) runCurBtn.disabled = on || !state.ready;
   resetBtn.disabled = on;
   replEl.disabled = on || !state.ready;
   stopBtn.disabled = !on || state.mode !== 'worker';
@@ -2435,6 +2631,15 @@ const REPL_HELPER_SRC = [
   '    if not __s:',
   '        __s = str(getattr(sys, "version", ""))',
   '    print("\\x1e" + __s)',
+  '',
+  '# 把用户目录 /flash 与 /lib 加入 sys.path（幂等，内核启动后自动执行）',
+  'try:',
+  '    import sys as __sp',
+  '    for __d in ("/flash", "/lib"):',
+  '        if __d not in __sp.path:',
+  '            __sp.path.append(__d)',
+  'except Exception:',
+  '    pass',
   ''
 ].join('\n');
 
@@ -2455,14 +2660,14 @@ const MP_WASM = ${JSON.stringify(MP_WASM_URL)};
 const BUNDLE_URL = ${JSON.stringify(MP_BUNDLE_URL)};
 const IS_FILE = ${JSON.stringify(IS_FILE_PROTOCOL)};
 const REPL_HELPER = ${JSON.stringify(REPL_HELPER_SRC)};
-/* 本地 lib 挂载函数（由主线程注入源码，Worker 内自包含执行） */
-const __mountLocalLib = ${__mountLocalLib.toString()};
-/* /flash 持久化函数（同样注入源码，Worker 内自包含执行） */
+/* 内核启动初始化函数（由主线程注入源码，Worker 内自包含执行） */
+const __fsInitRoot = ${__fsInitRoot.toString()};
+/* 文件系统持久化函数（同样注入源码，Worker 内自包含执行） */
 const __flashB64Encode = ${__flashB64Encode.toString()};
 const __flashB64Decode = ${__flashB64Decode.toString()};
 const __flashSnapshot = ${__flashSnapshot.toString()};
 const __flashRestore = ${__flashRestore.toString()};
-/* /flash 文件操作函数（文件列表 / 读写 / 删除） */
+/* 文件系统操作函数（文件列表 / 读写 / 删除） */
 const __fsTextEncode = ${__fsTextEncode.toString()};
 const __fsTextDecode = ${__fsTextDecode.toString()};
 const __fsList = ${__fsList.toString()};
@@ -2470,7 +2675,6 @@ const __fsRead = ${__fsRead.toString()};
 const __fsWrite = ${__fsWrite.toString()};
 const __fsUnlink = ${__fsUnlink.toString()};
 const __fsMkdir = ${__fsMkdir.toString()};
-const __fsChdirFlash = ${__fsChdirFlash.toString()};
 const __fsRename = ${__fsRename.toString()};
 const __fsStat = ${__fsStat.toString()};
 const __fsReadB64 = ${__fsReadB64.toString()};
@@ -2517,14 +2721,12 @@ self.onmessage = async (event) => {
         stdout: (line) => self.postMessage({ type: 'out', stream: 'stdout', text: line }),
         stderr: (line) => self.postMessage({ type: 'out', stream: 'stderr', text: line })
       });
-      // 把主线程传来的本地 ./lib 文件写入 wasm 文件系统的 /lib
-      const libCount = __mountLocalLib(mp, msg.libFiles);
-      // 恢复上次会话持久化的 /flash 文件
+      // 默认挂载到 / 根目录，自动创建 /flash、/lib
+      __fsInitRoot(mp);
+      // 恢复上次会话持久化的文件系统快照
       const flashCount = __flashRestore(mp, msg.flashFiles);
-      // 工作目录切到 /flash（相对路径 open('x.py') 落在此处）
-      __fsChdirFlash(mp);
       await mp.runPython(REPL_HELPER);
-      self.postMessage({ type: 'ready', libCount, flashCount });
+      self.postMessage({ type: 'ready', flashCount });
     } catch (err) {
       bootError = (err && (err.message || err.toString())) || 'unknown error';
       self.postMessage({ type: 'fatal', message: bootError });
@@ -2549,20 +2751,20 @@ self.onmessage = async (event) => {
         message: (err && (err.message || err.toString())) || 'unknown error'
       });
     }
-    // 每次执行后回写 /flash 快照，出错也保留已产生的改动
+    // 每次执行后回写文件系统快照，出错也保留已产生的改动
     let flashFiles = null;
     try { flashFiles = __flashSnapshot(mp); } catch (_) {}
     if (flashFiles) self.postMessage({ type: 'flash', files: flashFiles });
   }
 
-  /* /flash 文件操作：由主线程的文件列表面板 / 编辑器发起 */
+  /* 文件系统操作：由主线程的文件列表面板 / 编辑器发起 */
   if (msg.type === 'fsop') {
     const id = msg.id;
     const op = msg.op;
     try {
       if (!mp) throw new Error(bootError || '内核尚未就绪');
       let data = null;
-      if (op === 'list') data = __fsList(mp, msg.path || '/flash');
+      if (op === 'list') data = __fsList(mp, msg.path || '/');
       else if (op === 'read') data = __fsRead(mp, msg.path);
       else if (op === 'write') { __fsWrite(mp, msg.path, msg.text); data = true; }
       else if (op === 'unlink') { __fsUnlink(mp, msg.path); data = true; }
@@ -2587,7 +2789,7 @@ self.onmessage = async (event) => {
 };
 `;
 
-function createWorkerKernel(libFiles, flashFiles) {
+function createWorkerKernel(flashFiles) {
   return new Promise((resolve, reject) => {
     let workerUrl = null;
     let worker = null;
@@ -2626,7 +2828,7 @@ function createWorkerKernel(libFiles, flashFiles) {
           worker.postMessage({ type: 'run', code });
         });
       },
-      /* /flash 文件操作：统一通过 fsop 消息与 Worker 通信 */
+      /* 文件系统操作：统一通过 fsop 消息与 Worker 通信 */
       fsOp(op, path, text) {
         return new Promise((resolve, reject) => {
           if (!worker) return reject(new Error('内核尚未就绪'));
@@ -2635,7 +2837,7 @@ function createWorkerKernel(libFiles, flashFiles) {
           worker.postMessage({ type: 'fsop', id, op, path, text });
         });
       },
-      fsList(dir) { return this.fsOp('list', dir || '/flash'); },
+      fsList(dir) { return this.fsOp('list', dir || '/'); },
       fsRead(path) { return this.fsOp('read', path); },
       fsWrite(path, text) { return this.fsOp('write', path, text); },
       fsUnlink(path) { return this.fsOp('unlink', path); },
@@ -2664,8 +2866,7 @@ function createWorkerKernel(libFiles, flashFiles) {
       if (m.type === 'ready') {
         if (!settled) {
           settled = true; clearTimeout(timer);
-          if (m.libCount) writeLine('已映射本地 lib → /lib（' + m.libCount + ' 个文件）', 'sys');
-          if (m.flashCount) writeLine('已恢复 /flash（' + m.flashCount + ' 个文件）', 'sys');
+          if (m.flashCount) writeLine('已恢复文件系统（' + m.flashCount + ' 个文件）', 'sys');
           resolve(api);
         }
         return;
@@ -2708,12 +2909,12 @@ function createWorkerKernel(libFiles, flashFiles) {
 
     worker.onmessageerror = () => writeLine('Worker 消息解析失败', 'err');
 
-    worker.postMessage({ type: 'boot', libFiles: libFiles || [], flashFiles: flashFiles || [] });
+    worker.postMessage({ type: 'boot', flashFiles: flashFiles || [] });
   });
 }
 
 /* ---------------- 内核：主线程回退模式 ---------------- */
-async function createMainKernel(libFiles, flashFiles) {
+async function createMainKernel(flashFiles) {
   const { mod, wasmURL } = await loadKernelModule();
   const mp = await mod.loadMicroPython({
     url: wasmURL,
@@ -2724,16 +2925,15 @@ async function createMainKernel(libFiles, flashFiles) {
     stderr: (line) => emitOutput(line, 'err'),
   });
 
-  const libCount = __mountLocalLib(mp, libFiles);
-  if (libCount) writeLine('已映射本地 lib → /lib（' + libCount + ' 个文件）', 'sys');
+  // 默认挂载到 / 根目录，自动创建 /flash、/lib
+  __fsInitRoot(mp);
   const flashCount = __flashRestore(mp, flashFiles);
-  if (flashCount) writeLine('已恢复 /flash（' + flashCount + ' 个文件）', 'sys');
-  __fsChdirFlash(mp);
+  if (flashCount) writeLine('已恢复文件系统（' + flashCount + ' 个文件）', 'sys');
   await mp.runPython(REPL_HELPER_SRC);
 
   return {
     mode: 'main',
-    async fsList(dir) { return __fsList(mp, dir || '/flash'); },
+    async fsList(dir) { return __fsList(mp, dir || '/'); },
     async fsRead(path) { return __fsRead(mp, path); },
     async fsWrite(path, text) {
       __fsWrite(mp, path, text);
@@ -2782,21 +2982,20 @@ async function boot() {
   versionFetched = false;   // 每次（重新）启动内核后重新读取实际版本
   setStatus('loading', '正在加载内核…');
   runBtn.disabled = true;
+  if (runCurBtn) runCurBtn.disabled = true;
   replEl.disabled = true;
   resetBtn.disabled = true;
 
-  // 先发现本地 ./lib 文件（http 按 manifest fetch / file 走 bundle），供内核启动时注入
-  const libFiles = await loadLocalLibFiles();
-  // 读取上次会话持久化的 /flash，内核启动后自动恢复
+  // 读取上次会话持久化的文件系统快照，内核启动后自动恢复
   const flashFiles = loadFlashFiles();
 
   try {
-    state.kernel = await createWorkerKernel(libFiles, flashFiles);
+    state.kernel = await createWorkerKernel(flashFiles);
     state.mode = 'worker';
   } catch (wErr) {
     console.warn('[playground] Worker 模式不可用，回退主线程：', wErr);
     try {
-      state.kernel = await createMainKernel(libFiles, flashFiles);
+      state.kernel = await createMainKernel(flashFiles);
       state.mode = 'main';
       writeLine('注意：当前浏览器不支持 Worker 模式，已在主线程运行 —— 死循环会阻塞页面，无法中断。', 'sys');
     } catch (err) {
@@ -2816,6 +3015,7 @@ async function boot() {
   statusEl.title = '运行模式：' + (state.mode === 'worker' ? 'Worker 隔离' : '主线程');
   setStatus('ready', '就绪');
   runBtn.disabled = false;
+  if (runCurBtn) runCurBtn.disabled = false;
   resetBtn.disabled = false;
   replEl.disabled = false;
   stopBtn.disabled = true;
@@ -2878,7 +3078,7 @@ async function runCode(code, label, opts = {}) {
 
   setRunning(false);
   clearCompleteCache();   // 变量/导入可能变化，补全候选需重新采集
-  // Python 代码可能创建/删除/修改 /flash 文件，刷新文件列表
+  // Python 代码可能创建/删除/修改文件系统文件，刷新文件列表
   renderFileList();
 
   if (result.aborted) {
@@ -2904,7 +3104,7 @@ async function runCode(code, label, opts = {}) {
 
 function runEditor() {
   const d = activeDocObj();
-  const label = d ? ('运行 ' + (d.path.indexOf('/flash/') === 0 ? d.path.slice(7) : d.path)) : '运行当前文件';
+  const label = d ? ('运行 ' + (isSavedPath(d.path) ? shortName(d.path) : d.path)) : '运行当前文件';
   // 运行前把当前内容同步进文档（运行的是当前编辑文件的内存内容）
   syncActiveDoc();
   runCode(codeEl.value, label);
@@ -3142,6 +3342,12 @@ function indentSelection(outdent) {
 }
 
 codeEl.addEventListener('keydown', (e) => {
+  // 代码助手：Alt+/ 或 Ctrl/⌘+Space 唤出
+  if ((e.altKey && e.key === '/') || ((e.ctrlKey || e.metaKey) && e.key === ' ')) {
+    e.preventDefault();
+    openSnippets();
+    return;
+  }
   if (e.key === 'Tab') {
     e.preventDefault();
     const multi = codeEl.selectionStart !== codeEl.selectionEnd || e.shiftKey;
@@ -3183,16 +3389,194 @@ document.addEventListener('keydown', (e) => {
     runEditor();
     return;
   }
-  // Ctrl/⌘ + S：保存当前编辑文件到 /flash（全局，阻止浏览器保存网页）
+  // Ctrl/⌘ + S：保存当前编辑文件到文件系统（全局，阻止浏览器保存网页）
   if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 's' || e.key === 'S')) {
     e.preventDefault();
     saveActiveDoc();
   }
 });
 
+/* ---------------- 代码助手（片段模板） ----------------
+ * Alt+/ 或 Ctrl/⌘+Space 唤出浮层，继续输入关键字过滤，Tab / Enter 展开。
+ * 模板中的 ^| 标记最终光标位置；占位符 ${n:默认} 依次 Tab 跳转。
+ * 生成代码按当前行缩进对齐，保持合适缩进。
+ */
+const SNIPPETS = [
+  // 循环
+  { k: 'for',   n: 'for 循环',        s: 'for i in range(10):\n    ${1:pass}^|' },
+  { k: 'forin', n: 'for ... in 迭代',  s: 'for ${1:item} in ${2:iterable}:\n    ${3:pass}^|' },
+  { k: 'foren', n: 'for + enumerate', s: 'for ${1:i}, ${2:v} in enumerate(${3:seq}):\n    ${4:pass}^|' },
+  { k: 'forzr', n: 'for + zip',       s: 'for ${1:a}, ${2:b} in zip(${3:x}, ${4:y}):\n    ${5:pass}^|' },
+  { k: 'while', n: 'while 循环',      s: 'while ${1:cond}:\n    ${2:pass}^|' },
+  { k: 'loop',  n: 'while True 死循环', s: 'while True:\n    ${1:pass}^|' },
+  // 条件
+  { k: 'if',    n: 'if 判断',         s: 'if ${1:cond}:\n    ${2:pass}^|' },
+  { k: 'ife',   n: 'if / else',       s: 'if ${1:cond}:\n    ${2:pass}\nelse:\n    ${3:pass}^|' },
+  { k: 'ifel',  n: 'if / elif / else',s: 'if ${1:cond}:\n    ${2:pass}\nelif ${3:cond2}:\n    ${4:pass}\nelse:\n    ${5:pass}^|' },
+  // try / except 多种
+  { k: 'try',   n: 'try / except',    s: 'try:\n    ${1:pass}\nexcept ${2:Exception} as ${3:e}:\n    ${4:pass}^|' },
+  { k: 'trye',  n: 'try / except (无 as)', s: 'try:\n    ${1:pass}\nexcept ${2:Exception}:\n    ${3:pass}^|' },
+  { k: 'tryf',  n: 'try / finally',   s: 'try:\n    ${1:pass}\nfinally:\n    ${2:pass}^|' },
+  { k: 'tryef', n: 'try / except / else / finally', s: 'try:\n    ${1:pass}\nexcept ${2:Exception} as ${3:e}:\n    ${4:pass}\nelse:\n    ${5:pass}\nfinally:\n    ${6:pass}^|' },
+  { k: 'tryall',n: 'try / 多 except', s: 'try:\n    ${1:pass}\nexcept ${2:ValueError} as ${3:e}:\n    ${4:pass}\nexcept Exception as e:\n    ${5:pass}^|' },
+  // 函数
+  { k: 'def',   n: '函数 def',        s: 'def ${1:name}(${2:args}):\n    ${3:pass}^|' },
+  { k: 'defd',  n: '函数 + 文档字符串', s: 'def ${1:name}(${2:args}):\n    """${3:说明}"""\n    ${4:pass}^|' },
+  { k: 'defa',  n: '异步函数 async def', s: 'async def ${1:name}(${2:args}):\n    ${3:pass}^|' },
+  { k: 'gen',   n: '生成器函数 yield', s: 'def ${1:name}(${2:args}):\n    for ${3:x} in ${4:seq}:\n        yield ${5:x}^|' },
+  { k: 'lam',   n: 'lambda 匿名函数',  s: '${1:f} = lambda ${2:x}: ${3:x}^|' },
+  // 类
+  { k: 'class', n: '完整类 class',    s: 'class ${1:Name}:\n    """${2:类说明}"""\n\n    def __init__(self${3:, args}):\n        self.${4:args} = ${4:args}\n\n    def ${5:method}(self):\n        ${6:pass}^|\n\n    def __repr__(self):\n        return "${1:Name}(%r)" % self.${4:args}' },
+  { k: 'clsi',  n: '类 + __init__（带属性）', s: 'class ${1:Name}:\n    def __init__(self, ${2:name}, ${3:value}):\n        self.${2:name} = ${2:name}\n        self.${3:value} = ${3:value}^|' },
+  { k: 'clsfull', n: '完整类（继承 / 类方法 / 属性）', s: 'class ${1:Name}(${2:object}):\n    """${3:类说明}"""\n\n    ${4:kind} = "${5:default}"\n\n    def __init__(self${6:, args}):\n        self.${7:args} = ${7:args}\n\n    @property\n    def ${8:prop}(self):\n        return self._${8:prop}\n\n    @${8:prop}.setter\n    def ${8:prop}(self, value):\n        self._${8:prop} = value\n\n    @classmethod\n    def ${9:create}(cls${10:, args}):\n        return cls(${10:args})\n\n    @staticmethod\n    def ${11:helper}(${12:args}):\n        ${13:pass}\n\n    def __str__(self):\n        return "${1:Name}(%s)" % self.${7:args}^|' },
+  { k: 'prop',  n: '@property + setter', s: '@property\ndef ${1:name}(self):\n    return self._${1:name}\n\n@${1:name}.setter\ndef ${1:name}(self, value):\n    self._${1:name} = value^|' },
+  { k: 'sm',    n: '@staticmethod',    s: '@staticmethod\ndef ${1:name}(${2:args}):\n    ${3:pass}^|' },
+  { k: 'cm',    n: '@classmethod',     s: '@classmethod\ndef ${1:name}(cls${2:, args}):\n    ${3:pass}^|' },
+  // 异步
+  { k: 'await', n: 'await 调用',       s: '${1:result} = await ${2:coro()}^|' },
+  { k: 'awf',   n: 'async for 迭代',   s: 'async for ${1:item} in ${2:aiter}:\n    ${3:pass}^|' },
+  { k: 'awith', n: 'async with 上下文', s: 'async with ${1:ctx} as ${2:r}:\n    ${3:pass}^|' },
+  // 其它
+  { k: 'with',  n: 'with 上下文管理',  s: 'with ${1:open("f")} as ${2:f}:\n    ${3:pass}^|' },
+  { k: 'main',  n: '__main__ 入口',    s: 'if __name__ == "__main__":\n    ${1:pass}^|' },
+  { k: 'imp',   n: 'import 导入',      s: 'import ${1:module}^|' },
+  { k: 'impf',  n: 'from ... import',  s: 'from ${1:module} import ${2:name}^|' },
+  { k: 'lst',   n: '列表推导式',       s: '${1:result} = [${2:x} for ${2:x} in ${3:seq}]^|' },
+  { k: 'dict',  n: '字典推导式',       s: '${1:result} = {${2:k}: ${3:v} for ${2:k}, ${3:v} in ${4:items}}^|' },
+];
+
+let snipPop = null, snipInput = null, snipListEl = null;
+let snipFilter = '', snipShown = [], snipIndex = 0;
+
+function buildSnippetPopup() {
+  if (snipPop) return;
+  snipPop = document.createElement('div');
+  snipPop.className = 'snippet-pop';
+  snipPop.setAttribute('role', 'dialog');
+  snipPop.setAttribute('aria-label', '代码助手');
+  snipPop.innerHTML =
+    '<input class="snippet-search" id="snippetSearch" type="text" spellcheck="false" autocomplete="off" ' +
+    'placeholder="输入关键字过滤模板，Tab / 回车 插入，Esc 关闭">' +
+    '<div class="snippet-list" id="snippetList"></div>' +
+    '<div class="snippet-foot">↑↓ 选择 · Tab / 回车 插入 · Esc 关闭</div>';
+  document.body.appendChild(snipPop);
+  snipInput = snipPop.querySelector('#snippetSearch');
+  snipListEl = snipPop.querySelector('#snippetList');
+
+  snipInput.addEventListener('input', () => { snipFilter = snipInput.value.trim().toLowerCase(); snipIndex = 0; renderSnippets(); });
+  snipInput.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); snipIndex = Math.min(snipIndex + 1, snipShown.length - 1); renderSnippets(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); snipIndex = Math.max(snipIndex - 1, 0); renderSnippets(); }
+    else if (e.key === 'Tab' || e.key === 'Enter') {
+      e.preventDefault();
+      if (snipShown[snipIndex]) insertSnippet(snipShown[snipIndex]);
+    } else if (e.key === 'Escape') {
+      e.preventDefault(); closeSnippets();
+    }
+  });
+  snipListEl.addEventListener('mousedown', (e) => {
+    const item = e.target.closest('.snippet-item');
+    if (!item) return;
+    e.preventDefault();
+    const idx = Number(item.getAttribute('data-i'));
+    if (snipShown[idx]) insertSnippet(snipShown[idx]);
+  });
+}
+
+function renderSnippets() {
+  if (!snipListEl) return;
+  snipShown = SNIPPETS.filter(s =>
+    !snipFilter || s.k.toLowerCase().indexOf(snipFilter) >= 0 || s.n.toLowerCase().indexOf(snipFilter) >= 0
+  );
+  if (snipIndex >= snipShown.length) snipIndex = Math.max(0, snipShown.length - 1);
+  if (!snipShown.length) {
+    snipListEl.innerHTML = '<div class="snippet-empty">没有匹配的模板</div>';
+    return;
+  }
+  let html = '';
+  snipShown.forEach((s, i) => {
+    const preview = s.s.replace(/\$\{\d+:/g, '').replace(/[}\^|]/g, '').replace(/\n/g, ' ↵ ');
+    html += '<div class="snippet-item' + (i === snipIndex ? ' sel' : '') + '" data-i="' + i + '">' +
+      '<span class="snippet-key">' + escHTML(s.k) + '</span>' +
+      '<span class="snippet-label">' + escHTML(s.n) + '</span>' +
+      '<span class="snippet-preview">' + escHTML(preview) + '</span></div>';
+  });
+  snipListEl.innerHTML = html;
+  const sel = snipListEl.querySelector('.snippet-item.sel');
+  if (sel) sel.scrollIntoView({ block: 'nearest' });
+}
+
+function escHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function openSnippets() {
+  buildSnippetPopup();
+  snipFilter = ''; snipIndex = 0;
+  snipInput.value = '';
+  renderSnippets();
+  snipPop.hidden = false;
+  // 定位到编辑器附近，屏幕中央偏上
+  const rect = codeEl.getBoundingClientRect();
+  const w = snipPop.offsetWidth, h = snipPop.offsetHeight;
+  let left = Math.min(Math.max(12, rect.left + 40), window.innerWidth - w - 12);
+  let top = Math.min(Math.max(12, rect.top + 30), window.innerHeight - h - 12);
+  snipPop.style.left = left + 'px';
+  snipPop.style.top = top + 'px';
+  snipInput.focus();
+}
+
+function closeSnippets() {
+  if (snipPop) snipPop.hidden = true;
+  codeEl.focus();
+}
+
+// 供自动化测试调用
+window.__snippets = {
+  open: openSnippets, close: closeSnippets, insert: insertSnippet,
+  list: SNIPPETS, setFilter: (f) => { snipFilter = f.toLowerCase(); snipIndex = 0; renderSnippets(); },
+  shown: () => snipShown.map(s => s.k)
+};
+
+/* 展开模板：先展开占位符 ${n:默认}，再定位光标标记 ^|，按当前行缩进对齐 */
+function insertSnippet(snip) {
+  const start = codeEl.selectionStart;
+  const end = codeEl.selectionEnd;
+  // 当前行缩进
+  const before = codeEl.value.slice(0, start);
+  const lineStart = before.lastIndexOf('\n') + 1;
+  const indentMatch = before.slice(lineStart).match(/^[ \t]*/);
+  const indent = indentMatch ? indentMatch[0] : '';
+
+  // 展开占位符 ${n:默认} → 默认值
+  let body = snip.s.replace(/\$\{(\d+):([^}]*)\}/g, (_, _n, def) => def);
+  // 光标标记 ^| 改为哨兵字符，便于跨行定位
+  const CUR = '\u0000';
+  body = body.replace(/\^\|/g, CUR);
+
+  // 按行加缩进：首行直接在光标处插入，后续行前缀当前缩进
+  const lines = body.split('\n');
+  const text = lines.map((ln, i) => (i === 0 ? '' : indent) + ln).join('\n');
+
+  // 光标在最终文本中的相对偏移（哨兵位置）
+  let marker = text.indexOf(CUR);
+  if (marker < 0) marker = text.length;
+  const caretOffset = marker; // 哨兵会被移除，光标落在其位置
+
+  const insertText = text.replace(/\u0000/g, '');
+  codeEl.setRangeText(insertText, start, end, 'end');
+  refreshEditor();
+  saveCode();
+  closeSnippets();
+
+  const caret = Math.min(start + caretOffset, codeEl.value.length);
+  codeEl.setSelectionRange(caret, caret);
+  codeEl.focus();
+}
+
 /* ---------------- 多文件编辑器 ----------------
  * 文档保存在 state.docs：[{path, content, dirty}]
- *   path 以 '/flash/' 开头表示已落盘文件；'unsaved:N' 表示尚未命名的新文件。
+ *   path 以 '/' 开头表示已落盘的绝对路径；'unsaved:N' 表示尚未命名的新文件。
  *   打开标签与未保存内容另存 localStorage（mp_open_docs），刷新后恢复。
  */
 const OPEN_DOCS_KEY = 'mp_open_docs';
@@ -3237,7 +3621,7 @@ function renderTabs() {
 
     const label = document.createElement('span');
     const unsavedMatch = /^unsaved:(\d+)$/.exec(d.path);
-    label.textContent = d.path.indexOf('/flash/') === 0 ? d.path.slice(7)
+    label.textContent = isSavedPath(d.path) ? shortName(d.path)
       : (unsavedMatch ? ('新建文件' + (unsavedMatch[1] > 1 ? unsavedMatch[1] : '')) : d.path);
     tab.appendChild(label);
 
@@ -3266,8 +3650,8 @@ function updateCurFileTag() {
   const d = activeDocObj();
   if (!d) { curFileTagEl.textContent = 'main.py'; return; }
   const m = /^unsaved:(\d+)$/.exec(d.path);
-  curFileTagEl.textContent = d.path.indexOf('/flash/') === 0
-    ? d.path.slice(7)
+  curFileTagEl.textContent = isSavedPath(d.path)
+    ? shortName(d.path)
     : (m ? ('新建文件' + (m[1] > 1 ? m[1] : '')) : d.path);
 }
 
@@ -3276,7 +3660,7 @@ function updateSaveBtn() {
   if (!saveCurBtn) return;
   const d = activeDocObj();
   saveCurBtn.disabled = !d || !d.dirty;
-  saveCurBtn.title = !d ? '没有打开的文档' : (d.dirty ? '保存到 /flash（Ctrl/⌘ + S）' : '文件未修改');
+  saveCurBtn.title = !d ? '没有打开的文档' : (d.dirty ? '保存文件（Ctrl/⌘ + S）' : '文件未修改');
 }
 
 /* 把某个文档的内容载入 textarea（不触发 input） */
@@ -3337,21 +3721,38 @@ function newDoc(content, dirty) {
   codeEl.focus();
 }
 
-/* 保存当前文档到 /flash */
+/* 判断文档路径是否为已落盘的绝对路径（未命名文档为 unsaved:N） */
+function isSavedPath(path) {
+  return typeof path === 'string' && path.charAt(0) === '/';
+}
+
+/* 显示用短文件名：取路径最后一段 */
+function shortName(path) {
+  return typeof path === 'string' ? path.slice(path.lastIndexOf('/') + 1) : '';
+}
+
+/* 拼接目录与文件名，避免根目录 / 产生双斜杠 */
+function joinFsPath(dir, name) {
+  const base = dir || '/';
+  return (base === '/' ? '' : base.replace(/\/+$/, '')) + '/' + String(name).replace(/^\/+/, '');
+}
+
+/* 保存当前文档到文件系统（未命名文档保存到当前目录） */
 async function saveActiveDoc() {
   const d = activeDocObj();
   if (!d) return;
   syncActiveDoc();
 
   let path = d.path;
-  if (path.indexOf('/flash/') !== 0) {
-    // 未命名文档：询问文件名
-    let name = window.prompt('文件名（保存到 /flash，例如 demo.py）：', 'new_file.py');
+  if (!isSavedPath(path)) {
+    // 未命名文档：询问文件名，保存到当前目录
+    const cd = state.fsCwd || '/';
+    let name = window.prompt('文件名（保存到 ' + cd + '，例如 demo.py）：', 'new_file.py');
     if (name === null) return;
     name = String(name).trim().replace(/^\/+/, '');
     if (!name) return;
     if (!/\.py$/i.test(name)) name += '.py';
-    path = (state.fsCwd || '/flash') + '/' + name;
+    path = joinFsPath(cd, name);
     // 若目标文件已在别的标签打开，合并处理
     const exist = state.docs.find(x => x.path === path && x !== d);
     if (exist) {
@@ -3378,9 +3779,9 @@ async function saveActiveDoc() {
   }
 }
 
-/* 删除 /flash 文件 */
+/* 删除文件系统中的文件 */
 async function deleteFlashFile(path) {
-  if (!window.confirm('删除 /flash 中的文件 ' + path.slice(7) + ' ？')) return;
+  if (!window.confirm('删除文件 ' + path + ' ？')) return;
   if (!state.ready || !state.kernel) return;
   try {
     await state.kernel.fsUnlink(path);
@@ -3393,9 +3794,9 @@ async function deleteFlashFile(path) {
   }
 }
 
-/* 删除 /flash 文件夹（递归删除其中全部内容） */
+/* 删除文件系统中的文件夹（递归删除其中全部内容） */
 async function deleteFlashFolder(path) {
-  const label = path.indexOf('/flash/') === 0 ? path.slice(7) : path;
+  const label = path;
   if (!window.confirm('删除文件夹 ' + label + ' 及其中的全部文件？此操作不可撤销。')) return;
   if (!state.ready || !state.kernel || !state.kernel.fsRmtree) return;
   try {
@@ -3403,7 +3804,7 @@ async function deleteFlashFolder(path) {
     const prefix = path + '/';
     const affected = state.docs.filter(x => x.path.indexOf(prefix) === 0).map(x => x.path);
     for (const p of affected) closeDoc(p);
-    if (state.fsCwd === path || state.fsCwd.indexOf(prefix) === 0) state.fsCwd = '/flash';
+    if (state.fsCwd === path || state.fsCwd.indexOf(prefix) === 0) state.fsCwd = '/';
     await renderFileList();
     writeLine('已删除文件夹 ' + path, 'ok');
   } catch (err) {
@@ -3411,16 +3812,21 @@ async function deleteFlashFolder(path) {
   }
 }
 
-/* 渲染 /flash 文件列表（当前目录，含子目录） */
+/* 渲染文件系统文件列表（当前目录，含子目录） */
 async function renderFileList() {
   if (!state.ready || !state.kernel || !state.kernel.fsList) return;
-  const cwd = state.fsCwd || '/flash';
+  const cwd = state.fsCwd || '/';
   fileCwdTitleEl.textContent = cwd;
   fileCwdTitleEl.title = cwd;
-  fileUpBtn.disabled = cwd === '/flash';
+  fileUpBtn.disabled = cwd === '/' || cwd === '';
 
   let files = [];
   try { files = await state.kernel.fsList(cwd); } catch (_) { return; }
+  // 根目录下的虚拟/临时目录无法直接使用，从列表中隐藏；其他层级不受影响
+  if (cwd === '/' || cwd === '') {
+    const HIDDEN_ROOT_DIRS = { tmp: 1, home: 1, dev: 1, proc: 1 };
+    files = files.filter(function (f) { return !(f.isDir && HIDDEN_ROOT_DIRS[f.name]); });
+  }
   fileListEl.innerHTML = '';
   if (!files.length) {
     const empty = document.createElement('div');
@@ -3494,7 +3900,7 @@ function saveCode() {
 /* 在当前目录新建空文件（立即落盘，便于改名/删除/保存） */
 async function createFlashFile() {
   if (!state.ready || !state.kernel) { writeLine('内核未就绪，无法新建文件。', 'err'); return; }
-  const dir = state.fsCwd || '/flash';
+  const dir = state.fsCwd || '/';
   let name = 'new_file.py';
   let i = 2;
   try {
@@ -3502,7 +3908,7 @@ async function createFlashFile() {
     const names = new Set(files.map(f => f.name));
     while (names.has(name)) name = 'new_file_' + (i++) + '.py';
   } catch (_) {}
-  const path = dir + '/' + name;
+  const path = joinFsPath(dir, name);
   try {
     await state.kernel.fsWrite(path, '');
     openDoc(path, '', false);
@@ -3517,11 +3923,12 @@ async function createFlashFile() {
 /* 在当前目录新建文件夹 */
 async function createFlashFolder() {
   if (!state.ready || !state.kernel) { writeLine('内核未就绪，无法新建文件夹。', 'err'); return; }
-  const name = window.prompt('文件夹名称（创建于 ' + (state.fsCwd || '/flash') + '）：', 'new_folder');
+  const dir = state.fsCwd || '/';
+  const name = window.prompt('文件夹名称（创建于 ' + dir + '）：', 'new_folder');
   if (name === null) return;
   const clean = String(name).trim().replace(/^\/+|\/+$/g, '');
   if (!clean || clean.indexOf('/') >= 0) { writeLine('文件夹名称不能为空或包含 /。', 'err'); return; }
-  const path = (state.fsCwd || '/flash') + '/' + clean;
+  const path = joinFsPath(dir, clean);
   try {
     await state.kernel.fsMkdir(path);
     await renderFileList();
@@ -3534,9 +3941,10 @@ async function createFlashFolder() {
 if (newFileBtn) newFileBtn.addEventListener('click', createFlashFile);
 if (newFolderBtn) newFolderBtn.addEventListener('click', createFlashFolder);
 if (fileUpBtn) fileUpBtn.addEventListener('click', () => {
-  const cwd = state.fsCwd || '/flash';
-  if (cwd === '/flash') return;
-  state.fsCwd = cwd.slice(0, Math.max(6, cwd.lastIndexOf('/')));
+  const cwd = state.fsCwd || '/';
+  if (cwd === '/' || cwd === '') return;
+  const parent = cwd.slice(0, cwd.lastIndexOf('/'));
+  state.fsCwd = parent || '/';
   renderFileList();
 });
 if (saveCurBtn) saveCurBtn.addEventListener('click', saveActiveDoc);
@@ -4206,6 +4614,7 @@ applyIcons(currentTheme());
 
 /* ---------------- 按钮 ---------------- */
 runBtn.addEventListener('click', runEditor);
+if (runCurBtn) runCurBtn.addEventListener('click', runEditor);
 
 clearBtn.addEventListener('click', () => {
   outEl.innerHTML = '';
@@ -4313,6 +4722,15 @@ resetBtn.addEventListener('click', async () => {
     replHistNSaveBtn.addEventListener('click', applyHistN);
     replHistNInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); applyHistN(); }
+    });
+  }
+
+  // 选项页：计算工具点击结果自动复制（默认开启，localStorage 关闭时为 '0'）
+  const autoCopyChk = $('autoCopyChk');
+  if (autoCopyChk) {
+    try { autoCopyChk.checked = localStorage.getItem('mp_auto_copy') !== '0'; } catch (_) { autoCopyChk.checked = true; }
+    autoCopyChk.addEventListener('change', () => {
+      try { localStorage.setItem('mp_auto_copy', autoCopyChk.checked ? '1' : '0'); } catch (_) {}
     });
   }
 
@@ -4441,8 +4859,8 @@ resetBtn.addEventListener('click', async () => {
 })();
 
 /* ---------------- 数据导入 / 导出 ----------------
- * 备份所有 mp_ / mp- 前缀的 localStorage 与 Cookie（含 /flash 快照），
- * 导出为 JSON；导入校验格式后覆盖并重载页面，使 /flash 重新挂载生效。
+ * 备份所有 mp_ / mp- 前缀的 localStorage 与 Cookie（含文件系统快照），
+ * 导出为 JSON；导入校验格式后覆盖并重载页面，使文件系统重新挂载生效。
  * --------------------------------------------------- */
 (function initDataBackup() {
   const exportBtn = $('exportDataBtn');
@@ -4497,7 +4915,7 @@ resetBtn.addEventListener('click', async () => {
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       showToast('导出成功', '<p>已导出 <b>' + Object.keys(data.localStorage).length +
         '</b> 项本地存储、<b>' + Object.keys(data.cookies).length +
-        '</b> 项 Cookie（含 <kbd>/flash</kbd> 文件）到 JSON 文件。</p>', null, 3000);
+        '</b> 项 Cookie（含文件系统文件）到 JSON 文件。</p>', null, 3000);
     } catch (err) {
       showToast('导出失败', '<p>' + escapeHtml((err && err.message) || String(err)) + '</p>', null, 3000);
     }
@@ -4517,7 +4935,7 @@ resetBtn.addEventListener('click', async () => {
       showToast('导入失败', '<p>文件格式不匹配，请选择由本工具导出的备份文件。</p>');
       return;
     }
-    if (!window.confirm('导入将覆盖当前全部参数与 /flash 文件，并重新加载页面。确定继续？')) return;
+    if (!window.confirm('导入将覆盖当前全部参数与文件系统文件，并重新加载页面。确定继续？')) return;
     try {
       const backupLS = obj.localStorage;
       const obsolete = [];
@@ -4548,7 +4966,7 @@ resetBtn.addEventListener('click', async () => {
       showToast('导入失败', '<p>' + escapeHtml((err && err.message) || String(err)) + '</p>');
       return;
     }
-    showToast('导入成功', '<p>参数与 /flash 文件已恢复，页面即将重新加载…</p>');
+    showToast('导入成功', '<p>参数与文件系统文件已恢复，页面即将重新加载…</p>');
     setTimeout(() => location.reload(), 1200);
   });
 })();
@@ -5047,8 +5465,16 @@ setTimeout(autoCheckUpdate, 1500);
  *       →(普通修改：浏览器风格标签页 + 四种标签样式可选 + 文件按钮换图标 + 右键新建文件夹 + 导出文件名格式) 2.6.75
  *       →(普通修改：统一分隔条宽度 + 关于框小游戏加高 + 补充功能快捷键说明 + 修复三个示例 + 示例在 demo.py 打开 + 导出文件名加下划线 + 标签提前可切换 + 终端防翻译) 2.6.76
  *       →(普通修改：导出提示卡片移至全局、任意标签页可见且 3 秒自动消失) 2.6.77
+ *       →(较大功能增加：编辑框文件名后加运行按钮 + 计算页内置进制转换与 CRC4~128 校验多标签) 2.7.78
+ *       →(普通修改：运行按钮移至保存按钮右侧 + 进制转换支持浮点数 + 结果点击复制 + 校验页新增校验和/文件多算法校验) 2.7.79
+ *       →(较大功能增加：编辑器代码助手 Alt+/ 唤出、模板补全 + 校验页布局重排与文件结果清除) 2.7.80
+ *       →(较大功能增加：计算页新增「时间」标签页（多格式解析/详单/时间差） + CRC 参数四合一单行 + 进制下拉合并) 2.7.81
+ *       →(较大功能增加：代码助手完善 class 模板 + 时间页多格式互转输入框与农历信息 + 日历差单行 + 选项可关闭点击自动复制) 2.7.82
+ *       →(较大变更：移除本地 ./lib 映射；文件系统默认挂载到 / 根目录，可浏览/新建；自动创建 /flash、/lib 并加入 sys.path；持久化扩展到整个根目录) 2.7.83
+ *       →(普通修改：隐藏根目录虚拟目录 tmp/home/dev/proc + 新建文件夹图标改黄色 + 日历差移回时间差网格两倍宽) 2.7.84
+ *       →(普通修改：时间 A/B 前新增 📅 按钮，弹出日历时间选择器，选择后填入输入框) 2.7.85
  * build 号始终持续累加，前两位变化时不回零。 */
-const APP_VERSION = '2.6.77';
+const APP_VERSION = '2.7.85';
 
 const SAMPLE_GROUPS = [
   {
@@ -5977,7 +6403,7 @@ buf.seek(-3, 2)
 print("末尾3字节:", buf.read())
 print("getvalue:", buf.getvalue())
 ` },
-      { name: '文件：CSV 风格读写', code: `# 用文件模拟 CSV（写到当前工作目录 /flash）
+      { name: '文件：CSV 风格读写', code: `# 用文件模拟 CSV（写到当前工作目录 /，可用 /flash/data.csv 指定目录）
 import os
 path = "data.csv"
 rows = [("name", "score"), ("alice", "90"), ("bob", "85")]
@@ -12734,12 +13160,219 @@ boot();
 </script>
 </div>
 
-<div class="tab-panel placeholder" id="tab-calc" role="tabpanel" aria-labelledby="tabBtn-calc" data-panel="calc" hidden>
-  <div class="placeholder-card">
-    <div class="placeholder-icon">&Sigma;</div>
-    <h2>计算</h2>
-    <p>该标签页内容正在准备中。</p>
+<div class="tab-panel" id="tab-calc" role="tabpanel" aria-labelledby="tabBtn-calc" data-panel="calc" hidden>
+<div class="calc-wrap">
+  <h2 class="calc-title">计算工具</h2>
+  <div class="calc-subtabs" role="tablist" aria-label="计算工具子页">
+    <button class="calc-subtab active" type="button" data-sub="base" role="tab" aria-selected="true">进制转换</button>
+    <button class="calc-subtab" type="button" data-sub="crc" role="tab" aria-selected="false">校验</button>
+    <button class="calc-subtab" type="button" data-sub="time" role="tab" aria-selected="false">时间</button>
   </div>
+
+  <!-- 子页 1：进制转换 -->
+  <div class="calc-subpage" data-subpage="base">
+    <div class="calc-card">
+      <h3>进制转换</h3>
+      <p class="calc-desc">输入整数按整数转换，输入含小数点的浮点数按浮点转换（分数部分精确/循环展开）。来源 / 目标进制直接从下拉框选择（含 2–36 全部进制）。支持大整数，可含 <code>0x</code>/<code>0b</code>/<code>0o</code> 前缀及下划线。点击结果框可复制数值。</p>
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1 1 100%">
+          <label for="baseInput">输入数据</label>
+          <input class="calc-input wide" id="baseInput" type="text" spellcheck="false" autocomplete="off" placeholder="例如 255、0xFF、1010">
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-field">
+          <label for="baseFrom">来源进制</label>
+          <select class="calc-select" id="baseFrom" title="选择来源进制（2–36）"></select>
+        </div>
+        <button class="btn calc-swap" id="baseSwapBtn" title="交换来源与目标进制">⇄ 交换</button>
+        <div class="calc-field">
+          <label for="baseTo">目标进制</label>
+          <select class="calc-select" id="baseTo" title="选择目标进制（2–36）"></select>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1 1 100%">
+          <label>转换后的数据</label>
+          <div class="calc-out" id="baseResult">—</div>
+        </div>
+      </div>
+      <div class="calc-actions">
+        <button class="btn btn-primary" id="baseConvertBtn">转换</button>
+        <span class="calc-hint" style="margin:0">输入时自动转换 · 点击结果框复制数值</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 子页 2：校验 -->
+  <div class="calc-subpage" data-subpage="crc" hidden>
+    <!-- 方框 1：数据输入 → CRC 校验参数 → CRC 结果 -->
+    <div class="calc-card">
+      <h3>CRC 校验</h3>
+      <p class="calc-desc">选择常用 CRC 模式自动填充参数，或手工指定多项式（十六进制）、位宽、初始值、输入/输出翻转与结果异或值。位宽支持 4–128 位。</p>
+
+      <!-- 数据输入 -->
+      <div class="calc-section-title">待校验数据</div>
+      <div class="calc-row">
+        <div class="calc-radio">
+          <label><input type="radio" name="crcMode" value="hex"> HEX 模式</label>
+          <label><input type="radio" name="crcMode" value="str" checked> 字符串模式</label>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1 1 100%">
+          <label for="crcInput">数据</label>
+          <textarea class="calc-textarea" id="crcInput" spellcheck="false" autocomplete="off" placeholder="HEX：31 32 33 34 35 36 37 38 39&#10;字符串：123456789">123456789</textarea>
+          <div class="calc-hint" id="crcInputHint">字符串模式：按 UTF-8 编码为字节后再计算。</div>
+        </div>
+      </div>
+
+      <!-- CRC 校验参数 -->
+      <div class="calc-section-title">CRC 校验参数</div>
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1 1 100%">
+          <label for="crcPreset">常用 CRC 模式</label>
+          <select class="calc-select calc-input-wide" id="crcPreset" style="width:100%">
+            <option value="">自定义…</option>
+          </select>
+        </div>
+      </div>
+      <div class="crc-param-grid">
+        <div class="calc-field">
+          <label for="crcWidth">位宽（4–128）</label>
+          <input class="calc-input" id="crcWidth" type="number" min="4" max="128" value="32">
+        </div>
+        <div class="calc-field">
+          <label for="crcPoly">多项式（HEX）</label>
+          <input class="calc-input" id="crcPoly" type="text" spellcheck="false" autocomplete="off" value="04C11DB7">
+        </div>
+        <div class="calc-field">
+          <label for="crcInit">初始值（HEX）</label>
+          <input class="calc-input" id="crcInit" type="text" spellcheck="false" autocomplete="off" value="FFFFFFFF">
+        </div>
+        <div class="calc-field">
+          <label for="crcXor">结果异或值（HEX）</label>
+          <input class="calc-input" id="crcXor" type="text" spellcheck="false" autocomplete="off" value="FFFFFFFF">
+        </div>
+      </div>
+      <div class="calc-row" style="margin-top:14px">
+        <div class="calc-checks">
+          <label><input type="checkbox" id="crcRefIn" checked> 输入翻转（RefIn）</label>
+          <label><input type="checkbox" id="crcRefOut" checked> 输出翻转（RefOut）</label>
+        </div>
+      </div>
+      <div class="calc-hint">多项式按不含最高幂的“正规形式”填写（如 CRC-32 填 <code>04C11DB7</code>，CRC-16/ARC 填 <code>8005</code>，CRC-8/MAXIM 填 <code>31</code>）。</div>
+
+      <!-- CRC 结果 -->
+      <div class="calc-section-title">CRC 结果</div>
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1 1 100%">
+          <div class="calc-result-big" id="crcResult">—</div>
+        </div>
+      </div>
+      <div class="calc-actions">
+        <button class="btn btn-primary" id="crcComputeBtn">计算 CRC</button>
+        <span class="calc-hint" style="margin:0">修改参数或数据后自动计算 · 点击结果框复制</span>
+      </div>
+    </div>
+
+    <!-- 校验和：对上方同一份数据计算多种常用校验和 -->
+    <div class="calc-card">
+      <h3>校验和</h3>
+      <p class="calc-desc">对上方「待校验数据」按当前模式（HEX / 字符串）编码后的字节流计算常用校验和，点击任一结果可复制。</p>
+      <div class="sum-grid" id="sumGrid"></div>
+    </div>
+
+    <!-- 文件校验：多文件多算法 -->
+    <div class="calc-card">
+      <h3>文件校验</h3>
+      <p class="calc-desc">选择一个或多个文件，计算 CRC32 / MD5 / SHA-1 / SHA-256 / SHA-512 等常用摘要，结果以表格展示；点击单元格可复制对应值。</p>
+      <label class="hash-drop" id="hashDrop" for="fileHashInput">
+        <span class="hash-pick">＋ 点击选择文件</span><br>
+        <span style="display:inline-block;margin-top:8px">或将文件拖到此处（支持多选）</span><br>
+        <span class="hash-status">全部在浏览器本地计算，文件不会上传</span>
+      </label>
+      <input type="file" id="fileHashInput" multiple style="display:none" aria-label="选择要校验的文件">
+      <div class="calc-actions" style="margin-top:12px">
+        <button class="btn" id="hashClearBtn" disabled>清除结果</button>
+      </div>
+      <div class="hash-table-wrap" id="hashTableWrap" hidden>
+        <table class="hash-table">
+          <thead><tr>
+            <th>文件名</th><th>大小</th><th>CRC32</th><th>MD5</th><th>SHA-1</th><th>SHA-256</th><th>SHA-512</th>
+          </tr></thead>
+          <tbody id="hashTableBody"></tbody>
+        </table>
+      </div>
+      <div class="hash-status" id="hashStatus"></div>
+    </div>
+  </div>
+
+  <!-- 子页 3：时间 -->
+  <div class="calc-subpage" data-subpage="time" hidden>
+    <div class="calc-card">
+      <h3>时间解析与转换</h3>
+      <p class="calc-desc">支持时间戳、ISO 8601、常规日期时间、中文日期、RFC 2822 等多种格式；输入后自动识别并展开年 / 月 / 日 / 星期 / 年内位置 / 时区 / 时间戳等详细信息。点击任一数值可复制。</p>
+
+      <div class="time-block">
+        <div class="time-block-head">
+          <button class="time-cal-btn" id="timePickA" title="打开日历选择时间 A" aria-label="打开日历选择时间 A">📅</button>
+          <span class="time-tag">时间 A</span>
+          <span class="time-fmt-badge" id="timeFmtA">未输入</span>
+        </div>
+        <div class="time-input-line">
+          <input class="calc-input" id="timeInputA" type="text" spellcheck="false" autocomplete="off" placeholder="例如 1705314600000 / 2024-01-15T10:30:00Z / 2024年1月15日 10:30">
+          <button class="btn" id="timeClearA" title="清除时间 A">清除</button>
+        </div>
+        <div class="time-fmt-conv">
+          <div class="time-fmt-conv-title"><span>多格式互转（下方任一框修改并失焦后自动同步）</span><span class="time-conv-status" id="timeConvStatusA">编辑任一格式并失焦即可同步</span></div>
+          <div class="time-fmt-grid" id="timeFmtGridA"></div>
+        </div>
+        <div class="time-info-grid" id="timeInfoA"></div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-block-head">
+          <button class="time-cal-btn" id="timePickB" title="打开日历选择时间 B" aria-label="打开日历选择时间 B">📅</button>
+          <span class="time-tag">时间 B</span>
+          <span class="time-fmt-badge" id="timeFmtB">未输入</span>
+        </div>
+        <div class="time-input-line">
+          <input class="calc-input" id="timeInputB" type="text" spellcheck="false" autocomplete="off" placeholder="例如 2024-02-20 08:00:00 / Mon, 15 Jan 2024 10:30:00 GMT">
+          <button class="btn" id="timeClearB" title="清除时间 B">清除</button>
+        </div>
+        <div class="time-fmt-conv">
+          <div class="time-fmt-conv-title"><span>多格式互转（下方任一框修改并失焦后自动同步）</span><span class="time-conv-status" id="timeConvStatusB">编辑任一格式并失焦即可同步</span></div>
+          <div class="time-fmt-grid" id="timeFmtGridB"></div>
+        </div>
+        <div class="time-info-grid" id="timeInfoB"></div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn" id="timeNowA" title="把当前时刻填入 A">当前时间 → A</button>
+        <button class="btn" id="timeNowB" title="把当前时刻填入 B">当前时间 → B</button>
+        <button class="btn" id="timeSwapAB" title="交换 A 与 B">⇄ 交换 A/B</button>
+      </div>
+
+      <div class="time-fmt-ref">
+        <b>可识别的输入格式：</b><br>
+        • 时间戳：<code>1705314600</code>（秒）、<code>1705314600000</code>（毫秒）<br>
+        • ISO 8601：<code>2024-01-15T10:30:00Z</code>、<code>2024-01-15T10:30:00+08:00</code><br>
+        • 常规日期时间：<code>2024-01-15 10:30:00</code>、<code>2024/01/15</code>、<code>10:30</code>（今日）<br>
+        • 中文日期：<code>2024年1月15日 10:30:00</code><br>
+        • RFC 2822 / 英文：<code>Mon, 15 Jan 2024 10:30:00 GMT</code>、<code>Jan 15 2024</code><br>
+        • 相对时间：<code>now</code>、<code>今天</code>、<code>明天</code>、<code>昨天</code>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <h3>时间差（B − A）</h3>
+      <p class="calc-desc">同时给出精确时长（总毫秒 / 秒 / 分 / 时 / 天 / 周）、日历差（年 / 月 / 日 / 时 / 分 / 秒 / 毫秒），以及期间的日历天数、工作日与周末天数。</p>
+      <div class="time-diff-big" id="timeDiffBig">—</div>
+      <div class="time-diff-grid" id="timeDiffGrid"></div>
+    </div>
+  </div>
+</div>
 </div>
 
 <div class="tab-panel" id="tab-options" role="tabpanel" aria-labelledby="tabBtn-options" data-panel="options" hidden>
@@ -12799,19 +13432,26 @@ boot();
         <input class="opt-num" id="replHistNInput" type="number" min="0" max="500" step="1" title="保留最近 N 条 REPL 命令">
         <button class="btn" id="replHistNSaveBtn" title="保存设置并立即按新数量裁剪历史">保存</button>
       </div>
+      <div class="opt-row">
+        <div class="opt-info">
+          <div class="opt-name">点击结果自动复制</div>
+          <div class="opt-desc">开启后，在「计算」工具中点击进制转换结果、CRC 结果、校验和、文件摘要或时间详情，会自动复制到剪贴板。默认开启，设置即时生效并持久保存。</div>
+        </div>
+        <label class="opt-checkbox"><input type="checkbox" id="autoCopyChk" checked> 启用自动复制</label>
+      </div>
     </div>
     <div class="opt-card">
       <div class="opt-row">
         <div class="opt-info">
           <div class="opt-name">数据导出</div>
-          <div class="opt-desc">把主题、布局、文件列表宽度、REPL 历史、游戏进度、知识库总分等全部本地参数，连同 <kbd>/flash</kbd> 文件系统打包为 JSON 文件下载。</div>
+          <div class="opt-desc">把主题、布局、文件列表宽度、REPL 历史、游戏进度、知识库总分等全部本地参数，连同整个文件系统打包为 JSON 文件下载。</div>
         </div>
         <button class="btn" id="exportDataBtn" title="导出全部本地数据为 JSON 文件">导出数据</button>
       </div>
       <div class="opt-row">
         <div class="opt-info">
           <div class="opt-name">数据导入</div>
-          <div class="opt-desc">从之前导出的 JSON 文件恢复全部参数与 <kbd>/flash</kbd> 文件；导入会覆盖现有数据并自动重新加载页面。</div>
+          <div class="opt-desc">从之前导出的 JSON 文件恢复全部参数与文件系统文件；导入会覆盖现有数据并自动重新加载页面。</div>
         </div>
         <button class="btn" id="importDataBtn" title="从 JSON 文件恢复本地数据">导入数据</button>
         <input type="file" id="importDataFile" accept=".json,application/json" hidden>
@@ -12839,7 +13479,7 @@ boot();
         <span class="ver-badge"><span class="ver-badge-l">当前内核版本</span><span class="ver-badge-r vb-blue" id="aboutVersion">检测中…</span></span>
         <span class="ver-badge"><span class="ver-badge-l">PHP 版本</span><span class="ver-badge-r vb-orange" id="aboutPhpVersion">检测中…</span></span>
         <span class="ver-badge"><span class="ver-badge-l">知识库版本</span><span class="ver-badge-r vb-purple" id="aboutKbVersion">检测中…</span></span>
-        <span class="ver-badge" id="appVersionBadge"><span class="ver-badge-l">程序版本</span><span class="ver-badge-r" id="appVersionBody">2.6.77</span></span>
+        <span class="ver-badge" id="appVersionBadge"><span class="ver-badge-l">程序版本</span><span class="ver-badge-r" id="appVersionBody">2.7.85</span></span>
       </div>
       <div class="about-ver-row">
         <div class="about-credit-links">
@@ -12859,10 +13499,10 @@ boot();
         <ul>
           <li>编辑器 Python 语法高亮，亮 / 暗主题与四种标签样式切换</li>
           <li>REPL 交互、表达式回显、Tab 补全与命令历史持久化</li>
-          <li>多文件编辑器 + <kbd>/flash</kbd> 文件列表，新建 / 改名 / 删除 / 右键菜单</li>
-          <li>本地 <kbd>./lib</kbd> 映射为 <kbd>/lib</kbd>，可 <kbd>import</kbd> 外部模块</li>
+          <li>多文件编辑器 + 文件系统列表（默认挂载到 <kbd>/</kbd>），新建 / 改名 / 删除 / 右键菜单</li>
+          <li>自动创建 <kbd>/flash</kbd>、<kbd>/lib</kbd> 并加入 <kbd>sys.path</kbd>，根目录可直接创建文件</li>
           <li>两级示例菜单（统一在 <b>demo.py</b> 打开）与常用链接</li>
-          <li><kbd>/flash</kbd> 持久化到 localStorage，刷新自动运行 <b>main.py</b></li>
+          <li>文件系统持久化到 localStorage，刷新自动运行 <b>main.py</b></li>
           <li>一键导入 / 导出全部本地数据，检查并更新内核（多 CDN / PHP）</li>
           <li>上下 / 左右分区、拖拽分隔条调整，代码与布局自动保存</li>
           <li><a class="more-link" href="https://gitee.com/shaoziyang/MicroPythonPlayground/blob/main/README.md" target="_blank" rel="noopener">详细说明 →</a></li>
@@ -12872,6 +13512,7 @@ boot();
         <h3>快捷键</h3>
         <ul>
           <li><kbd>Ctrl / ⌘ + Enter</kbd> 运行 · <kbd>Ctrl / ⌘ + S</kbd> 保存</li>
+          <li><kbd>Alt + /</kbd> / <kbd>Ctrl + Space</kbd> 代码助手</li>
           <li><kbd>Tab</kbd> 补全 / 缩进 · <kbd>Shift + Enter</kbd> REPL 换行</li>
           <li><kbd>↑ / ↓</kbd> REPL 历史 · <kbd>Ctrl + D</kbd> 软复位内核</li>
           <li><kbd>Ctrl / ⌘ + J</kbd> / <kbd>T</kbd> 切换主题（全局）</li>
@@ -12988,6 +13629,1161 @@ boot();
     activate(btns[next].getAttribute('data-tab'));
     e.preventDefault();
   });
+})();
+</script>
+
+<!-- 日历时间选择器（时间 A / B 共用） -->
+<div class="cal-pick" id="calPick" role="dialog" aria-label="日历时间选择" hidden>
+  <div class="cal-pick-head">
+    <button class="cp-nav" id="calPrevY" title="上一年" aria-label="上一年">«</button>
+    <button class="cp-nav" id="calPrevM" title="上一月" aria-label="上一月">‹</button>
+    <span class="cp-title" id="calTitle"></span>
+    <button class="cp-nav" id="calNextM" title="下一月" aria-label="下一月">›</button>
+    <button class="cp-nav" id="calNextY" title="下一年" aria-label="下一年">»</button>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+  <div class="cal-pick-time">
+    <label for="calHour">时间</label>
+    <input id="calHour" type="number" min="0" max="23" value="0" aria-label="时">
+    <span class="cp-sep">:</span>
+    <input id="calMin" type="number" min="0" max="59" value="0" aria-label="分">
+    <span class="cp-sep">:</span>
+    <input id="calSec" type="number" min="0" max="59" value="0" aria-label="秒">
+  </div>
+  <div class="cal-pick-foot">
+    <button class="btn" id="calTodayBtn" title="选今天当前时刻">现在</button>
+    <button class="btn" id="calCancelBtn" title="取消">取消</button>
+    <button class="btn btn-primary" id="calOkBtn" title="填入所选时间">确定</button>
+  </div>
+</div>
+
+<!-- 计算工具：进制转换 / CRC 校验（独立脚本，避免与主模块作用域耦合） -->
+<script>
+(function () {
+  var $ = (id) => document.getElementById(id);
+  var tabCalc = $('tab-calc');
+  if (!tabCalc) return;
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---------- 通用：复制到剪贴板（含 file:// 回退） ---------- */
+  // 选项页开关：未选中 mp_auto_copy='0' 时，点击结果不复制
+  function autoCopyEnabled() {
+    try { return localStorage.getItem('mp_auto_copy') !== '0'; } catch (_) { return true; }
+  }
+  function copyText(text) {
+    if (!text) return Promise.resolve();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+  function legacyCopy(text) {
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok ? resolve() : reject(new Error('copy failed'));
+      } catch (e) {
+        document.body.removeChild(ta);
+        reject(e);
+      }
+    });
+  }
+  function flashCopied(el) {
+    el.classList.add('copied');
+    setTimeout(function () { el.classList.remove('copied'); }, 900);
+  }
+  function bindCopy(el, getValue) {
+    el.addEventListener('click', function () {
+      if (!autoCopyEnabled()) return;
+      var v = getValue();
+      if (!v) return;
+      copyText(v).then(function () { flashCopied(el); }).catch(function () {});
+    });
+  }
+
+  /* ---------- 子标签切换 ---------- */
+  var subBtns = Array.prototype.slice.call(tabCalc.querySelectorAll('.calc-subtab'));
+  var subPages = Array.prototype.slice.call(tabCalc.querySelectorAll('.calc-subpage'));
+  subBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var name = b.getAttribute('data-sub');
+      subBtns.forEach(function (x) {
+        var on = x === b;
+        x.classList.toggle('active', on);
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      subPages.forEach(function (p) { p.hidden = p.getAttribute('data-subpage') !== name; });
+      if (name === 'crc') computeCRC();
+      else if (name === 'time') computeTime();
+      else convertBase();
+    });
+  });
+
+  /* ================= 进制转换 ================= */
+  var DIGITS = '0123456789abcdefghijklmnopqrstuvwxyz';
+  var baseIn = $('baseInput'), baseFrom = $('baseFrom'), baseTo = $('baseTo');
+  var baseResult = $('baseResult');
+  // 进制下拉框已包含 2–36 全部进制，不再需要单独的数字输入框与预设下拉
+  var BASE_NAMES = { 2: '二进制', 8: '八进制', 10: '十进制', 16: '十六进制', 36: '三十六进制' };
+  function fillBaseSelect(sel, def) {
+    for (var b = 2; b <= 36; b++) {
+      var opt = document.createElement('option');
+      opt.value = String(b);
+      opt.textContent = b + (BASE_NAMES[b] ? ' · ' + BASE_NAMES[b] : ' 进制');
+      sel.appendChild(opt);
+    }
+    sel.value = String(def);
+  }
+  fillBaseSelect(baseFrom, 10);
+  fillBaseSelect(baseTo, 2);
+
+  /* 解析来源进制下的数：整数用 BigInt，小数用「分子/分母」的精确分数表示，避免浮点误差。
+   * 返回 { neg, intVal, fracNum, fracDen, isFloat }； null 表示非法。 */
+  function parseBaseNumber(str, base) {
+    str = String(str).trim().toLowerCase().replace(/[_\s]/g, '');
+    if (!str) return null;
+    var neg = false;
+    if (str[0] === '-') { neg = true; str = str.slice(1); }
+    else if (str[0] === '+') { str = str.slice(1); }
+    // 前缀覆盖下拉进制：0x/0b/0o
+    if (str.indexOf('0x') === 0) { base = 16; str = str.slice(2); }
+    else if (str.indexOf('0b') === 0) { base = 2; str = str.slice(2); }
+    else if (str.indexOf('0o') === 0) { base = 8; str = str.slice(2); }
+    if (base < 2 || base > 36) return null;
+    var dot = str.indexOf('.');
+    var intStr, fracStr = '';
+    if (dot < 0) intStr = str;
+    else {
+      intStr = str.slice(0, dot); fracStr = str.slice(dot + 1);
+      if (fracStr.indexOf('.') >= 0) return null;   // 多个小数点
+    }
+    if (!intStr && !fracStr) return null;
+    intStr = intStr || '0';
+    var B = BigInt(base), i, d;
+    var intVal = 0n;
+    for (i = 0; i < intStr.length; i++) {
+      d = DIGITS.indexOf(intStr[i]);
+      if (d < 0 || d >= base) return null;
+      intVal = intVal * B + BigInt(d);
+    }
+    var fracNum = 0n, fracDen = 1n;
+    for (i = 0; i < fracStr.length; i++) {
+      d = DIGITS.indexOf(fracStr[i]);
+      if (d < 0 || d >= base) return null;
+      fracNum = fracNum * B + BigInt(d);
+      fracDen *= B;
+    }
+    return { neg: neg, intVal: intVal, fracNum: fracNum, fracDen: fracDen, isFloat: fracStr.length > 0 };
+  }
+
+  function toBaseString(val, base) {
+    if (base < 2 || base > 36) return null;
+    var neg = val < 0n;
+    var v = neg ? -val : val;
+    if (v === 0n) return '0';
+    var out = '';
+    var b = BigInt(base);
+    while (v > 0n) {
+      out = DIGITS[Number(v % b)] + out;
+      v /= b;
+    }
+    return (neg ? '-' : '') + out;
+  }
+
+  var MAX_FRAC = 40;   // 小数部分最多展开位数（循环小数在此截断）
+  function formatBaseNumber(num, base) {
+    var out = toBaseString(num.intVal, base);
+    if (num.isFloat) {
+      if (num.fracNum === 0n) {
+        out += '.0';
+      } else {
+        var T = BigInt(base), n = num.fracNum, d = num.fracDen, frac = '';
+        for (var k = 0; k < MAX_FRAC && n !== 0n; k++) {
+          n *= T;
+          frac += DIGITS[Number(n / d)];
+          n %= d;
+        }
+        out += '.' + frac;
+      }
+    }
+    return (num.neg ? '-' : '') + out;
+  }
+
+  var baseResultValue = '';   // 纯数值（复制时使用，不含 (base N) 说明）
+  function convertBase() {
+    var bFrom = parseInt(baseFrom.value, 10);
+    var bTo = parseInt(baseTo.value, 10);
+    if (!baseIn.value.trim()) { setBase('—', false, ''); return; }
+    var num = parseBaseNumber(baseIn.value, bFrom);
+    if (num === null || !(bTo >= 2 && bTo <= 36)) {
+      setBase('无效输入（检查数据与进制 2–36）', true, ''); return;
+    }
+    var pure = formatBaseNumber(num, bTo);
+    setBase(pure + '  (base ' + bTo + ')', false, pure);
+  }
+  function setBase(text, err, value) {
+    baseResult.textContent = text;
+    baseResult.classList.toggle('err', !!err);
+    baseResultValue = value || '';
+    baseResult.classList.toggle('copyable', !err && !!value);
+  }
+  [baseIn, baseFrom, baseTo].forEach(function (el) {
+    el.addEventListener('input', convertBase);
+    el.addEventListener('change', convertBase);
+  });
+  $('baseSwapBtn').addEventListener('click', function () {
+    var f = baseFrom.value, t = baseTo.value;
+    baseFrom.value = t; baseTo.value = f;
+    convertBase();
+  });
+  $('baseConvertBtn').addEventListener('click', convertBase);
+  bindCopy(baseResult, function () { return baseResultValue; });
+
+  /* ================= CRC 校验 ================= */
+  // CRC 预设（参数与 crccheck 官方校验值一致；poly 为不含最高幂的正规形式）
+  var CRC_PRESETS = [
+    { name: 'CRC-4/ITU',            w: 4,   poly: '3',                 init: '0',                 rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-5/EPC',            w: 5,   poly: '9',                 init: '9',                 rin: false, rout: false, xor: '0' },
+    { name: 'CRC-5/ITU',            w: 5,   poly: '15',                init: '0',                 rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-5/USB',            w: 5,   poly: '5',                 init: '1f',                rin: true,  rout: true,  xor: '1f' },
+    { name: 'CRC-6/ITU',            w: 6,   poly: '3',                 init: '0',                 rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-7',                w: 7,   poly: '9',                 init: '0',                 rin: false, rout: false, xor: '0' },
+    { name: 'CRC-8',                w: 8,   poly: '7',                 init: '0',                 rin: false, rout: false, xor: '0' },
+    { name: 'CRC-8/MAXIM',          w: 8,   poly: '31',                init: '0',                 rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-8/CDMA2000',       w: 8,   poly: '9b',                init: 'ff',                rin: false, rout: false, xor: '0' },
+    { name: 'CRC-16/CCITT-FALSE',   w: 16,  poly: '1021',              init: 'ffff',              rin: false, rout: false, xor: '0' },
+    { name: 'CRC-16/ARC',           w: 16,  poly: '8005',              init: '0',                 rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-16/MODBUS',        w: 16,  poly: '8005',              init: 'ffff',              rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-16/X25',           w: 16,  poly: '1021',              init: 'ffff',              rin: true,  rout: true,  xor: 'ffff' },
+    { name: 'CRC-16/KERMIT',        w: 16,  poly: '1021',              init: '0',                 rin: true,  rout: true,  xor: '0' },
+    { name: 'CRC-16/USB',           w: 16,  poly: '8005',              init: 'ffff',              rin: true,  rout: true,  xor: 'ffff' },
+    { name: 'CRC-16/IBM-SDLC',      w: 16,  poly: '1021',              init: 'ffff',              rin: true,  rout: true,  xor: 'ffff' },
+    { name: 'CRC-32',               w: 32,  poly: '4c11db7',           init: 'ffffffff',          rin: true,  rout: true,  xor: 'ffffffff' },
+    { name: 'CRC-32C',              w: 32,  poly: '1edc6f41',          init: 'ffffffff',          rin: true,  rout: true,  xor: 'ffffffff' },
+    { name: 'CRC-32/MPEG-2',        w: 32,  poly: '4c11db7',           init: 'ffffffff',          rin: false, rout: false, xor: '0' },
+    { name: 'CRC-32/BZIP2',         w: 32,  poly: '4c11db7',           init: 'ffffffff',          rin: false, rout: false, xor: 'ffffffff' },
+    { name: 'CRC-64/ECMA-182',      w: 64,  poly: '42f0e1eba9ea3693',  init: '0',                 rin: false, rout: false, xor: '0' },
+    { name: 'CRC-64/XZ',            w: 64,  poly: '42f0e1eba9ea3693',  init: 'ffffffffffffffff',  rin: true,  rout: true,  xor: 'ffffffffffffffff' }
+  ];
+
+  var crcPreset = $('crcPreset'), crcWidth = $('crcWidth'), crcPoly = $('crcPoly');
+  var crcInit = $('crcInit'), crcXor = $('crcXor'), crcRefIn = $('crcRefIn'), crcRefOut = $('crcRefOut');
+  var crcInput = $('crcInput'), crcResult = $('crcResult');
+
+  // 填充预设下拉
+  CRC_PRESETS.forEach(function (p, i) {
+    var opt = document.createElement('option');
+    opt.value = String(i); opt.textContent = p.name;
+    crcPreset.appendChild(opt);
+  });
+
+  function applyPreset(i) {
+    var p = CRC_PRESETS[i];
+    if (!p) return;
+    crcWidth.value = p.w; crcPoly.value = p.poly; crcInit.value = p.init;
+    crcXor.value = p.xor; crcRefIn.checked = p.rin; crcRefOut.checked = p.rout;
+    computeCRC();
+  }
+  crcPreset.addEventListener('change', function () {
+    if (crcPreset.value !== '') applyPreset(parseInt(crcPreset.value, 10));
+  });
+
+  function hexToBigInt(hex) {
+    hex = String(hex).trim().replace(/^0x/i, '').replace(/[\s_]/g, '');
+    if (!hex) return 0n;
+    if (!/^[0-9a-fA-F]+$/.test(hex)) return null;
+    return BigInt('0x' + hex);
+  }
+  function reverseBits(x, w) {
+    var r = 0n;
+    for (var i = 0; i < w; i++) {
+      r = (r << 1n) | (x & 1n);
+      x >>= 1n;
+    }
+    return r;
+  }
+  // Rocksoft/catalogue 通用模型：逐字节、逐位、MSB 优先，支持任意位宽（BigInt）
+  function crcComputeBytes(bytes, width, poly, init, refin, refout, xorout) {
+    var mask = (1n << BigInt(width)) - 1n;
+    var top = 1n << BigInt(width - 1);
+    poly &= mask; init &= mask; xorout &= mask;
+    var c = init;
+    for (var bi = 0; bi < bytes.length; bi++) {
+      var byte = bytes[bi];
+      if (refin) byte = Number(reverseBits(BigInt(byte), 8));
+      for (var i = 7; i >= 0; i--) {
+        var fb = ((c & top) !== 0n) ^ (((byte >> i) & 1) === 1);
+        c = (c << 1n) & mask;
+        if (fb) c ^= poly;
+      }
+    }
+    if (refout) c = reverseBits(c, width);
+    return (c ^ xorout) & mask;
+  }
+  function parseHexBytes(text) {
+    var hex = text.replace(/0x/gi, '').replace(/[\s,:]/g, '').replace(/_/g, '');
+    if (hex.length % 2 !== 0) return null;
+    if (!/^[0-9a-fA-F]*$/.test(hex)) return null;
+    var out = [];
+    for (var i = 0; i < hex.length; i += 2) out.push(parseInt(hex.slice(i, i + 2), 16));
+    return out;
+  }
+  function parseStringBytes(text) {
+    // UTF-8 编码（TextEncoder），无 TextEncoder 时退回 Latin-1
+    if (typeof TextEncoder !== 'undefined') return Array.prototype.slice.call(new TextEncoder().encode(text));
+    var out = [];
+    for (var i = 0; i < text.length; i++) {
+      var code = text.charCodeAt(i);
+      if (code < 128) out.push(code);
+      else { var u = unescape(encodeURIComponent(text)); for (var j = 0; j < u.length; j++) out.push(u.charCodeAt(j) & 0xff); break; }
+    }
+    return out;
+  }
+
+  var crcResultValue = '';   // 纯结果（复制用，不含说明）
+  function computeCRC() {
+    var w = parseInt(crcWidth.value, 10);
+    var poly = hexToBigInt(crcPoly.value), init = hexToBigInt(crcInit.value), xor = hexToBigInt(crcXor.value);
+    var mode = (document.querySelector('input[name=crcMode]:checked') || {}).value || 'hex';
+    var bytes = mode === 'hex' ? parseHexBytes(crcInput.value) : parseStringBytes(crcInput.value);
+    function err(msg) {
+      crcResult.textContent = msg; crcResult.classList.add('err');
+      crcResult.classList.remove('copyable'); crcResultValue = '';
+    }
+    if (!(w >= 4 && w <= 128)) { err('位宽需在 4–128 之间'); return; }
+    if (poly === null || init === null || xor === null) { err('多项式 / 初始值 / 异或值须为有效 HEX'); return; }
+    if (!bytes) { err(mode === 'hex' ? 'HEX 数据须为成对十六进制字符' : '数据为空'); return; }
+    var res = crcComputeBytes(bytes, w, poly, init, crcRefIn.checked, crcRefOut.checked, xor);
+    var hexLen = Math.ceil(w / 4);
+    var hexStr = res.toString(16).toUpperCase().padStart(hexLen, '0');
+    crcResult.classList.remove('err');
+    crcResultValue = '0x' + hexStr;
+    crcResult.textContent = crcResultValue + '  ·  ' + res.toString(10);
+    crcResult.classList.add('copyable');
+  }
+  bindCopy(crcResult, function () { return crcResultValue; });
+
+  [crcWidth, crcPoly, crcInit, crcXor].forEach(function (el) { el.addEventListener('input', function () { crcPreset.value = ''; computeCRC(); }); });
+  [crcRefIn, crcRefOut].forEach(function (el) { el.addEventListener('change', function () { crcPreset.value = ''; computeCRC(); }); });
+  crcInput.addEventListener('input', computeCRC);
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=crcMode]'), function (r) {
+    r.addEventListener('change', function () {
+      var mode = r.value;
+      $('crcInputHint').innerHTML = mode === 'hex'
+        ? 'HEX 模式：可含空格，每两位为一个字节（如 <code>31 32 33</code>）。'
+        : '字符串模式：按 UTF-8 编码为字节后再计算。';
+      computeCRC();
+    });
+  });
+  $('crcComputeBtn').addEventListener('click', computeCRC);
+
+  /* ================= 校验和 ================= */
+  function padHex(v, len) {
+    var s = v.toString(16).toUpperCase();
+    while (s.length < len) s = '0' + s;
+    return s;
+  }
+  function checksums(bytes) {
+    var out = [];
+    // 累加和
+    var s8 = 0, s16 = 0, xr = 0, i;
+    for (i = 0; i < bytes.length; i++) { s8 = (s8 + bytes[i]) & 0xff; s16 = (s16 + bytes[i]) & 0xffff; xr ^= bytes[i]; }
+    out.push({ name: '8 位累加和 (SUM8)', val: '0x' + padHex(s8, 2) + '  ·  ' + s8 });
+    out.push({ name: '16 位累加和 (SUM16)', val: '0x' + padHex(s16, 4) + '  ·  ' + s16 });
+    out.push({ name: '异或校验 (XOR)', val: '0x' + padHex(xr, 2) + '  ·  ' + xr });
+    // LRC（Modbus ASCII）：累加和取二进制补码
+    out.push({ name: '纵向冗余校验 (LRC)', val: '0x' + padHex((-s8) & 0xff, 2) + '  ·  ' + ((-s8) & 0xff) });
+    // NMEA-0183：若有 $...* 则异或其中内容，否则异或全部字节
+    var nmeaBytes = bytes;
+    if (bytes.length && bytes[0] === 0x24) { // '$'
+      var star = -1;
+      for (i = 1; i < bytes.length; i++) if (bytes[i] === 0x2a) { star = i; break; }
+      if (star > 0) nmeaBytes = bytes.slice(1, star);
+    }
+    var nx = 0;
+    for (i = 0; i < nmeaBytes.length; i++) nx ^= nmeaBytes[i];
+    out.push({ name: 'NMEA-0183 校验', val: '0x' + padHex(nx, 2) });
+    // Adler-32
+    var a = 1, b = 0;
+    for (i = 0; i < bytes.length; i++) { a = (a + bytes[i]) % 65521; b = (b + a) % 65521; }
+    out.push({ name: 'Adler-32', val: '0x' + padHex(((b << 16) | a) >>> 0, 8) });
+    // Fletcher 家族
+    function fletcher(mod, bits) {
+      var s1 = 0, s2 = 0;
+      for (var j = 0; j < bytes.length; j++) { s1 = (s1 + bytes[j]) % mod; s2 = (s2 + s1) % mod; }
+      var v = (s2 << (bits / 2)) | s1;
+      return '0x' + padHex(v >>> 0, bits / 4);
+    }
+    out.push({ name: 'Fletcher-8', val: fletcher(15, 8) });
+    out.push({ name: 'Fletcher-16', val: fletcher(255, 16) });
+    out.push({ name: 'Fletcher-32', val: fletcher(65535, 32) });
+    // BSD checksum（16 位循环右移 + 累加）
+    var c = 0;
+    for (i = 0; i < bytes.length; i++) {
+      c = (c >> 1) + ((c & 1) << 15);
+      c = (c + bytes[i]) & 0xffff;
+    }
+    out.push({ name: 'BSD 校验和 (16)', val: '0x' + padHex(c, 4) + '  ·  ' + c });
+    return out;
+  }
+
+  var sumGrid = $('sumGrid');
+  function computeChecksums() {
+    var mode = (document.querySelector('input[name=crcMode]:checked') || {}).value || 'hex';
+    var bytes = mode === 'hex' ? parseHexBytes(crcInput.value) : parseStringBytes(crcInput.value);
+    if (!bytes) { sumGrid.innerHTML = '<div class="sum-item"><div class="sum-val">数据无效</div></div>'; return; }
+    var list = checksums(bytes);
+    var html = '';
+    list.forEach(function (it) {
+      html += '<div class="sum-item"><div class="sum-name">' + it.name + '</div>' +
+              '<div class="sum-val">' + it.val + '</div></div>';
+    });
+    sumGrid.innerHTML = html;
+  }
+  // 让每个校验和值可点击复制
+  sumGrid.addEventListener('click', function (e) {
+    if (!autoCopyEnabled()) return;
+    var cell = e.target.closest ? e.target.closest('.sum-val') : null;
+    if (!cell) return;
+    var txt = cell.textContent.split('·')[0].trim();
+    copyText(txt).then(function () { flashCopied(cell); }).catch(function () {});
+  });
+
+  /* ================= 文件校验（CRC32 / MD5 / SHA 家族） ================= */
+  var CRC32_TABLE = (function () {
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32Bytes(u8) {
+    var c = 0xffffffff;
+    for (var i = 0; i < u8.length; i++) c = CRC32_TABLE[(c ^ u8[i]) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  }
+  // MD5（纯 JS，不依赖 Web Crypto）
+  function md5Bytes(u8) {
+    function rol(x, n) { return (x << n) | (x >>> (32 - n)); }
+    var S = [7,12,17,22, 7,12,17,22, 7,12,17,22, 7,12,17,22,
+             5,9,14,20, 5,9,14,20, 5,9,14,20, 5,9,14,20,
+             4,11,16,23, 4,11,16,23, 4,11,16,23, 4,11,16,23,
+             6,10,15,21, 6,10,15,21, 6,10,15,21, 6,10,15,21];
+    var K = [];
+    for (var ki = 0; ki < 64; ki++) K[ki] = Math.floor(Math.abs(Math.sin(ki + 1)) * 4294967296);
+    var len = u8.length;
+    var words = [];
+    for (var i = 0; i < len; i++) words[i >> 2] |= u8[i] << ((i % 4) * 8);
+    words[len >> 2] |= 0x80 << ((len % 4) * 8);
+    var bitLen = len * 8;
+    words[(((len + 8) >> 6) << 4) + 14] = bitLen >>> 0;
+    words[(((len + 8) >> 6) << 4) + 15] = Math.floor(bitLen / 4294967296);
+    var a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+    for (var off = 0; off < words.length; off += 16) {
+      var a = a0, b = b0, c = c0, d = d0;
+      for (var j = 0; j < 64; j++) {
+        var f, g;
+        if (j < 16) { f = (b & c) | (~b & d); g = j; }
+        else if (j < 32) { f = (d & b) | (~d & c); g = (5 * j + 1) % 16; }
+        else if (j < 48) { f = b ^ c ^ d; g = (3 * j + 5) % 16; }
+        else { f = c ^ (b | ~d); g = (7 * j) % 16; }
+        var tmp = d; d = c; c = b;
+        b = (b + rol((a + f + K[j] + (words[off + g] | 0)) | 0, S[j])) | 0;
+        a = tmp;
+      }
+      a0 = (a0 + a) | 0; b0 = (b0 + b) | 0; c0 = (c0 + c) | 0; d0 = (d0 + d) | 0;
+    }
+    var res = '';
+    [a0, b0, c0, d0].forEach(function (w) {
+      for (var k = 0; k < 4; k++) res += padHex((w >>> (k * 8)) & 0xff, 2);
+    });
+    return res.toLowerCase();
+  }
+  function shaHex(algo, buf) {
+    if (!(window.crypto && crypto.subtle)) return Promise.resolve('—');
+    return crypto.subtle.digest(algo, buf).then(function (d) {
+      var v = new Uint8Array(d), s = '';
+      for (var i = 0; i < v.length; i++) s += padHex(v[i], 2);
+      return s.toLowerCase();
+    }).catch(function () { return '—'; });
+  }
+
+  var fileInput = $('fileHashInput'), hashDrop = $('hashDrop');
+  var hashBody = $('hashTableBody'), hashWrap = $('hashTableWrap'), hashStatus = $('hashStatus');
+  var hashClearBtn = $('hashClearBtn');
+  var fileRows = [];   // { name, size, digests:{} }
+
+  function fmtSize(n) {
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1048576).toFixed(2) + ' MB';
+  }
+  function renderHashTable() {
+    if (!fileRows.length) {
+      hashWrap.hidden = true;
+      hashClearBtn.disabled = true;
+      return;
+    }
+    hashWrap.hidden = false;
+    hashClearBtn.disabled = false;
+    var html = '';
+    fileRows.forEach(function (row, ri) {
+      html += '<tr><td class="fname">' + esc(row.name) + '</td><td>' + fmtSize(row.size) + '</td>';
+      ['crc32', 'md5', 'sha1', 'sha256', 'sha512'].forEach(function (key) {
+        var v = row.digests[key];
+        if (v === undefined) v = '计算中…';
+        else if (v === null) v = '不可用';
+        html += '<td class="hash-cell" data-r="' + ri + '" data-k="' + key + '">' + esc(v) + '</td>';
+      });
+      html += '</tr>';
+    });
+    hashBody.innerHTML = html;
+  }
+  hashBody.addEventListener('click', function (e) {
+    if (!autoCopyEnabled()) return;
+    var cell = e.target;
+    if (!cell.classList || !cell.classList.contains('hash-cell')) return;
+    var v = cell.textContent;
+    if (!v || v === '计算中…' || v === '不可用') return;
+    copyText(v).then(function () { flashCopied(cell); }).catch(function () {});
+  });
+
+  function hashFile(file) {
+    var row = { name: file.name, size: file.size, digests: {} };
+    fileRows.push(row);
+    renderHashTable();
+    return file.arrayBuffer().then(function (buf) {
+      var u8 = new Uint8Array(buf);
+      row.digests.crc32 = padHex(crc32Bytes(u8), 8);
+      row.digests.md5 = md5Bytes(u8);
+      renderHashTable();
+      return Promise.all([
+        shaHex('SHA-1', buf).then(function (v) { row.digests.sha1 = v; renderHashTable(); }),
+        shaHex('SHA-256', buf).then(function (v) { row.digests.sha256 = v; renderHashTable(); }),
+        shaHex('SHA-512', buf).then(function (v) { row.digests.sha512 = v; renderHashTable(); })
+      ]);
+    }).catch(function (err) {
+      row.digests.crc32 = null; row.digests.md5 = null;
+      row.digests.sha1 = null; row.digests.sha256 = null; row.digests.sha512 = null;
+      renderHashTable();
+    });
+  }
+  function handleFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    hashStatus.textContent = '正在计算 ' + files.length + ' 个文件的校验值…';
+    var tasks = files.map(hashFile);
+    Promise.all(tasks).then(function () { hashStatus.textContent = '已完成 ' + files.length + ' 个文件。'; });
+  }
+  fileInput.addEventListener('change', function () { handleFiles(fileInput.files); fileInput.value = ''; });
+  hashClearBtn.addEventListener('click', function () {
+    fileRows = [];
+    hashBody.innerHTML = '';
+    hashWrap.hidden = true;
+    hashClearBtn.disabled = true;
+    hashStatus.textContent = '';
+    fileInput.value = '';
+  });
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    hashDrop.addEventListener(ev, function (e) { e.preventDefault(); hashDrop.classList.add('dragover'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    hashDrop.addEventListener(ev, function (e) { e.preventDefault(); hashDrop.classList.remove('dragover'); });
+  });
+  hashDrop.addEventListener('drop', function (e) { handleFiles(e.dataTransfer.files); });
+
+  // 输入变化时重算校验和
+  crcInput.addEventListener('input', computeChecksums);
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=crcMode]'), function (r) {
+    r.addEventListener('change', computeChecksums);
+  });
+
+  /* ================= 时间工具 ================= */
+  var timeInputA = $('timeInputA'), timeInputB = $('timeInputB');
+  var timeInfoA = $('timeInfoA'), timeInfoB = $('timeInfoB');
+  var timeFmtA = $('timeFmtA'), timeFmtB = $('timeFmtB');
+  var timeDiffBig = $('timeDiffBig'), timeDiffGrid = $('timeDiffGrid');
+  var WEEK_CN = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+  function pad2(n) { return n < 10 ? '0' + n : String(n); }
+  function validYMD(y, mo, da) {
+    var d = new Date(y, mo - 1, da);
+    return d.getFullYear() === y && d.getMonth() === mo - 1 && d.getDate() === da;
+  }
+  function mkDate(y, mo, da, h, mi, se, ms) {
+    if (!validYMD(y, mo, da) || h > 23 || mi > 59 || se > 59) return null;
+    var d = new Date(y, mo - 1, da, h || 0, mi || 0, se || 0, ms || 0);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // 解析输入 → { date: Date, fmt: 格式说明 }；无法识别返回 null
+  function parseTimeInput(raw) {
+    var s = String(raw || '').trim();
+    if (!s) return null;
+    var lower = s.toLowerCase();
+    var now = new Date();
+
+    if (lower === 'now' || lower === '现在' || lower === '当前时间')
+      return { date: new Date(), fmt: '相对时间（当前时刻）' };
+    if (lower === '今天' || lower === 'today')
+      return { date: new Date(now.getFullYear(), now.getMonth(), now.getDate()), fmt: '相对时间（今天 00:00）' };
+    if (lower === '明天' || lower === 'tomorrow')
+      return { date: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1), fmt: '相对时间（明天 00:00）' };
+    if (lower === '昨天' || lower === 'yesterday')
+      return { date: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1), fmt: '相对时间（昨天 00:00）' };
+
+    // 纯数字：Unix 时间戳（秒 / 毫秒，以 1e11 为界）
+    if (/^\d{1,16}$/.test(s)) {
+      var n = Number(s);
+      if (!isFinite(n)) return null;
+      var isMs = n >= 1e11;
+      var d = new Date(isMs ? n : n * 1000);
+      if (isNaN(d.getTime())) return null;
+      return { date: d, fmt: isMs ? 'Unix 时间戳（毫秒）' : 'Unix 时间戳（秒）' };
+    }
+
+    // 中文日期：2024年1月15日 [10:30[:00]]
+    var m = s.match(/^(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+    if (m) {
+      var dc = mkDate(+m[1], +m[2], +m[3], +(m[4] || 0), +(m[5] || 0), +(m[6] || 0));
+      return dc ? { date: dc, fmt: '中文日期时间' } : null;
+    }
+
+    // ISO 8601 / 常规：YYYY-MM-DD 或 YYYY/MM/DD，可选时间与时区
+    m = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[T\s]+(\d{1,2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?)?\s*(Z|z|[+-]\d{2}:?\d{2})?$/);
+    if (m) {
+      var y = +m[1], mo = +m[2], da = +m[3], h = +(m[4] || 0), mi = +(m[5] || 0);
+      var se = +(m[6] || 0), ms = +(m[7] || 0), tz = m[8];
+      if (!validYMD(y, mo, da) || h > 23 || mi > 59 || se > 59) return null;
+      if (tz) {
+        var utcMs = Date.UTC(y, mo - 1, da, h, mi, se, ms);
+        if (tz !== 'Z' && tz !== 'z') {
+          var sign = tz[0] === '-' ? -1 : 1;
+          var t = tz.slice(1).replace(':', '');
+          utcMs -= sign * ((+t.slice(0, 2)) * 60 + (+t.slice(2, 2))) * 60000;
+        }
+        var dt = new Date(utcMs);
+        return isNaN(dt.getTime()) ? null : { date: dt, fmt: 'ISO 8601（含时区）' };
+      }
+      var dl = mkDate(y, mo, da, h, mi, se, ms);
+      return dl ? { date: dl, fmt: m[4] ? '日期时间（本地时区）' : '日期（本地 00:00）' } : null;
+    }
+
+    // 纯时间 HH:MM[:SS] → 今天
+    m = s.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+    if (m) {
+      var dh = mkDate(now.getFullYear(), now.getMonth(), now.getDate(), +m[1], +m[2], +(m[3] || 0));
+      return dh ? { date: dh, fmt: '时间（今天）' } : null;
+    }
+
+    // RFC 2822 / 英文日期：交给原生 Date 解析
+    var dn = new Date(s);
+    if (!isNaN(dn.getTime())) return { date: dn, fmt: 'Date 可解析格式（RFC 2822 / 英文）' };
+    return null;
+  }
+
+  function isoWeekInfo(d) {
+    var t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var dayNum = t.getUTCDay() || 7;
+    t.setUTCDate(t.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+    var week = Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+    return { year: t.getUTCFullYear(), week: week };
+  }
+  function dayOfYear(d) {
+    var start = Date.UTC(d.getFullYear(), 0, 1);
+    var cur = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+    return Math.floor((cur - start) / 86400000) + 1;
+  }
+  function julianDay(d) {
+    var y = d.getUTCFullYear(), mo = d.getUTCMonth() + 1, da = d.getUTCDate();
+    var h = d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600 + d.getUTCMilliseconds() / 3600000;
+    if (mo <= 2) { y--; mo += 12; }
+    var a = Math.floor(y / 100), b = 2 - a + Math.floor(a / 4);
+    return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (mo + 1)) + da + b - 1524.5 + h / 24;
+  }
+
+  /* ---------- 农历（1900–2100，经典压缩数据表） ---------- */
+  var LUNAR_INFO = [
+    0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,//1900-1909
+    0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,//1910-1919
+    0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,//1920-1929
+    0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,//1930-1939
+    0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,//1940-1949
+    0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,//1950-1959
+    0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,//1960-1969
+    0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,//1970-1979
+    0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,//1980-1989
+    0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,//1990-1999
+    0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,//2000-2009
+    0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,//2010-2019
+    0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,//2020-2029
+    0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,//2030-2039
+    0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,//2040-2049
+    0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,//2050-2059
+    0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,//2060-2069
+    0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,//2070-2079
+    0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,//2080-2089
+    0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,//2090-2099
+    0x0d520 //2100
+  ];
+  var GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+  var ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  var ZODIAC = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+  var CN_MONTH = ['', '正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
+  var CN_NUM = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+  function cnDay(n) {
+    if (n <= 10) return CN_NUM[n];
+    if (n < 20) return '十' + CN_NUM[n - 10];
+    return CN_NUM[Math.floor(n / 10)] + '十' + (n % 10 ? CN_NUM[n % 10] : '');
+  }
+  function cnLunarDay(n) {
+    if (n === 10) return '初十';
+    if (n < 10) return '初' + CN_NUM[n];
+    if (n < 20) return '十' + CN_NUM[n - 10];
+    return CN_NUM[Math.floor(n / 10)] + '十' + (n % 10 ? CN_NUM[n % 10] : '');
+  }
+  function ganzhiYear(y) { var i = (y - 4) % 60; if (i < 0) i += 60; return GAN[i % 10] + ZHI[i % 12]; }
+  function zodiacYear(y) { var i = (y - 4) % 12; if (i < 0) i += 12; return ZODIAC[i]; }
+  function lunarLeapMonth(y) { return LUNAR_INFO[y - 1900] & 0xf; }
+  function lunarLeapDays(y) { return lunarLeapMonth(y) ? ((LUNAR_INFO[y - 1900] & 0x10000) ? 30 : 29) : 0; }
+  function lunarMonthDays(y, m) { return (LUNAR_INFO[y - 1900] & (0x10000 >> m)) ? 30 : 29; }
+  function lunarYearDays(y) {
+    var sum = 348;
+    for (var i = 0x8000; i > 0x8; i >>= 1) sum += (LUNAR_INFO[y - 1900] & i) ? 1 : 0;
+    return sum + lunarLeapDays(y);
+  }
+  function solarToLunar(sy, sm, sd) {
+    if (sy < 1900 || sy > 2100) return null;
+    var offset = Math.floor((Date.UTC(sy, sm - 1, sd) - Date.UTC(1900, 0, 31)) / 86400000);
+    if (offset < 0) return null;
+    var temp = 0, i = 1900;
+    for (; i <= 2100 && offset > 0; i++) { temp = lunarYearDays(i); offset -= temp; }
+    if (offset < 0) { offset += temp; i--; }
+    var year = i, leap = lunarLeapMonth(year), isLeap = false;
+    for (i = 1; i < 13 && offset > 0; i++) {
+      if (leap > 0 && i === leap + 1 && !isLeap) { --i; isLeap = true; temp = lunarLeapDays(year); }
+      else { temp = lunarMonthDays(year, i); }
+      if (isLeap && i === leap + 1) isLeap = false;
+      offset -= temp;
+    }
+    if (offset === 0 && leap > 0 && i === leap + 1) {
+      if (isLeap) { isLeap = false; } else { isLeap = true; --i; }
+    }
+    if (offset < 0) { offset += temp; --i; }
+    return { year: year, month: i, day: offset + 1, isLeap: isLeap };
+  }
+  var LUNAR_FEST = { '1-1': '春节', '1-15': '元宵节', '2-2': '龙抬头', '5-5': '端午节',
+                     '7-7': '七夕', '8-15': '中秋节', '9-9': '重阳节', '12-8': '腊八节' };
+  function lunarFestival(l) {
+    var key = l.month + '-' + l.day;
+    if (LUNAR_FEST[key]) return LUNAR_FEST[key];
+    var last = l.isLeap ? lunarLeapDays(l.year) : lunarMonthDays(l.year, l.month);
+    if (l.month === 12 && l.day === last) return '除夕';
+    return '';
+  }
+  var TERM_INFO = [0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758];
+  var TERM_NAMES = ['小寒', '大寒', '立春', '雨水', '惊蛰', '春分', '清明', '谷雨', '立夏', '小满', '芒种', '夏至',
+                    '小暑', '大暑', '立秋', '处暑', '白露', '秋分', '寒露', '霜降', '立冬', '小雪', '大雪', '冬至'];
+  function solarTermDate(y, n) {
+    return new Date(Date.UTC(1900, 0, 6, 2, 5) + 31556925974.7 * (y - 1900) + TERM_INFO[n] * 60000);
+  }
+  function solarTermOfDate(d) {
+    var y = d.getFullYear();
+    for (var yy = y - 1; yy <= y + 1; yy++) {
+      for (var n = 0; n < 24; n++) {
+        var t = new Date(solarTermDate(yy, n).getTime() + 8 * 3600000);  // 北京时间
+        if (t.getUTCFullYear() === y && t.getUTCMonth() === d.getMonth() && t.getUTCDate() === d.getDate())
+          return TERM_NAMES[n];
+      }
+    }
+    return '';
+  }
+
+  function timeInfoItems(d) {
+    var y = d.getFullYear(), mo = d.getMonth() + 1, da = d.getDate();
+    var h = d.getHours(), mi = d.getMinutes(), se = d.getSeconds(), ms = d.getMilliseconds();
+    var daysInMonth = new Date(y, mo, 0).getDate();
+    var leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+    var iw = isoWeekInfo(d), doy = dayOfYear(d);
+    var h12 = h % 12 || 12;
+    var fd = (new Date(y, mo - 1, 1).getDay() + 6) % 7;   // 周一=0
+    var tzOff = -d.getTimezoneOffset();
+    var tzStr = (tzOff >= 0 ? '+' : '-') + pad2(Math.floor(Math.abs(tzOff) / 60)) + ':' + pad2(Math.abs(tzOff) % 60);
+    var tzName = '本地时间';
+    try { tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || tzName; } catch (_) {}
+    var l = solarToLunar(y, mo, da);
+    var lunarText = '—', lunarGZ = '—', lunarFest = '—';
+    if (l) {
+      lunarText = '农历 ' + (l.isLeap ? '闰' : '') + CN_MONTH[l.month] + '月' + cnLunarDay(l.day);
+      lunarGZ = ganzhiYear(l.year) + '年 · ' + zodiacYear(l.year) + '年';
+      lunarFest = lunarFestival(l) || '—';
+    }
+    var curTerm = solarTermOfDate(d) || '—';
+    return [
+      { k: '公历日期', v: y + '-' + pad2(mo) + '-' + pad2(da) },
+      { k: '时间', v: pad2(h) + ':' + pad2(mi) + ':' + pad2(se) + '.' + String(ms).padStart(3, '0') },
+      { k: '星期', v: WEEK_CN[d.getDay()] },
+      { k: '农历日期', v: lunarText },
+      { k: '农历干支 / 生肖', v: lunarGZ },
+      { k: '农历节日', v: lunarFest },
+      { k: '节气', v: curTerm },
+      { k: '一年中的第几天', v: doy + ' / ' + (leap ? 366 : 365) },
+      { k: '一年中的第几小时', v: String((doy - 1) * 24 + h + 1) },
+      { k: 'ISO 周', v: iw.year + '-W' + pad2(iw.week) },
+      { k: '季度 / 月份', v: 'Q' + Math.ceil(mo / 3) + ' · 第 ' + mo + ' 月' },
+      { k: '本月第几天 / 天数', v: da + ' / ' + daysInMonth },
+      { k: '本月第几周', v: '第 ' + Math.ceil((da + fd) / 7) + ' 周' },
+      { k: '距年末天数', v: String((leap ? 366 : 365) - doy) },
+      { k: '是否闰年', v: leap ? '是（闰年）' : '否（平年）' },
+      { k: '12 小时制', v: (h < 12 ? '上午 AM' : '下午 PM') + ' ' + h12 + ':' + pad2(mi) },
+      { k: '一天中的第几秒', v: String(h * 3600 + mi * 60 + se) + ' / 86400' },
+      { k: 'Unix 时间戳（毫秒）', v: String(d.getTime()) },
+      { k: 'Unix 时间戳（秒）', v: String(Math.floor(d.getTime() / 1000)) },
+      { k: 'UTC 时间', v: d.toISOString() },
+      { k: '本地字符串', v: d.toLocaleString('zh-CN') },
+      { k: '时区', v: tzName + ' (UTC' + tzStr + ')' },
+      { k: '儒略日 (JD)', v: julianDay(d).toFixed(5) }
+    ];
+  }
+
+  function bindTimeCopy(container) {
+    container.addEventListener('click', function (e) {
+      if (!autoCopyEnabled()) return;
+      var el = e.target.closest ? e.target.closest('.tv') : null;
+      if (!el) return;
+      var v = el.getAttribute('data-copy');
+      if (!v) return;
+      copyText(v).then(function () { flashCopied(el); }).catch(function () {});
+    });
+  }
+  bindTimeCopy(timeInfoA); bindTimeCopy(timeInfoB);
+
+  /* ---------- 多格式互转：每个框代表一种时间格式，修改并失焦后同步全部 ---------- */
+  var TIME_FORMATS = [
+    { key: 'unix_s', label: 'Unix 时间戳（秒）',
+      fmt: function (d) { return String(Math.floor(d.getTime() / 1000)); },
+      parse: function (s) { if (!/^\d{1,12}$/.test(s)) return null; var d = new Date(Number(s) * 1000); return isNaN(d.getTime()) ? null : d; } },
+    { key: 'unix_ms', label: 'Unix 时间戳（毫秒）',
+      fmt: function (d) { return String(d.getTime()); },
+      parse: function (s) { if (!/^\d{1,16}$/.test(s)) return null; var d = new Date(Number(s)); return isNaN(d.getTime()) ? null : d; } },
+    { key: 'iso', label: 'ISO 8601（UTC）',
+      fmt: function (d) { return d.toISOString(); },
+      parse: function (s) { var r = parseTimeInput(s); return r ? r.date : null; } },
+    { key: 'local', label: '本地日期时间',
+      fmt: function (d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds()); },
+      parse: function (s) { var r = parseTimeInput(s); return r ? r.date : null; } },
+    { key: 'cn', label: '中文日期时间',
+      fmt: function (d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds()); },
+      parse: function (s) { var r = parseTimeInput(s); return r ? r.date : null; } },
+    { key: 'rfc', label: 'RFC 2822 / UTC 字符串',
+      fmt: function (d) { return d.toUTCString(); },
+      parse: function (s) { var r = parseTimeInput(s); return r ? r.date : null; } }
+  ];
+  function buildFormatConverters(which) {
+    var grid = $('timeFmtGrid' + which);
+    if (!grid) return;
+    var html = '';
+    TIME_FORMATS.forEach(function (f) {
+      html += '<div class="time-fmt-field"><label for="tf_' + which + '_' + f.key + '">' + esc(f.label) + '</label>' +
+              '<input id="tf_' + which + '_' + f.key + '" type="text" spellcheck="false" autocomplete="off"></div>';
+    });
+    grid.innerHTML = html;
+    TIME_FORMATS.forEach(function (f) {
+      var inp = $('tf_' + which + '_' + f.key);
+      inp.addEventListener('blur', function () { applyFormatInput(which, f, inp); });
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); inp.blur(); } });
+    });
+  }
+  function syncFormats(which, d) {
+    var status = $('timeConvStatus' + which);
+    if (status) { status.textContent = '编辑任一格式并失焦即可同步'; status.classList.remove('err'); }
+    TIME_FORMATS.forEach(function (f) {
+      var inp = $('tf_' + which + '_' + f.key);
+      if (inp) inp.classList.remove('invalid');
+      if (inp && document.activeElement !== inp) inp.value = d ? f.fmt(d) : '';
+    });
+  }
+  function applyFormatInput(which, f, inp) {
+    var raw = inp.value.trim();
+    var status = $('timeConvStatus' + which);
+    if (!raw) {
+      inp.classList.remove('invalid');
+      status.textContent = '编辑任一格式并失焦即可同步';
+      status.classList.remove('err');
+      return;
+    }
+    var d = f.parse(raw);
+    if (!d) {
+      inp.classList.add('invalid');
+      status.textContent = '「' + f.label + '」无法识别';
+      status.classList.add('err');
+      return;
+    }
+    inp.classList.remove('invalid');
+    status.classList.remove('err');
+    var main = which === 'A' ? timeInputA : timeInputB;
+    main.value = raw;
+    computeTime();
+    status.textContent = '已从「' + f.label + '」同步其余 ' + (TIME_FORMATS.length - 1) + ' 种格式';
+  }
+  buildFormatConverters('A');
+  buildFormatConverters('B');
+
+  function renderTimeInfo(container, fmtEl, raw, data) {
+    if (!raw || !data) {
+      fmtEl.textContent = raw ? '无法识别的格式' : '未输入';
+      container.innerHTML = raw && !data ? '<div class="time-err">无法识别该时间格式，请参考下方支持的格式。</div>' : '';
+      return;
+    }
+    fmtEl.textContent = data.fmt;
+    var html = '';
+    timeInfoItems(data.date).forEach(function (it) {
+      html += '<div class="time-info-item"><div class="tk">' + esc(it.k) + '</div>' +
+              '<div class="tv" data-copy="' + esc(it.v) + '" title="点击复制">' + esc(it.v) + '</div></div>';
+    });
+    container.innerHTML = html;
+  }
+
+  // 日历差：先折合成 UTC 字段避免夏令时干扰，再按 年→月→日→时→分→秒 分解
+  function toUTCFields(d) {
+    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()));
+  }
+  function addMonthsClampedUTC(date, n) {
+    var y = date.getUTCFullYear(), m = date.getUTCMonth() + n, da = date.getUTCDate();
+    var last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+    return new Date(Date.UTC(y, m, Math.min(da, last), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()));
+  }
+  function calendarDiff(a, b) {
+    var sign = a.getTime() > b.getTime() ? -1 : 1;
+    var lo = toUTCFields(sign === 1 ? a : b), hi = toUTCFields(sign === 1 ? b : a);
+    var years = hi.getUTCFullYear() - lo.getUTCFullYear();
+    var p = addMonthsClampedUTC(lo, years * 12);
+    if (p.getTime() > hi.getTime()) { years--; p = addMonthsClampedUTC(lo, years * 12); }
+    var months = 0;
+    for (var guard = 0; guard < 13; guard++) {
+      var nx = addMonthsClampedUTC(lo, years * 12 + months + 1);
+      if (nx.getTime() > hi.getTime()) break;
+      months++;
+    }
+    p = addMonthsClampedUTC(lo, years * 12 + months);
+    var ms = hi.getTime() - p.getTime();
+    var days = Math.floor(ms / 86400000); ms -= days * 86400000;
+    var hrs = Math.floor(ms / 3600000); ms -= hrs * 3600000;
+    var mins = Math.floor(ms / 60000); ms -= mins * 60000;
+    var secs = Math.floor(ms / 1000); ms -= secs * 1000;
+    return { years: years * sign, months: months * sign, days: days * sign, hours: hrs * sign,
+             minutes: mins * sign, seconds: secs * sign, ms: ms * sign };
+  }
+  function weekdaySpan(a, b) {
+    var sign = a.getTime() > b.getTime() ? -1 : 1;
+    var lo = sign === 1 ? a : b, hi = sign === 1 ? b : a;
+    var d0 = new Date(lo.getFullYear(), lo.getMonth(), lo.getDate());
+    var d1 = new Date(hi.getFullYear(), hi.getMonth(), hi.getDate());
+    var work = 0, weekend = 0, total = 0;
+    while (d0.getTime() <= d1.getTime() && total < 365000) {
+      var w = d0.getDay();
+      if (w === 0 || w === 6) weekend++; else work++;
+      d0.setDate(d0.getDate() + 1);
+      total++;
+    }
+    return { work: work * sign, weekend: weekend * sign, days: total * sign };
+  }
+  function fmtNum(n) {
+    if (!isFinite(n)) return '—';
+    return Number(n.toFixed(4)).toLocaleString('zh-CN');
+  }
+  function fmtDuration(ms) {
+    var s = Math.floor(ms / 1000), frac = ms % 1000;
+    var d = Math.floor(s / 86400); s %= 86400;
+    var h = Math.floor(s / 3600); s %= 3600;
+    var mi = Math.floor(s / 60); s %= 60;
+    return d + ' 天 ' + h + ' 小时 ' + mi + ' 分 ' + s + ' 秒' + (frac ? ' ' + frac + ' 毫秒' : '');
+  }
+
+  var timeParsed = { A: null, B: null };
+  function computeTime() {
+    var pa = parseTimeInput(timeInputA.value), pb = parseTimeInput(timeInputB.value);
+    timeParsed.A = pa; timeParsed.B = pb;
+    syncFormats('A', pa && pa.date);
+    syncFormats('B', pb && pb.date);
+    renderTimeInfo(timeInfoA, timeFmtA, timeInputA.value.trim(), pa);
+    renderTimeInfo(timeInfoB, timeFmtB, timeInputB.value.trim(), pb);
+    if (!pa || !pb) {
+      timeDiffBig.textContent = '请先在上方输入两个有效时间';
+      timeDiffBig.classList.add('err');
+      timeDiffGrid.innerHTML = '';
+      return;
+    }
+    var a = pa.date, b = pb.date, diffMs = b.getTime() - a.getTime();
+    var sign = diffMs < 0 ? '−' : (diffMs > 0 ? '+' : '');
+    timeDiffBig.textContent = sign + fmtDuration(Math.abs(diffMs)) + '　（B − A）';
+    timeDiffBig.classList.remove('err');
+
+    var cd = calendarDiff(a, b), wd = weekdaySpan(a, b);
+    var cdText = cd.years + ' 年 ' + cd.months + ' 月 ' + cd.days + ' 日 ' + cd.hours + ' 时 ' + cd.minutes + ' 分 ' + cd.seconds + ' 秒 ' + cd.ms + ' 毫秒';
+    var items = [
+      { k: '总毫秒', v: fmtNum(diffMs) },
+      { k: '总秒', v: fmtNum(diffMs / 1000) },
+      { k: '总分钟', v: fmtNum(diffMs / 60000) },
+      { k: '总小时', v: fmtNum(diffMs / 3600000) },
+      { k: '总天数（24h）', v: fmtNum(diffMs / 86400000) },
+      { k: '总周数', v: fmtNum(diffMs / 604800000) },
+      { k: '年', v: String(cd.years) }, { k: '月', v: String(cd.months) }, { k: '日', v: String(cd.days) },
+      { k: '时', v: String(cd.hours) }, { k: '分', v: String(cd.minutes) },
+      { k: '秒', v: String(cd.seconds) }, { k: '毫秒', v: String(cd.ms) },
+      { k: '跨度（日历天）', v: String(wd.days) },
+      { k: '工作日（周一至周五）', v: String(wd.work) },
+      { k: '周末天数', v: String(wd.weekend) },
+      { k: '日历差（B − A）', v: cdText, calDiff: true }
+    ];
+    var html = '';
+    items.forEach(function (it) {
+      html += '<div class="time-info-item' + (it.calDiff ? ' cal-diff-item' : '') + '"><div class="tk">' + esc(it.k) + '</div>' +
+              '<div class="tv" data-copy="' + esc(it.v) + '" title="点击复制">' + esc(it.v) + '</div></div>';
+    });
+    timeDiffGrid.innerHTML = html;
+  }
+  bindTimeCopy(timeDiffGrid);
+
+  [timeInputA, timeInputB].forEach(function (el) { el.addEventListener('input', computeTime); });
+  $('timeClearA').addEventListener('click', function () { timeInputA.value = ''; computeTime(); timeInputA.focus(); });
+  $('timeClearB').addEventListener('click', function () { timeInputB.value = ''; computeTime(); timeInputB.focus(); });
+  $('timeNowA').addEventListener('click', function () { timeInputA.value = new Date().toISOString(); computeTime(); });
+  $('timeNowB').addEventListener('click', function () { timeInputB.value = new Date().toISOString(); computeTime(); });
+  $('timeSwapAB').addEventListener('click', function () {
+    var t = timeInputA.value; timeInputA.value = timeInputB.value; timeInputB.value = t; computeTime();
+  });
+
+  /* ---------- 日历时间选择器 ---------- */
+  var DIALOG_WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+  var calPick = $('calPick'), calGrid = $('calGrid'), calTitle = $('calTitle');
+  var calHour = $('calHour'), calMin = $('calMin'), calSec = $('calSec');
+  var calTarget = null;                       // 'A' 或 'B'
+  var calView = new Date();                   // 当前显示的年月
+  var calSelY = 0, calSelM = 0, calSelD = 0; // 选中的年月日
+
+  function openCalPicker(which, anchor) {
+    calTarget = which;
+    // 若输入框已有有效时间，以其为初始选中，否则用今天
+    var parsed = parseTimeInput((which === 'A' ? timeInputA : timeInputB).value);
+    var base = parsed ? parsed.date : new Date();
+    calSelY = base.getFullYear(); calSelM = base.getMonth(); calSelD = base.getDate();
+    calView = new Date(calSelY, calSelM, 1);
+    calHour.value = base.getHours(); calMin.value = base.getMinutes(); calSec.value = base.getSeconds();
+    renderCalendar();
+    calPick.hidden = false;
+    // 定位到按钮下方，避免超出视口
+    var r = anchor.getBoundingClientRect();
+    var w = calPick.offsetWidth, h = calPick.offsetHeight;
+    var left = Math.min(Math.max(12, r.left), window.innerWidth - w - 12);
+    var top = r.bottom + 6;
+    if (top + h > window.innerHeight - 12) top = Math.max(12, r.top - h - 6);
+    calPick.style.left = left + 'px';
+    calPick.style.top = top + 'px';
+  }
+  function closeCalPicker() { calPick.hidden = true; }
+
+  function renderCalendar() {
+    var y = calView.getFullYear(), m = calView.getMonth();
+    calTitle.textContent = y + ' 年 ' + (m + 1) + ' 月';
+    var now = new Date();
+    var html = '';
+    DIALOG_WEEK.forEach(function (w) { html += '<span class="cp-wd">' + w + '</span>'; });
+    var firstDow = new Date(y, m, 1).getDay();
+    var days = new Date(y, m + 1, 0).getDate();
+    for (var i = 0; i < firstDow; i++) html += '<button class="cp-day blank" disabled></button>';
+    for (var d = 1; d <= days; d++) {
+      var cls = 'cp-day';
+      if (d === calSelD && y === calSelY && m === calSelM) cls += ' sel';
+      else if (y === now.getFullYear() && m === now.getMonth() && d === now.getDate()) cls += ' today';
+      html += '<button class="' + cls + '" data-d="' + d + '" title="' + y + '-' + pad2(m + 1) + '-' + pad2(d) + '">' + d + '</button>';
+    }
+    calGrid.innerHTML = html;
+  }
+
+  function applyCalendar() {
+    if (!calTarget) return;
+    var h = Math.min(23, Math.max(0, parseInt(calHour.value, 10) || 0));
+    var mi = Math.min(59, Math.max(0, parseInt(calMin.value, 10) || 0));
+    var se = Math.min(59, Math.max(0, parseInt(calSec.value, 10) || 0));
+    var value = calSelY + '-' + pad2(calSelM + 1) + '-' + pad2(calSelD) + ' ' + pad2(h) + ':' + pad2(mi) + ':' + pad2(se);
+    var input = calTarget === 'A' ? timeInputA : timeInputB;
+    input.value = value;
+    closeCalPicker();
+    computeTime();
+    input.focus();
+  }
+
+  $('timePickA').addEventListener('click', function () { openCalPicker('A', this); });
+  $('timePickB').addEventListener('click', function () { openCalPicker('B', this); });
+  $('calPrevY').addEventListener('click', function () { calView.setFullYear(calView.getFullYear() - 1); renderCalendar(); });
+  $('calNextY').addEventListener('click', function () { calView.setFullYear(calView.getFullYear() + 1); renderCalendar(); });
+  $('calPrevM').addEventListener('click', function () { calView.setMonth(calView.getMonth() - 1); renderCalendar(); });
+  $('calNextM').addEventListener('click', function () { calView.setMonth(calView.getMonth() + 1); renderCalendar(); });
+  calGrid.addEventListener('click', function (e) {
+    // 换日后会重建网格 DOM，原节点脱离弹层，需阻止冒泡以免被“点击外部关闭”误判
+    e.stopPropagation();
+    var cell = e.target.closest ? e.target.closest('.cp-day[data-d]') : null;
+    if (!cell) return;
+    calSelD = parseInt(cell.getAttribute('data-d'), 10);
+    calSelY = calView.getFullYear(); calSelM = calView.getMonth();
+    renderCalendar();
+  });
+  $('calTodayBtn').addEventListener('click', function () {
+    var n = new Date();
+    calSelY = n.getFullYear(); calSelM = n.getMonth(); calSelD = n.getDate();
+    calView = new Date(calSelY, calSelM, 1);
+    calHour.value = n.getHours(); calMin.value = n.getMinutes(); calSec.value = n.getSeconds();
+    renderCalendar();
+  });
+  $('calCancelBtn').addEventListener('click', closeCalPicker);
+  $('calOkBtn').addEventListener('click', applyCalendar);
+  // 弹层内任意点击都阻止冒泡，避免重建 DOM 后被外部关闭逻辑误判
+  calPick.addEventListener('click', function (e) { e.stopPropagation(); });
+  // 点击弹层外部关闭；Esc 关闭
+  document.addEventListener('click', function (e) {
+    if (calPick.hidden) return;
+    if (calPick.contains(e.target) || e.target.closest('.time-cal-btn')) return;
+    closeCalPicker();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (calPick.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeCalPicker(); }
+    else if (e.key === 'Enter' && calPick.contains(e.target)) { e.preventDefault(); applyCalendar(); }
+  });
+
+  // 初始渲染
+  convertBase();
+  computeCRC();
+  computeChecksums();
+  computeTime();
+  // 供自动化测试调用
+  window.__calc = {
+    convertBase: convertBase, computeCRC: computeCRC, crcComputeBytes: crcComputeBytes,
+    parseHexBytes: parseHexBytes, CRC_PRESETS: CRC_PRESETS,
+    checksums: checksums, crc32Bytes: crc32Bytes, md5Bytes: md5Bytes,
+    parseBaseNumber: parseBaseNumber, formatBaseNumber: formatBaseNumber,
+    parseTimeInput: parseTimeInput, calendarDiff: calendarDiff,
+    timeInfoItems: timeInfoItems, computeTime: computeTime,
+    solarToLunar: solarToLunar, solarTermOfDate: solarTermOfDate,
+    TIME_FORMATS: TIME_FORMATS, autoCopyEnabled: autoCopyEnabled,
+    openCalPicker: openCalPicker, closeCalPicker: closeCalPicker,
+    calPickerShown: function () { return !calPick.hidden; }
+  };
 })();
 </script>
 
