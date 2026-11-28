@@ -1067,7 +1067,7 @@
   .about-snake-score {
     position: absolute; top: 7px; right: 9px;
     font-family: var(--mono);
-    font-size: 12px; font-weight: 700; line-height: 1;
+    font-size: var(--hud-fs, 16px); font-weight: 700; line-height: 1;
     font-variant-numeric: tabular-nums;
     text-shadow: 0 0 3px var(--panel-2), 0 1px 2px var(--panel-2);
     pointer-events: none;
@@ -1075,22 +1075,35 @@
   .about-snake-score .manual { color: var(--snake-manual-a); }  /* 手动分：手动模式主题色 */
   .about-snake-score .sep    { color: var(--muted-2); margin: 0 2px; }
   .about-snake-score .auto   { color: var(--snake-auto-a); }    /* 自动分：自动模式主题色 */
-  /* 大屏控制行：模式下拉框 + 分数；默认隐藏（小屏沿用画布 HUD 分数） */
+  /* ===== 小游戏信息条统一规范（2.7.91）=====
+     统一字号阶梯：--hud-fs 数值 HUD / --info-fs 信息文字 / --ctl-fs 下拉与按钮。
+     所有信息条高 28px、垂直居中、8px 间距；数字统一 tabular-nums 等宽对齐。 */
   .about-snake-bar {
-    display: none; align-items: center; gap: 14px; flex-wrap: wrap;
+    --hud-fs: 16px;    /* 分数 HUD（画布叠层与大屏分数行） */
+    --info-fs: 12px;   /* 信息文字（状态 / 步数 / 计时等） */
+    --ctl-fs: 12px;    /* 下拉框 / 按钮文字 */
+    --bar-h: 28px;     /* 信息条控件统一高度 */
+    display: none; align-items: center; gap: 10px; flex-wrap: wrap;
     padding: 0 6px 10px;
   }
+  /* 2.8.97：游戏上方的分数/关卡/步数等文字禁止选中。划词选择这些动态数字容易与
+     浏览器翻译/取词等扩展冲突（误触发取词、把数字当段落），统一禁用文本选择；
+     下拉框/按钮/复选框的点击交互不受影响（user-select 只影响文本选取）。 */
+  .about-snake-bar, .about-snake-bar *,
+  .about-snake-score, .about-snake-score * {
+    -webkit-user-select: none; user-select: none;
+  }
   .about-snake-bar select {
-    font: inherit; font-size: 14px; cursor: pointer;
+    font: inherit; font-size: var(--ctl-fs); cursor: pointer;
     color: var(--fg); background: var(--panel-2);
     border: 1px solid var(--border-soft); border-radius: 6px;
-    padding: 5px 10px;
+    padding: 4px 9px; height: var(--bar-h);
   }
   /* 贪吃蛇子模式单选框（合作 / 人机 / 群雄 / 无尽）：仅大屏贪吃蛇模式显示 */
   .about-snake-submode {
     display: flex; align-items: center; gap: 10px;
-    font-size: 13px; color: var(--muted-2); cursor: pointer;
-    padding: 4px 10px; border: 1px solid var(--border-soft); border-radius: 6px;
+    font-size: var(--info-fs, 12px); color: var(--muted-2); cursor: pointer;
+    padding: 4px 10px; min-height: var(--bar-h, 28px); border: 1px solid var(--border-soft); border-radius: 6px;
     background: var(--panel-2);
   }
   .about-snake-submode[hidden] { display: none; }
@@ -1098,7 +1111,7 @@
   .about-snake-submode input { cursor: pointer; accent-color: var(--accent, #2dd4bf); }
   .about-snake-bar-score {
     margin-left: auto; font-family: var(--mono);
-    font-size: 18px; font-weight: 700; line-height: 1;
+    font-size: var(--hud-fs, 16px); font-weight: 700; line-height: 1;
     font-variant-numeric: tabular-nums;
   }
   /* 分数颜色与蛇身颜色对应：手动=靛蓝、自动/人工=青绿、计算机=玫红 */
@@ -1109,7 +1122,7 @@
   .about-snake-bar-score .sep    { color: var(--muted-2); margin: 0 4px; }
   /* 最高分：品牌强调色醒目、可点击清零 */
   .about-snake-bar-best {
-    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    font-family: var(--mono); font-size: var(--info-fs, 12px); font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--muted-2); cursor: default; white-space: nowrap;
   }
@@ -1125,8 +1138,8 @@
   :root[data-theme="light"] .about-body .about-snake-bar-best { color: var(--muted-2); }
   /* 模式3 群雄争霸 / 模式19 无尽：蛇分数的紧凑显示 */
   .about-snake-bar-arena {
-    display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: center;
-    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center;
+    font-family: var(--mono); font-size: var(--info-fs, 12px); font-weight: 700;
     font-variant-numeric: tabular-nums;
   }
   .about-snake-bar-arena[hidden] { display: none; }
@@ -1138,7 +1151,7 @@
   .about-snake-bar-arena .asb-item.is-out { opacity: .35; text-decoration: line-through; }
   /* 模式4 俄罗斯方块：得分/消行/等级 */
   .about-snake-bar-tetris {
-    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    font-family: var(--mono); font-size: var(--info-fs, 12px); font-weight: 700;
     font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted-2);
   }
   .about-snake-bar-tetris[hidden] { display: none; }
@@ -1151,25 +1164,45 @@
   .about-snake-bar-tetris .arcade-act:hover { color: var(--accent); text-decoration: underline; }
   /* 扫雷尺寸下拉框（信息条内） */
   .about-snake-bar-tetris .mines-size-sel {
-    margin-left: 6px; padding: 1px 4px; font-family: var(--mono); font-size: 12px;
+    margin-left: 6px; padding: 2px 6px; height: var(--bar-h, 28px);
+    font-family: var(--mono); font-size: var(--ctl-fs, 12px);
     background: var(--btn-bg, #151b25); color: var(--accent-strong);
-    border: 1px solid var(--border, #202a3a); border-radius: 4px; cursor: pointer;
+    border: 1px solid var(--border, #202a3a); border-radius: 5px; cursor: pointer;
   }
   .about-snake-bar-tetris .mines-size-sel[hidden] { display: none; }
   /* 小游戏信息条：内容过长时自动换行，避免尺寸/墙壁风格下拉框被挤出可视区域。
      :not([hidden]) 保证 hidden 时仍由上面的 [hidden] 规则隐藏；white-space: normal 让说明文字可折行。 */
   #arcadeScoreBar:not([hidden]) {
     display: inline-flex; flex-wrap: wrap; align-items: center;
-    gap: 2px 8px; min-width: 0; max-width: 100%; white-space: normal;
+    gap: 6px 10px; min-width: 0; max-width: 100%; white-space: normal;
   }
-  #arcadeInfo { min-width: 0; font-size: 11px; }
+  /* 2.7.91：信息文字统一字号与垂直对齐；内部用 flex + gap 分隔，空片段不占位 */
+  #arcadeInfo {
+    display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
+    min-width: 0; font-size: var(--info-fs, 12px); font-variant-numeric: tabular-nums;
+  }
+  #arcadeInfo .ai-pre, #arcadeInfo .ai-text, #arcadeInfo .ai-tip { white-space: nowrap; }
+  #arcadeInfo .ai-pre:empty, #arcadeInfo .ai-text:empty, #arcadeInfo .ai-tip:empty { display: none; }
+  /* 旧的 .ai-sep 全角空格分隔改为 flex gap，避免重复留白与错位 */
+  #arcadeInfo .ai-sep { display: none; }
   #arcadeScoreBar .mines-size-sel { flex: 0 0 auto; margin-left: 0; white-space: nowrap; }
   #arcadeScoreBar button.mines-size-sel:hover { border-color: var(--accent-strong); color: var(--accent); }
+  /* 2.8.98：钻石迷阵成就/特殊效果文字（紧跟尺寸框后），暖金高亮、淡入淡出 */
+  #arcadeScoreBar .jewel-achv {
+    flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-size: var(--ctl-fs, 12px); font-weight: 700; letter-spacing: .3px;
+    color: #f59e0b; padding: 2px 8px; border-radius: 999px;
+    background: linear-gradient(90deg, rgba(245,158,11,.16), rgba(245,158,11,.04));
+    border: 1px solid rgba(245,158,11,.45);
+    animation: jewelAchvIn .28s ease-out; user-select: none;
+  }
+  #arcadeScoreBar .jewel-achv[hidden] { display: none; }
+  @keyframes jewelAchvIn { from { opacity: 0; transform: translateY(-3px) scale(.94); } to { opacity: 1; transform: none; } }
   /* 推箱子操作按钮：无衬线加粗字体、圆角描边、hover 填充，明暗主题通用 */
   #arcadeScoreBar .soko-btn {
-    flex: 0 0 auto; margin-left: 2px; padding: 3px 10px;
+    flex: 0 0 auto; margin-left: 0; padding: 3px 12px; height: var(--bar-h, 28px);
     font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: 12px; font-weight: 600; letter-spacing: .2px; white-space: nowrap;
+    font-size: var(--ctl-fs, 12px); font-weight: 600; letter-spacing: .2px; white-space: nowrap;
     cursor: pointer; border-radius: 6px;
     background: var(--accent-soft); color: var(--accent-strong);
     border: 1px solid var(--accent-strong);
@@ -1180,6 +1213,9 @@
     box-shadow: 0 2px 8px var(--accent-soft);
   }
   #arcadeScoreBar .soko-btn:active { transform: translateY(1px); }
+  /* 禁用态（如经典华容道提示资格未解锁）：明显置灰，去掉 hover 反色与投影 */
+  #arcadeScoreBar .soko-btn:disabled { opacity: .42; filter: grayscale(.7); cursor: not-allowed; box-shadow: none; }
+  #arcadeScoreBar .soko-btn:disabled:hover { background: var(--accent-soft); color: var(--accent-strong); box-shadow: none; }
   #arcadeScoreBar .soko-btn[hidden] { display: none; }
   /* 次要按钮「重新开始本关」：中性边框，hover 转为强调色，与主按钮主次分明又协调 */
   #arcadeScoreBar .soko-btn-ghost {
@@ -1191,40 +1227,40 @@
   /* 模式4：AI 对手开关（仅宽度足够/横屏时显示） */
   .about-snake-bar-rival {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 12px; color: var(--muted-2); cursor: pointer; white-space: nowrap;
+    font-size: var(--ctl-fs, 12px); color: var(--muted-2); cursor: pointer; white-space: nowrap;
     user-select: none;
   }
   .about-snake-bar-rival[hidden] { display: none; }
   .about-snake-bar-rival input { cursor: pointer; accent-color: var(--accent-strong); margin: 0; }
-  .about-snake-bar-rival select { font-size: 12px; padding: 3px 6px; }
+  .about-snake-bar-rival select { font-size: var(--ctl-fs, 12px); padding: 3px 6px; height: var(--bar-h, 28px); }
   .about-snake-bar-rival > span { color: var(--muted-2); }
   /* 坦克选关/AI 队员控件：靠右对齐，与模式选择框同一行，省略点击层级 */
   .about-snake-bar-right {
     display: inline-flex; align-items: center; gap: 8px; margin-left: auto;
   }
   .about-snake-bar-right[hidden] { display: none; }
-  .about-snake-bar-right .about-snake-bar-rival { font-size: 13px; }
+  .about-snake-bar-right .about-snake-bar-rival { font-size: var(--ctl-fs, 12px); }
   /* 模式6 生命游戏：世代/存活 展示 + 播放/单步/随机/清空/速度 控制 */
   .about-snake-bar-life {
-    display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    font-family: var(--mono); font-size: 12px; font-weight: 400;   /* 默认常规字重，仅世代/存活标签与数值加粗 */
+    display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: var(--info-fs, 12px); font-weight: 400;   /* 默认常规字重，仅世代/存活标签与数值加粗 */
     font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted-2);
   }
   .about-snake-bar-life[hidden] { display: none; }
   .about-snake-bar-life > span { color: var(--muted-2); font-weight: 700; }   /* 「世代」「存活」标签保留粗体 */
   .about-snake-bar-life b { color: var(--accent-strong); font-weight: 700; }  /* 数值保留粗体 */
   .about-snake-bar-life button {
-    font: inherit; font-size: 12px; cursor: pointer;
+    font: inherit; font-size: var(--ctl-fs, 12px); cursor: pointer;
     color: var(--fg); background: var(--panel-2);
     border: 1px solid var(--border-soft); border-radius: 6px;
-    padding: 3px 9px;
+    padding: 3px 10px; height: var(--bar-h, 28px);
   }
   .about-snake-bar-life button:hover { border-color: var(--accent-strong); }
   .about-snake-bar-life select {
-    font: inherit; font-size: 12px; cursor: pointer;
+    font: inherit; font-size: var(--ctl-fs, 12px); cursor: pointer;
     color: var(--fg); background: var(--panel-2);
     border: 1px solid var(--border-soft); border-radius: 6px;
-    padding: 3px 6px;
+    padding: 3px 8px; height: var(--bar-h, 28px);
   }
   .about-snake canvas {
     width: 100%; height: 150px; display: block; cursor: pointer;
@@ -1579,6 +1615,41 @@
   .hash-table td.hash-cell:hover { color: var(--accent); background: var(--accent-soft); }
   .hash-table td.fname { font-weight: 600; color: var(--fg); max-width: 180px; word-break: break-all; }
   .hash-status { font-size: 11.5px; color: var(--muted-2); margin-top: 8px; }
+
+  /* ---------- 单位换算 ---------- */
+  .unit-head {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end;
+    padding: 14px 16px; border: 1px solid var(--border-soft);
+    border-radius: 12px; background: var(--panel-2, var(--bg)); margin-bottom: 16px;
+  }
+  .unit-head .calc-field { flex: 1 1 200px; }
+  .unit-head .calc-select { width: 100%; min-width: 0; }
+  .unit-head .calc-field[hidden] { display: none; }
+  .unit-rows { display: flex; flex-direction: column; gap: 10px; }
+  .unit-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    padding: 14px 16px; border: 1px solid var(--border-soft);
+    border-radius: 12px; background: var(--panel-2, var(--bg));
+  }
+  .unit-row.out { border-color: var(--accent-line); background: var(--accent-soft); }
+  .unit-row-label { flex: 0 0 46px; font-size: 12.5px; font-weight: 650; color: var(--muted); }
+  .unit-row.out .unit-row-label { color: var(--accent); }
+  .unit-row .unit-num { flex: 1 1 180px; width: auto; font-size: 15px; font-weight: 600; }
+  .unit-row .calc-out {
+    flex: 1 1 180px; font-size: 15px; font-weight: 700;
+    min-height: 35px; display: flex; align-items: center;
+  }
+  .unit-row .unit-select { flex: 0 1 210px; min-width: 150px; }
+  .unit-swap-row { display: flex; justify-content: center; }
+  .unit-meta {
+    display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center;
+    margin-top: 12px; font-size: 11.5px; color: var(--muted-2);
+  }
+  .unit-meta b { color: var(--accent); font-weight: 650; }
+  @media (max-width: 620px) {
+    .unit-head .calc-field { flex: 1 1 100%; }
+    .unit-row .unit-num, .unit-row .calc-out, .unit-row .unit-select { flex: 1 1 100%; }
+  }
 
   /* ---------- 时间工具 ---------- */
   .time-block {
@@ -2084,6 +2155,40 @@ function loadProgress(key) {
 function saveProgress(key, obj) {
   try { cookieSet(key, JSON.stringify(obj)); } catch (_) {}
 }
+
+/* ---------------- 小游戏局面存档（退出保存 / 重新进入恢复） ----------------
+ * 每个游戏在 reset(full, fresh) 中：fresh=true（R 重开）清空自身存档并重新开局；
+ * fresh 省略（切模式 / 退出大屏 / 刷新进入）时先尝试 restoreState 恢复上次局面。
+ * 2.7.88：贪吃蛇(1/2/3/19)、扫雷(7)、俄罗斯方块(4)、坦克(17)、推箱子(12)、
+ *         数独(14)、2048(5)、独立钻石(15)、五子棋(9)、黑白棋(11)、
+ *         数字华容道(20)、经典华容道(21) 支持局面持久化。
+ * 2.7.89：新增炸弹人(18)完整局面存档；ESC 退出大屏前保存进度（修复先 snakeStop 导致漏存）。
+ * 2.7.90：经典华容道提示资格(hintUsedFree/hintBase)纳入局面存档，刷新/切换后可续用。
+ * 2.8.93：新增钻石迷阵(22)、空当接龙(23) 的完整局面存档。
+ * 2.8.94：钻石迷阵修复下落残留匹配、过关自动进关并加主题；空当接龙改为经典全明牌规则并加主题。 */
+const GAME_SAVE_KEY = 'mp_game_state_v1';
+function loadGameStates() {
+  try {
+    const v = JSON.parse(cookieGet(GAME_SAVE_KEY) || 'null');
+    return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+  } catch (_) { return {}; }
+}
+function saveGameStates(all) {
+  try { cookieSet(GAME_SAVE_KEY, JSON.stringify(all)); } catch (_) {}
+}
+function saveGameState(mode, data) {
+  const all = loadGameStates(); all[String(mode)] = data; saveGameStates(all);
+}
+function loadGameState(mode) {
+  const all = loadGameStates(); return all[String(mode)] || null;
+}
+function clearGameState(mode) {
+  const all = loadGameStates(); delete all[String(mode)]; saveGameStates(all);
+}
+// TypedArray <-> 普通数组（JSON 存档用）
+const taArr = (ta) => Array.prototype.slice.call(ta || []);
+const arrTa = (arr, TA) => { try { return new TA(arr || []); } catch (_) { return new TA(); } };
+const deepCopy = (v) => JSON.parse(JSON.stringify(v));
 
 /* ---------------- REPL 历史命令持久化 ----------------
  * 命令可能含引号、换行、中文，统一用 Base64URL 编码后存字符串，
@@ -5474,8 +5579,13 @@ setTimeout(autoCheckUpdate, 1500);
  *       →(普通修改：隐藏根目录虚拟目录 tmp/home/dev/proc + 新建文件夹图标改黄色 + 日历差移回时间差网格两倍宽) 2.7.84
  *       →(普通修改：时间 A/B 前新增 📅 按钮，弹出日历时间选择器，选择后填入输入框) 2.7.85
  *       →(普通修改：知识库新增分类下拉筛选，含"所有"，只出所选分类题目) 2.7.86
+ *       →(较大功能：小游戏新增数字华容道(可选长宽)与经典华容道(多布局+按布局最低步数)) 2.7.87
+ *       →(较大功能：12游戏局面存档与恢复 / 华容道6×6与主题 / 经典华容道多布局与棋子主题 / 知识库5分与提示) 2.7.88
+ *       →(较大功能：ESC退出保存进度 / 炸弹人完整存档 / 五子棋黑白棋执子选择 / 经典华容道积分提示下一步) 2.7.89
+ *       →(普通修改：知识库答对改回1分(提示仍扣5分) / 经典华容道提示改积分里程碑解锁:新局免费1次,之后积分较基准+5解锁1次,不累计不扣分) 2.7.90
+ *       →(普通修改：统一全部小游戏信息条的布局与风格——字号阶梯/控件高度/垂直对齐/统一间距) 2.7.91
  * build 号始终持续累加，前两位变化时不回零。 */
-const APP_VERSION = '2.7.86';
+const APP_VERSION = '2.9.04';
 
 const SAMPLE_GROUPS = [
   {
@@ -7186,6 +7296,8 @@ linksEl.addEventListener('change', () => {
    * 解锁状态持久化到 localStorage，解锁后点击画布 / 按 B 才能进入大屏游戏模式。 */
   const UNLOCK_KEY = 'mp_game_unlocked';
   const KB_TOTAL_KEY = 'mp_kb_total_score';
+  // 读取知识库累计总分（经典华容道提示里程碑解锁用；不修改积分）
+  const kbScoreNow = () => { try { return parseInt(localStorage.getItem(KB_TOTAL_KEY) || '0', 10) || 0; } catch (_) { return 0; } };
   const UNLOCK_CLICKS = 6;
   const CLICK_WINDOW = 3000;
   let unlockHintTimer = null;
@@ -7276,6 +7388,11 @@ linksEl.addEventListener('change', () => {
   const tetAiLevelWrapEl = $('tetAiLevelWrap'), tetAiLevelSelEl = $('tetAiLevelSel');
   const g2048ScoreBarEl = $('g2048ScoreBar'), g2048ScoreEl = $('g2048Score');
   const arcadeScoreBarEl = $('arcadeScoreBar'), arcadeInfoEl = $('arcadeInfo'), mazeSizeSelEl = $('mazeSizeSel'), mazeStyleSelEl = $('mazeStyleSel'), breakoutLevelSelEl = $('breakoutLevelSel'), pegBoardSelEl = $('pegBoardSel');
+  const slideSizeSelEl = $('slideSizeSel'), klotskiLayoutSelEl = $('klotskiLayoutSel'),
+        slideThemeSelEl = $('slideThemeSel'), klotskiThemeSelEl = $('klotskiThemeSel'),
+        gomokuColorSelEl = $('gomokuColorSel'), reversiColorSelEl = $('reversiColorSel'),
+        jewelThemeSelEl = $('jewelThemeSel'), jewelSizeSelEl = $('jewelSizeSel'), jewelAchvEl = $('jewelAchv'), freecellThemeSelEl = $('freecellThemeSel'),
+        klotskiHintBtnEl = $('klotskiHintBtn');
   const minesSizeSelEl = $('minesSizeSel');
   const tankLevelSelEl = $('tankLevelSel'), bomberLevelSelEl = $('bomberLevelSel'), tankAIChkEl = $('tankAIChk'), tankRightCtlEl = $('tankRightCtl');
   const sokobanLevelSelEl = $('sokobanLevelSel'), sokoRandomBtnEl = $('sokoRandomBtn'), sokoRestartBtnEl = $('sokoRestartBtn');
@@ -7407,23 +7524,30 @@ linksEl.addEventListener('change', () => {
   // 19=无尽（玩家 + 15 条 PC，撞死重生、无 100 分上限，仅大屏）
   // 4=俄罗斯方块；5=2048；6=生命游戏；7=扫雷；8=Flappy Bird；9=五子棋；10=太空侵略者（4~10 仅大屏）
   let gameMode = 1;
-  // 上次处于大屏时使用的模式（1~18），持久化：退出大屏/切模式时保存，再进大屏或刷新页面时恢复。
+  // 上次处于大屏时使用的模式（内部 1~23），持久化：退出大屏/切模式时保存，再进大屏或刷新页面时恢复。
   // 小屏始终强制模式1，故此处记录的是「大屏模式」，而非当前实际模式。
-  // 注意：上限必须与游戏模式总数一致（19，含无尽）。曾误写为 10，导致选择太空侵略者(10)之后的游戏
-  // （11~18）刷新后被钳制成 10，表现为「重新载入后都是太空侵略者」。
-  let savedBigMode = Math.max(1, Math.min(19, parseInt(cookieGet('mp_snake_mode') || '1', 10) || 1));
+  // 注意：上限必须与游戏模式总数一致（23，含无尽19、两种华容道20/21 与新增 22~23）。曾误写为 10，
+  // 导致选择后面的游戏刷新后被钳制成 10，表现为「重新载入后都是太空侵略者」。
+  let savedBigMode = Math.max(1, Math.min(23, parseInt(cookieGet('mp_snake_mode') || '1', 10) || 1));
   // 贪吃蛇子模式（1 合作 / 2 人机 / 3 群雄 / 19 无尽）：均已合并为下拉框的「贪吃蛇」，由顶部单选框选择。
   // 独立记住子模式，使下拉框从其它模式切回「贪吃蛇」时恢复到上次的子模式。
   let lastSnakeSub = ((savedBigMode >= 1 && savedBigMode <= 3) || savedBigMode === 19) ? savedBigMode : 1;
-  // 下拉框 / 数字键的显示序号（1~16）↔ 内部 gameMode 的映射。
+  // 下拉框 / 数字键的显示序号（1~20）↔ 内部 gameMode 的映射。
   // 内部仍保留 1~3 与 19 四个贪吃蛇子模式编号，仅在界面层转换，避免大范围改动游戏逻辑。
-  // 显示顺序见下方两张表（用户自定义顺序）；数字键只覆盖 1-9，序号 10~16 仅能通过下拉框选择。
+  // 显示顺序见下方两张表（用户自定义顺序）；数字键只覆盖 1-9，序号 10~20 仅能通过下拉框选择。
   // 当前顺序：1贪吃蛇 2俄罗斯方块 3扫雷 4坦克 5炸弹人 6太空侵略者 7打砖块 8 2048 9推箱子
   //           10数独 11独立钻石 12五子棋 13黑白棋 14FlappyBird 15迷宫 16生命游戏
+  //           17数字华容道 18经典华容道 19钻石迷阵 20空当接龙
+  // 内部模式号：20/21 华容道；新增 22 钻石迷阵 / 23 空当接龙。
   const DISPLAY_TO_MODE = { 1:1, 2:4, 3:7, 4:17, 5:18, 6:10, 7:13, 8:5,
-                            9:12, 10:14, 11:15, 12:9, 13:11, 14:8, 15:16, 16:6 };
+                            9:12, 10:14, 11:15, 12:9, 13:11, 14:8, 15:16, 16:6, 17:20, 18:21,
+                            19:22, 20:23 };
   const MODE_TO_DISPLAY = { 4:2, 5:8, 6:16, 7:3, 8:14, 9:12, 10:6, 11:13,
-                            12:9, 13:7, 14:10, 15:11, 16:15, 17:4, 18:5 };
+                            12:9, 13:7, 14:10, 15:11, 16:15, 17:4, 18:5, 20:17, 21:18,
+                            22:19, 23:20 };
+  // 是否为「小游戏」；模式19 是无尽贪吃蛇，不在此列。
+  // 抽出统一判断，避免散落的区间判断在扩展模式号时被误伤/遗漏。
+  const isArcade = (m) => (m >= 7 && m <= 18) || (m >= 20 && m <= 23);
   function displayToMode(d) {           // 显示序号 → 内部模式
     if (d === 1) return lastSnakeSub;   // 「1. 贪吃蛇」恢复到上次选择的子模式
     return DISPLAY_TO_MODE[d] || 1;
@@ -7479,6 +7603,44 @@ linksEl.addEventListener('change', () => {
     { name: '欧式十字 37孔', mask: ['..111..','.11111.','1111111','1111111','1111111','.11111.','..111..'], hole: 3 * 7 + 3 },
     { name: '方形 45孔',     mask: ['.11111.','1111111','1111111','1111111','1111111','1111111','.11111.'], hole: 3 * 7 + 3 }
   ];
+  // 数字华容道尺寸档位：[列, 行]（支持不同长宽；2.7.88 增加 6×6）
+  const SLIDE_SIZES = [[3,3],[4,4],[5,5],[3,4],[4,5],[5,3],[5,4],[6,6]];
+  // 数字华容道数字方块主题：每种定义方块渐变起止色、数字色、已归位描边、底框色
+  const SLIDE_THEMES = [
+    { name: '青碧',   c0: '#2dd4bf', c1: '#0d9488', txt: '#fff', edge: 'rgba(255,255,255,0.9)', board: 'rgba(0,0,0,0.18)' },
+    { name: '靛蓝',   c0: '#60a5fa', c1: '#2563eb', txt: '#fff', edge: 'rgba(255,255,255,0.9)', board: 'rgba(0,0,0,0.18)' },
+    { name: '蜜橘',   c0: '#fbbf24', c1: '#ea580c', txt: '#fff', edge: 'rgba(255,255,255,0.9)', board: 'rgba(0,0,0,0.18)' },
+    { name: '玫红',   c0: '#fb7185', c1: '#be123c', txt: '#fff', edge: 'rgba(255,255,255,0.9)', board: 'rgba(0,0,0,0.18)' },
+    { name: '紫罗兰', c0: '#c084fc', c1: '#7e22ce', txt: '#fff', edge: 'rgba(255,255,255,0.9)', board: 'rgba(0,0,0,0.18)' },
+    { name: '森绿',   c0: '#86efac', c1: '#15803d', txt: '#062e12', edge: 'rgba(6,46,18,0.6)', board: 'rgba(0,0,0,0.18)' },
+    { name: '象牙白', c0: '#fef3c7', c1: '#d6b15a', txt: '#3b2f0b', edge: 'rgba(59,47,11,0.5)', board: 'rgba(0,0,0,0.25)' },
+    { name: '石墨黑', c0: '#475569', c1: '#0f172a', txt: '#e2e8f0', edge: 'rgba(226,232,240,0.7)', board: 'rgba(0,0,0,0.35)' }
+  ];
+  // 经典华容道布局：4列×5行；B=曹操(2x2) A/C/D/F=竖将(1x2) E=横将(2x1) G/H/I/J=小兵(1x1) .=空
+  // optimal 为权威理论最优步数（连续移动同一块算一步的通行口径）
+  // 2.7.88：新增「初试身手/狭路相逢/开门见山/迂回而行/双门紧锁/退守深营」等布局（网格经合法性+可解性验证）
+  const KLOTSKI_LAYOUTS = [
+    { name: '横刀立马', optimal: 81, grid: ['ABBC','ABBC','DEEF','DGHF','I..J'] },
+    { name: '齐头并进', optimal: 60, grid: ['ABBC','ABBC','GHIJ','DEEF','D..F'] },
+    { name: '指挥若定', optimal: 70, grid: ['ABBC','ABBC','GEEH','DIJF','D..F'] },
+    { name: '兵分三路', optimal: 72, grid: ['GBBH','ABBC','AEEC','DIJF','D..F'] },
+    { name: '迂回而行', optimal: 43, grid: ['GHBB','ACBB','ACID','FEJD','FE..'] },
+    { name: '双门紧锁', optimal: 53, grid: ['GBBH','ABBC','ADIC','FDJE','F..E'] },
+    { name: '退守深营', optimal: 88, grid: ['GBBA','CBBA','CDFH','EDFI','EJ..'] }
+  ];
+  // 经典华容道棋子主题：定义棋盘底色、边框、网格线、出口色，以及各棋子 [曹操,竖将,横将,小兵] 的渐变起止色与文字色
+  const KLOTSKI_THEMES = [
+    { name: '桃木', board: '#2a1a0c', cell: '#1c1108', edge: '#c9a227', grid: 'rgba(201,162,39,0.12)', exit: null,
+      B:['#ef4444','#b91c1c','#fff'], V:['#60a5fa','#2563eb','#fff'], H:['#34d399','#059669','#fff'], S:['#fbbf24','#d97706','#fff'] },
+    { name: '青玉', board: '#0d2b2b', cell: '#083536', edge: '#2dd4bf', grid: 'rgba(45,212,191,0.14)', exit: null,
+      B:['#f472b6','#be185d','#fff'], V:['#38bdf8','#0369a1','#fff'], H:['#a3e635','#4d7c0f','#0b1a05'], S:['#fde68a','#d97706','#3b2605'] },
+    { name: '军旗', board: '#1a2415', cell: '#22301a', edge: '#8fae5a', grid: 'rgba(143,174,90,0.14)', exit: null,
+      B:['#dc2626','#7f1d1d','#fff'], V:['#94a3b8','#475569','#fff'], H:['#fbbf24','#b45309','#fff'], S:['#65a30d','#3f6212','#fff'] },
+    { name: '糖果', board: '#3b1a3a', cell: '#4a1f49', edge: '#f9a8d4', grid: 'rgba(249,168,212,0.14)', exit: null,
+      B:['#fb7185','#e11d48','#fff'], V:['#818cf8','#4338ca','#fff'], H:['#4ade80','#16a34a','#052e16'], S:['#fde047','#f59e0b','#422006'] },
+    { name: '水墨', board: '#18181b', cell: '#27272a', edge: '#a1a1aa', grid: 'rgba(161,161,170,0.12)', exit: null,
+      B:['#b91c1c','#7f1d1d','#fff'], V:['#3f3f46','#18181b','#e4e4e7'], H:['#52525b','#27272a','#f4f4f5'], S:['#a8a29e','#57534e','#1c1917'] }
+  ];
   const mines = createMines();       // 模式7 扫雷
   const flappy = createFlappy();     // 模式8 Flappy Bird
   const gomoku = createGomoku();     // 模式9 五子棋
@@ -7491,6 +7653,10 @@ linksEl.addEventListener('change', () => {
   const maze = createMaze();         // 模式16 迷宫
   const tank = createTank();         // 模式17 坦克大战
   const bomber = createBomber();     // 模式18 炸弹人
+  const sliding = createSlidingPuzzle();  // 模式20 数字华容道
+  const klotski = createKlotski();        // 模式21 经典华容道
+  const jewel = createJewelMania();       // 模式22 钻石迷阵
+  const freecell = createFreeCell();      // 模式23 空当接龙
   // 选择档位后主动移开焦点：否则焦点停留在 select 上，方向键会切换选项而非控制游戏
   const blurAfterChange = (el) => { try { el.blur(); } catch (_) {} };
   // 扫雷尺寸下拉框：初始化选项并回显当前档位
@@ -7520,6 +7686,99 @@ linksEl.addEventListener('change', () => {
       blurAfterChange(pegBoardSelEl);
     });
   }
+  // 数字华容道尺寸下拉框：3×3 / 4×4 / 5×5 / 3×4 / 4×5 / 5×3 / 5×4，切换即重新打乱
+  if (slideSizeSelEl) {
+    slideSizeSelEl.innerHTML = SLIDE_SIZES.map((s, i) => '<option value="' + i + '">' + s[0] + '列 × ' + s[1] + '行</option>').join('');
+    slideSizeSelEl.value = String(sliding.sizeIdx);
+    slideSizeSelEl.addEventListener('change', () => {
+      sliding.setSize(parseInt(slideSizeSelEl.value, 10));
+      blurAfterChange(slideSizeSelEl);
+    });
+  }
+  // 经典华容道布局下拉框：切换即从该布局重新开局
+  if (klotskiLayoutSelEl) {
+    klotskiLayoutSelEl.innerHTML = KLOTSKI_LAYOUTS.map((b, i) => '<option value="' + i + '">' + b.name + '（最优 ' + b.optimal + ' 步）</option>').join('');
+    klotskiLayoutSelEl.value = String(klotski.layoutIdx);
+    klotskiLayoutSelEl.addEventListener('change', () => {
+      klotski.setLayout(parseInt(klotskiLayoutSelEl.value, 10));
+      blurAfterChange(klotskiLayoutSelEl);
+    });
+  }
+  // 数字华容道 / 经典华容道主题下拉框
+  if (slideThemeSelEl) {
+    slideThemeSelEl.innerHTML = SLIDE_THEMES.map((t, i) => '<option value="' + i + '">' + t.name + '</option>').join('');
+    slideThemeSelEl.value = String(sliding.themeIdx);
+    slideThemeSelEl.addEventListener('change', () => { sliding.setTheme(parseInt(slideThemeSelEl.value, 10)); blurAfterChange(slideThemeSelEl); });
+  }
+  if (klotskiThemeSelEl) {
+    klotskiThemeSelEl.innerHTML = KLOTSKI_THEMES.map((t, i) => '<option value="' + i + '">' + t.name + '</option>').join('');
+    klotskiThemeSelEl.value = String(klotski.themeIdx);
+    klotskiThemeSelEl.addEventListener('change', () => { klotski.setTheme(parseInt(klotskiThemeSelEl.value, 10)); blurAfterChange(klotskiThemeSelEl); });
+  }
+  // 五子棋 / 黑白棋执子颜色下拉框：切换即重开一局（玩家执黑先手 / 执白后手，AI 执相反色）
+  const COLOR_OPTS = '<option value="1">执黑（先手）</option><option value="2">执白（后手）</option>';
+  if (gomokuColorSelEl) {
+    gomokuColorSelEl.innerHTML = COLOR_OPTS;
+    gomokuColorSelEl.value = String(gomoku.playerColor);
+    gomokuColorSelEl.addEventListener('change', () => { gomoku.setPlayerColor(parseInt(gomokuColorSelEl.value, 10)); blurAfterChange(gomokuColorSelEl); });
+  }
+  if (reversiColorSelEl) {
+    reversiColorSelEl.innerHTML = COLOR_OPTS;
+    reversiColorSelEl.value = String(reversi.playerColor);
+    reversiColorSelEl.addEventListener('change', () => { reversi.setPlayerColor(parseInt(reversiColorSelEl.value, 10)); blurAfterChange(reversiColorSelEl); });
+  }
+  // 钻石迷阵 / 空当接龙主题下拉框
+  if (jewelThemeSelEl) {
+    jewelThemeSelEl.innerHTML = jewel.themeNames.map((n, i) => '<option value="' + i + '">' + n + '</option>').join('');
+    jewelThemeSelEl.value = String(jewel.theme);
+    jewelThemeSelEl.addEventListener('change', () => { jewel.setTheme(parseInt(jewelThemeSelEl.value, 10)); updateScore(); draw(); blurAfterChange(jewelThemeSelEl); });
+  }
+  if (jewelSizeSelEl) {
+    jewelSizeSelEl.innerHTML = jewel.sizeNames.map((n, i) => '<option value="' + i + '">' + n + '</option>').join('');
+    const sz = jewel.getSize(), si = jewel.sizeNames.indexOf(sz[0] + '×' + sz[1]);
+    jewelSizeSelEl.value = String(Math.max(0, si));
+    jewelSizeSelEl.addEventListener('change', () => {
+      const pair = jewel.sizeNames[parseInt(jewelSizeSelEl.value, 10)].split('×').map(Number);
+      jewel.setSize(pair[0], pair[1]); updateScore(); draw(); blurAfterChange(jewelSizeSelEl);
+    });
+  }
+  if (freecellThemeSelEl) {
+    freecellThemeSelEl.innerHTML = freecell.themeNames.map((n, i) => '<option value="' + i + '">' + n + '</option>').join('');
+    freecellThemeSelEl.value = String(freecell.theme);
+    freecellThemeSelEl.addEventListener('change', () => { freecell.setTheme(parseInt(freecellThemeSelEl.value, 10)); updateScore(); draw(); blurAfterChange(freecellThemeSelEl); });
+  }
+  // 经典华容道提示按钮（2.7.90 里程碑规则）：新局首次免费 1 次；用掉后知识库积分较基准 +5 才解锁下一次，
+  // 超额分数不累计次数；提示不扣知识库积分。高亮下一步要移动的棋子与方向。
+  if (klotskiHintBtnEl) {
+    klotskiHintBtnEl.addEventListener('click', () => {
+      if (gameMode !== 21 || klotski.won) return;
+      if (!klotski.hintEligible()) { updateKlotskiHintBtn(); return; }
+      const mv = klotski.findHintMove();
+      if (!mv) { klotskiHintBtnEl.title = '当前局面暂无可行提示'; return; }
+      klotski.hintConsume();   // 消耗资格、重置积分基准，不扣知识库积分
+      klotski.hintMove = { id: mv.id, dx: mv.dx, dy: mv.dy, until: performance.now() + 6000 };
+      const NAMES = { B:'曹操', A:'张飞', C:'赵云', D:'马超', F:'黄忠', E:'关羽' };
+      const DIRS = { '0,-1':'上', '0,1':'下', '-1,0':'左', '1,0':'右' };
+      klotskiHintBtnEl.title = '提示：将「' + (NAMES[mv.id] || '小兵') + '」向' + (DIRS[mv.dx + ',' + mv.dy] || '合适方向') + '移动（不扣分）';
+      if (typeof updateScore === 'function') updateScore();
+      if (typeof draw === 'function') draw();
+    });
+  }
+  // 刷新提示按钮状态：资格可用时点亮；否则置灰并在 title 提示还需多少分
+  function updateKlotskiHintBtn() {
+    if (!klotskiHintBtnEl) return;
+    klotskiHintBtnEl.hidden = (gameMode !== 21);
+    if (gameMode !== 21) return;
+    const ok = klotski.hintEligible(), won = klotski.won;
+    klotskiHintBtnEl.disabled = !ok || won;
+    if (won) klotskiHintBtnEl.title = '已通关，按 R 重开新局';
+    else if (ok) klotskiHintBtnEl.title = klotski.hintUsedFree
+      ? '积分已达标，可提示下一步移动（不扣分）'
+      : '本局首次提示免费，高亮下一步移动（不扣分）';
+    else klotskiHintBtnEl.title = '知识库积分再增加 ' + klotski.hintNeed() + ' 分后可提示 1 次（不扣分）';
+  }
+  // 知识库积分变化（答题 +1 / 知识库提示 -5）后，实时刷新经典华容道提示按钮资格
+  window.addEventListener('kb:score', () => { if (gameMode === 21) updateKlotskiHintBtn(); });
   // 打砖块选关下拉框：1~N 关，切换即从该关重新开局
   if (breakoutLevelSelEl) {
     let _bl = '';
@@ -7756,7 +8015,7 @@ linksEl.addEventListener('change', () => {
     syncTankCtlUI();                             // 所有模式统一同步一次，放在任何分支 return 之前
     // 生命游戏用独立控制条（世代/存活/操作），其余模式隐藏；画布光标切为十字便于绘制细胞
     if (lifeScoreBarEl) lifeScoreBarEl.hidden = (gameMode !== 6);
-    if (arcadeScoreBarEl && !(gameMode >= 7 && gameMode <= 18)) arcadeScoreBarEl.hidden = true;
+    if (arcadeScoreBarEl && !(isArcade(gameMode))) arcadeScoreBarEl.hidden = true;
     if (canvas) canvas.style.cursor = gameMode === 6 ? 'crosshair' : '';
     if (gameMode === 3 || gameMode === 19) {
       // 模式3：玩家 + 6 条 PC 全列；模式19：只列玩家 + 分数排名前三的 PC（撞死的置灰划线）
@@ -7816,7 +8075,7 @@ linksEl.addEventListener('change', () => {
       updateLifeBar();
       return;
     }
-    if (gameMode >= 7 && gameMode <= 18) {
+    if (isArcade(gameMode)) {
       // 模式7~18：小游戏各自计分，显示通用信息条，隐藏其它分数/最高分/生命控制条
       if (snakeBarScoreEl) snakeBarScoreEl.hidden = true;
       if (barBestEl) barBestEl.hidden = true;
@@ -7848,6 +8107,52 @@ linksEl.addEventListener('change', () => {
       if (pegBoardSelEl) {
         pegBoardSelEl.hidden = (gameMode !== 15);
         if (gameMode === 15 && pegBoardSelEl.value !== String(peg.boardIdx)) pegBoardSelEl.value = String(peg.boardIdx);
+      }
+      // 数字华容道尺寸下拉框仅模式20显示；经典华容道布局下拉框仅模式21显示
+      if (slideSizeSelEl) {
+        slideSizeSelEl.hidden = (gameMode !== 20);
+        if (gameMode === 20 && slideSizeSelEl.value !== String(sliding.sizeIdx)) slideSizeSelEl.value = String(sliding.sizeIdx);
+      }
+      if (klotskiLayoutSelEl) {
+        klotskiLayoutSelEl.hidden = (gameMode !== 21);
+        if (gameMode === 21 && klotskiLayoutSelEl.value !== String(klotski.layoutIdx)) klotskiLayoutSelEl.value = String(klotski.layoutIdx);
+      }
+      if (slideThemeSelEl) {
+        slideThemeSelEl.hidden = (gameMode !== 20);
+        if (gameMode === 20 && slideThemeSelEl.value !== String(sliding.themeIdx)) slideThemeSelEl.value = String(sliding.themeIdx);
+      }
+      if (klotskiThemeSelEl) {
+        klotskiThemeSelEl.hidden = (gameMode !== 21);
+        if (gameMode === 21 && klotskiThemeSelEl.value !== String(klotski.themeIdx)) klotskiThemeSelEl.value = String(klotski.themeIdx);
+      }
+      updateKlotskiHintBtn();
+      // 五子棋(9) / 黑白棋(11) 执子颜色下拉框
+      if (gomokuColorSelEl) {
+        gomokuColorSelEl.hidden = (gameMode !== 9);
+        if (gameMode === 9 && gomokuColorSelEl.value !== String(gomoku.playerColor)) gomokuColorSelEl.value = String(gomoku.playerColor);
+      }
+      if (reversiColorSelEl) {
+        reversiColorSelEl.hidden = (gameMode !== 11);
+        if (gameMode === 11 && reversiColorSelEl.value !== String(reversi.playerColor)) reversiColorSelEl.value = String(reversi.playerColor);
+      }
+      // 钻石迷阵(22) / 空当接龙(23) 主题下拉框
+      if (jewelThemeSelEl) {
+        jewelThemeSelEl.hidden = (gameMode !== 22);
+        if (gameMode === 22 && jewelThemeSelEl.value !== String(jewel.theme)) jewelThemeSelEl.value = String(jewel.theme);
+      }
+      if (jewelSizeSelEl) {
+        jewelSizeSelEl.hidden = (gameMode !== 22);
+        if (gameMode === 22) { const sz = jewel.getSize(); const v = String(Math.max(0, jewel.sizeNames.indexOf(sz[0] + '×' + sz[1]))); if (jewelSizeSelEl.value !== v) jewelSizeSelEl.value = v; }
+      }
+      // 2.8.98：钻石迷阵成就文字（尺寸框后）；到期自动隐藏，带淡出过渡
+      if (jewelAchvEl) {
+        const active = (gameMode === 22) && jewel.achv && (performance.now() < jewel.achvUntil);
+        jewelAchvEl.hidden = !active;
+        if (active && jewelAchvEl.textContent !== jewel.achv) jewelAchvEl.textContent = jewel.achv;
+      }
+      if (freecellThemeSelEl) {
+        freecellThemeSelEl.hidden = (gameMode !== 23);
+        if (gameMode === 23 && freecellThemeSelEl.value !== String(freecell.theme)) freecellThemeSelEl.value = String(freecell.theme);
       }
       // 坦克(17)选关/AI 队员：显隐已由开头 syncTankCtlUI 统一处理，这里只回显控件当前值
       if (tankLevelSelEl) {
@@ -7922,7 +8227,7 @@ linksEl.addEventListener('change', () => {
   }
   // 把当前模式的最高分渲染到大屏控制行（模式2 显示人工与电脑两档；模式3 不记录/不显示）
   function renderBest() {
-    if (gameMode === 3 || gameMode === 19 || gameMode === 6 || (gameMode >= 7 && gameMode <= 18)) {
+    if (gameMode === 3 || gameMode === 19 || gameMode === 6 || (isArcade(gameMode))) {
       if (barBestEl) barBestEl.hidden = true;
       return;
     }
@@ -7946,7 +8251,7 @@ linksEl.addEventListener('change', () => {
   }
   // 点击最高分：清零指定记录并重开本局（避免当前分数立刻把记录顶回）
   function clearBest(who) {
-    if (gameMode === 3 || gameMode === 19 || gameMode === 6 || (gameMode >= 7 && gameMode <= 18)) return;   // 这些模式不使用该最高分行
+    if (gameMode === 3 || gameMode === 19 || gameMode === 6 || (isArcade(gameMode))) return;   // 这些模式不使用该最高分行
     if (gameMode === 4) {
       tetBest = 0; cookieSet('mp_snake_best4', '0');
       renderBest();
@@ -8038,13 +8343,21 @@ linksEl.addEventListener('change', () => {
     while (bot.color === oldColor);
   }
   function resetGame(fullReset) {
-    if (gameMode === 4) { tetMain.reset(); tetRival.reset(); updateScore(); draw(); return; }   // 俄罗斯方块：主游戏与对手各自独立重置
-    if (gameMode === 5) { g2048.reset(); g2048Rival.reset(); updateScore(); draw(); return; }   // 2048：主游戏与对手各自重置
+    if (gameMode === 4) {   // 俄罗斯方块：主游戏与对手各自重置；有存档则恢复上次局面
+      tetMain.reset(); tetRival.reset();
+      const d = loadGameState(4); if (d && tetMain.restore && tetMain.restore(d)) { /* 已恢复 */ }
+      updateScore(); draw(); return;
+    }
+    if (gameMode === 5) {   // 2048：主游戏与对手各自重置；有存档则恢复上次局面
+      g2048.reset(); g2048Rival.reset();
+      const d = loadGameState(5); if (d && g2048.restore && g2048.restore(d)) { /* 已恢复 */ }
+      updateScore(); draw(); return;
+    }
     if (gameMode === 6) {   // 生命游戏：按当前网格重建并随机初始化
       lifeDrawActive = false; lifeStepHold = false; lifeResumeAt = 0;
       sizeCanvas(); life.reset(); updateScore(); draw(); return;
     }
-    if (gameMode >= 7 && gameMode <= 18) {   // 模式7~18 小游戏：各自完整重置
+    if (isArcade(gameMode)) {   // 模式7~18 小游戏：各自完整重置
       sizeCanvas();
       // 推箱子：切模式/重开保留当前关卡（关卡号与布局稳定绑定），只有 R 才随机换关
       arcadeReset(gameMode !== 12); return;
@@ -8086,6 +8399,11 @@ linksEl.addEventListener('change', () => {
             : FOOD_MIN + Math.floor(Math.random() * (FOOD_MAX - FOOD_MIN + 1)))
       : Math.min(keep, foodCap());
     placeFoods(n);
+    // 贪吃蛇局面存档（模式1/2/3/19）：完整重开时若有存档则恢复上次局面
+    if (fullReset) {
+      const d = loadGameState(gameMode);
+      if (d && snakeRestore(d)) { sizeCanvas(); updateScore(); draw(); return; }
+    }
     updateScore();
     draw();
   }
@@ -8308,6 +8626,28 @@ linksEl.addEventListener('change', () => {
       st.next = tetMakePiece(st.randomType());
       st.spawn();
     };
+    // 局面存档（模式4）：棋子对象只存 type/rot/x/y，恢复时用工厂重建 rots/color
+    const packPiece = (p) => p ? { type: p.type, rot: p.rot, x: p.x, y: p.y } : null;
+    const unpackPiece = (d) => {
+      if (!d || !TET_SHAPES[d.type]) return null;
+      const p = tetMakePiece(d.type);
+      p.rot = d.rot | 0; p.x = d.x | 0; p.y = d.y | 0;
+      return p;
+    };
+    st.snapshot = () => ({ grid: st.grid.map(r => r.slice()), cur: packPiece(st.cur), next: packPiece(st.next),
+      score: st.score, lines: st.lines, level: st.level, baseLevel: st.baseLevel, bag: st.bag.slice() });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.grid) || d.grid.length !== TET_ROWS ||
+          !d.grid.every(r => Array.isArray(r) && r.length === TET_COLS)) return false;
+      st.grid = d.grid.map(r => r.slice());
+      st.cur = unpackPiece(d.cur); st.next = unpackPiece(d.next);
+      if (!st.cur || !st.next) return false;
+      st.score = d.score | 0; st.lines = d.lines | 0; st.level = d.level | 0;
+      st.baseLevel = d.baseLevel || 1; st.bag = Array.isArray(d.bag) ? d.bag.slice() : [];
+      st.over = false; st.overAt = 0; st.acc = 0; st.ai = st.alwaysAI;
+      st.aiAcc = 0; st.lastInputAt = performance.now(); st.aiPlanCache = null; st.aiStuck = 0;
+      return true;
+    };
     // 模拟落点：把方块放到指定朝向、列 x，返回消行后的网格；起始即碰撞返回 null
     st.simPlace = function (piece, rot, x) {
       const g = st.grid.map(row => row.slice());
@@ -8380,6 +8720,15 @@ linksEl.addEventListener('change', () => {
       st.score = 0; st.won = false; st.keepPlaying = false;
       st.over = false; st.overAt = 0; st.anim = null; st.aiAcc = 0;
       st.spawn(); st.spawn();
+    };
+    st.snapshot = () => ({ grid: st.grid.map(r => r.slice()), score: st.score,
+      won: st.won, keepPlaying: st.keepPlaying, over: st.over });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.grid) || d.grid.length !== G2048_SIZE ||
+          !d.grid.every(r => Array.isArray(r) && r.length === G2048_SIZE)) return false;
+      st.grid = d.grid.map(r => r.slice()); st.score = d.score | 0;
+      st.won = !!d.won; st.keepPlaying = !!d.keepPlaying; st.over = !!d.over;
+      st.overAt = 0; st.anim = null; st.aiAcc = 0; return true;
     };
     // 是否还存在可移动方向（有空格，或存在相邻相同数字）
     st.canMove = function () {
@@ -8800,7 +9149,7 @@ linksEl.addEventListener('change', () => {
     if (!st.isRival && st.won && !st.keepPlaying) draw2048Banner(ox, oy, bw, bw, 'YOU WIN!', '按空格或点击继续挑战', cssVar('--ok', '#34d399'));
     else if (st.over) draw2048Banner(ox, oy, bw, bw, 'GAME OVER', '即将自动重开', cssVar('--err', '#f87171'));
   }
-  // ============ 模式7~18 小游戏合集 ============
+  // ============ 小游戏合集（模式7~18、20~23）============
   // 各工厂封装状态；统一走 arcadeTick/arcadeDraw/arcadeKey/arcadePointer/arcadeReset 分发。
   // 数值彩色 <b> 标签的公共拼接 helper（供各小游戏 info 使用）
   const ab = (c, v) => '<b style="color:' + c + '">' + v + '</b>';
@@ -8816,17 +9165,44 @@ linksEl.addEventListener('change', () => {
     15: '点击选中 · 隔格跳吃 · R 重开',
     16: '方向键/WASD 移动 · R 重开',
     17: '方向/WASD 移动 · 空格开火 · P: 火力 S: 速度 K: 钢甲 I: 铁壁 D: 双子弹 · R 重开',
-    18: '方向/WASD 移动 · 空格放弹 · F: 引爆遥控 · R 重开'
+    18: '方向/WASD 移动 · 空格放弹 · F: 引爆遥控 · R 重开',
+    20: '点击方块/方向键 移动 · 复原数字 · R 重新打乱',
+    21: '点击棋子/方向键 移动 · 送曹操出关 · R 重开',
+    22: 'R 重开',
+    23: 'R 新局'
   };
   function arcadeCur() {
     return gameMode === 7 ? mines : gameMode === 8 ? flappy : gameMode === 9 ? gomoku :
            gameMode === 10 ? invaders : gameMode === 11 ? reversi : gameMode === 12 ? sokoban :
            gameMode === 13 ? breakout : gameMode === 14 ? sudoku : gameMode === 15 ? peg :
-           gameMode === 16 ? maze : gameMode === 17 ? tank : gameMode === 18 ? bomber : null;
+           gameMode === 16 ? maze : gameMode === 17 ? tank : gameMode === 18 ? bomber :
+           gameMode === 20 ? sliding : gameMode === 21 ? klotski :
+           gameMode === 22 ? jewel : gameMode === 23 ? freecell : null;
   }
   // fresh=true 表示「重新开始本局」：炸弹人能力数值归默认/最小（保留已解锁进度）；
   // 切模式/刷新进入时 fresh 省略，恢复存档数值。其他游戏的 reset 忽略该参数。
-  function arcadeReset(full, fresh) { const g = arcadeCur(); if (!g) return; if (g.reset) g.reset(full, fresh); updateScore(); draw(); }
+  function arcadeReset(full, fresh) {
+    const g = arcadeCur(); if (!g) return;
+    const m = gameMode;
+    if (fresh === true) {                       // R 重开：丢弃局面存档，重新开局
+      clearGameState(m);
+      if (g.reset) g.reset(full, fresh);
+    } else if (g.restore && g.snapshot) {       // 进入游戏：优先恢复上次局面
+      const d = loadGameState(m);
+      if (d && g.restore(d)) { updateScore(); draw(); return; }
+      if (g.reset) g.reset(full, fresh);
+    } else if (g.reset) g.reset(full, fresh);
+    updateScore(); draw();
+  }
+  // 保存当前游戏局面到存档（退出/切模式/刷新时调用）；仅对支持 snapshot 的游戏生效
+  function saveCurrentGameState() {
+    const m = gameMode;
+    if (m >= 1 && m <= 3 || m === 19) { saveGameState(m, snakeSnapshot()); return; }
+    if (m === 4) { if (tetMain.snapshot) saveGameState(4, tetMain.snapshot()); return; }
+    if (m === 5) { if (g2048.snapshot) saveGameState(5, g2048.snapshot()); return; }
+    const g = arcadeCur();
+    if (g && g.snapshot) { try { saveGameState(m, g.snapshot()); } catch (_) {} }
+  }
   function arcadeTick(dt, now) { const g = arcadeCur(); if (!g || !g.tick) return; if (g.tick(dt, now)) { updateScore(); draw(); } }
   function arcadeDraw(ctx, w, h) {
     const g = arcadeCur(); if (g && g.draw) g.draw(ctx, w, h);
@@ -8856,7 +9232,7 @@ linksEl.addEventListener('change', () => {
   // 坦克/炸弹人(17/18)的提示改绘到画布顶部 HUD，信息栏不再显示提示文字。
   function arcadeTip() {
     if (gameMode === 17 || gameMode === 18) return '';
-    return (ARCADE_TIP[gameMode] || '').replace(/R (?:重开|换一关|换一局|随机换关)/g,
+    return (ARCADE_TIP[gameMode] || '').replace(/R (?:重开|换一关|换一局|随机换关|新局)/g,
       m => '<b class="arcade-act" data-act="reset" title="点击重新开局">' + m + '</b>');
   }
   // 信息条「R 重开」可点击（事件委托）
@@ -8889,7 +9265,20 @@ linksEl.addEventListener('change', () => {
       if (idx === st.sizeIdx) return;
       st.sizeIdx = idx;
       cookieSet('mp_mines_size', String(st.sizeIdx));
+      clearGameState(7);                         // 换棋盘 => 丢弃旧局面
       st.reset(); updateScore(); draw();
+    };
+    st.snapshot = () => ({ cols: st.cols, rows: st.rows, mines: st.mines, sizeIdx: st.sizeIdx,
+      grid: st.grid.map(c => ({ mine: c.mine, adj: c.adj, open: c.open, flag: c.flag })),
+      started: st.started, over: st.over, won: st.won, flags: st.flags, opened: st.opened, elapsed: st.elapsed });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.grid) || d.grid.length !== d.cols * d.rows) return false;
+      st.cols = d.cols; st.rows = d.rows; st.mines = d.mines;
+      st.sizeIdx = Math.max(0, Math.min(MINE_SIZES.length - 1, d.sizeIdx | 0));
+      st.grid = d.grid.map(c => ({ mine: !!c.mine, adj: c.adj | 0, open: !!c.open, flag: !!c.flag }));
+      st.started = !!d.started; st.over = !!d.over; st.won = !!d.won;
+      st.flags = d.flags | 0; st.opened = d.opened | 0; st.elapsed = d.elapsed | 0;
+      st.layout(); return true;
     };
     const neigh = (x, y, fn) => {
       for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
@@ -9153,10 +9542,29 @@ linksEl.addEventListener('change', () => {
   // ---- 模式9：五子棋 ----
   function createGomoku() {
     const N = 15;
-    const st = { board: new Int8Array(N * N), turn: 1, over: false, winner: 0, last: null, wins: 0, losses: 0, aiAt: 0 };
+    const st = { board: new Int8Array(N * N), turn: 1, over: false, winner: 0, last: null, wins: 0, losses: 0, aiAt: 0,
+                 playerColor: 1, aiColor: 2 };
     st.wins = parseInt(cookieGet('mp_best9') || '0', 10) || 0;
     st.losses = parseInt(cookieGet('mp_gomoku_loss') || '0', 10) || 0;
-    st.reset = () => { st.board.fill(0); st.turn = 1; st.over = false; st.winner = 0; st.last = null; st.aiAt = 0; };
+    st.playerColor = parseInt(cookieGet('mp_gomoku_color') || '1', 10) === 2 ? 2 : 1;
+    st.aiColor = 3 - st.playerColor;
+    st.reset = () => {
+      st.board.fill(0); st.turn = 1; st.over = false; st.winner = 0; st.last = null;
+      st.aiAt = st.playerColor === 2 ? performance.now() + 300 : 0;   // 玩家执白：AI 执黑先手
+    };
+    st.setPlayerColor = (c) => {
+      st.playerColor = c === 2 ? 2 : 1; st.aiColor = 3 - st.playerColor;
+      cookieSet('mp_gomoku_color', String(st.playerColor));
+      try { clearGameState(9); } catch (_) {}
+      st.reset();
+    };
+    st.snapshot = () => ({ board: taArr(st.board), turn: st.turn, over: st.over, winner: st.winner, last: st.last, playerColor: st.playerColor });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.board) || d.board.length !== N * N) return false;
+      st.board = arrTa(d.board, Int8Array); st.turn = d.turn === 2 ? 2 : 1;
+      st.over = !!d.over; st.winner = d.winner | 0; st.last = d.last || null; st.aiAt = 0;
+      st.playerColor = d.playerColor === 2 ? 2 : 1; st.aiColor = 3 - st.playerColor; return true;
+    };
     const idx = (x, y) => y * N + x;
     const winAt = (x, y, p) => {
       const dirs = [[1,0],[0,1],[1,1],[1,-1]];
@@ -9183,6 +9591,7 @@ linksEl.addEventListener('change', () => {
       return total;
     };
     const aiMove = () => {
+      const me = st.aiColor, opp = st.playerColor;
       let best = -1, bx = -1, by = -1;
       const cands = [];
       for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
@@ -9196,37 +9605,38 @@ linksEl.addEventListener('change', () => {
       }
       const pool = cands.length ? cands : [{ x: 7, y: 7 }];
       for (const c of pool) {
-        const a = evalPoint(c.x, c.y, 2), d = evalPoint(c.x, c.y, 1);
+        const a = evalPoint(c.x, c.y, me), d = evalPoint(c.x, c.y, opp);
         const s = a + d * 0.85 + Math.random() * 5;
         if (s > best) { best = s; bx = c.x; by = c.y; }
       }
       if (bx >= 0) {
-        st.board[idx(bx, by)] = 2; st.last = { x: bx, y: by, p: 2 };
-        if (winAt(bx, by, 2)) { st.over = true; st.winner = 2; st.losses++; cookieSet('mp_gomoku_loss', String(st.losses)); }
-        else st.turn = 1;
+        st.board[idx(bx, by)] = me; st.last = { x: bx, y: by, p: me };
+        if (winAt(bx, by, me)) { st.over = true; st.winner = me; st.losses++; cookieSet('mp_gomoku_loss', String(st.losses)); }
+        else st.turn = opp;
       }
     };
     st.onPointer = (type, x, y, button) => {
-      if (type !== 'down' || button === 2 || st.over || st.turn !== 1 || back.hidden) return false;
+      if (type !== 'down' || button === 2 || st.over || st.turn !== st.playerColor || back.hidden) return false;
       const w = canvas ? canvas.clientWidth : 600, h = canvas ? canvas.clientHeight : 400;
       const size = Math.min(w - 70, h - 70), cs = size / (N - 1);
       const ox = (w - size) / 2, oy = (h - size) / 2;
       const gx = Math.round((x - ox) / cs), gy = Math.round((y - oy) / cs);
       if (gx < 0 || gy < 0 || gx >= N || gy >= N) return false;
       if (st.board[idx(gx, gy)] !== 0) return false;
-      st.board[idx(gx, gy)] = 1; st.last = { x: gx, y: gy, p: 1 };
-      if (winAt(gx, gy, 1)) { st.over = true; st.winner = 1; st.wins++; cookieSet('mp_best9', String(st.wins)); }
-      else { st.turn = 2; st.aiAt = performance.now() + 260; }
+      st.board[idx(gx, gy)] = st.playerColor; st.last = { x: gx, y: gy, p: st.playerColor };
+      if (winAt(gx, gy, st.playerColor)) { st.over = true; st.winner = st.playerColor; st.wins++; cookieSet('mp_best9', String(st.wins)); }
+      else { st.turn = st.aiColor; st.aiAt = performance.now() + 260; }
       return true;
     };
     st.tick = (dt, now) => {
-      if (st.turn === 2 && !st.over && now >= st.aiAt) { aiMove(); return true; }
+      if (st.turn === st.aiColor && !st.over && now >= st.aiAt) { aiMove(); return true; }
       return false;
     };
     st.info = () => {
-      const s = st.over ? (st.winner === 1 ? ab('var(--ok)', '你赢!') : ab('var(--err)', '电脑赢'))
-                        : (st.turn === 1 ? ab('var(--accent-strong)', '轮到你') : '<b style="color:#64748b">电脑思考</b>');
-      return s + ' · 胜 ' + ab('var(--ok)', st.wins) + ' 负 ' + ab('var(--err)', st.losses);
+      const s = st.over ? (st.winner === st.playerColor ? ab('var(--ok)', '你赢!') : ab('var(--err)', '电脑赢'))
+                        : (st.turn === st.playerColor ? ab('var(--accent-strong)', '轮到你') : '<b style="color:#64748b">电脑思考</b>');
+      return s + ' · 执' + ab(st.playerColor === 1 ? '#e2e8f0' : '#94a3b8', st.playerColor === 1 ? '黑' : '白') +
+             ' · 胜 ' + ab('var(--ok)', st.wins) + ' 负 ' + ab('var(--err)', st.losses);
     };
     st.draw = (ctx, w, h) => {
       ctx.clearRect(0, 0, w, h);
@@ -9257,10 +9667,11 @@ linksEl.addEventListener('change', () => {
         }
       }
       if (st.over) {
-        ctx.fillStyle = st.winner === 1 ? cssVar('--ok', '#34d399') : cssVar('--err', '#f87171');
+        const playerWon = st.winner === st.playerColor;
+        ctx.fillStyle = playerWon ? cssVar('--ok', '#34d399') : cssVar('--err', '#f87171');
         ctx.font = 'bold ' + Math.max(20, Math.round(Math.min(w, h) * 0.06)) + 'px system-ui';
         ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-        ctx.fillText(st.winner === 1 ? '你赢了!' : '电脑获胜 · 按 R 再来', w / 2, h - 8);
+        ctx.fillText(playerWon ? '你赢了!' : '电脑获胜 · 按 R 再来', w / 2, h - 8);
       }
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     };
@@ -9399,9 +9810,11 @@ linksEl.addEventListener('change', () => {
   function createReversi() {
     const N = 8, DIM = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
     const st = { board: new Int8Array(N * N), turn: 1, over: false, last: null,
-                 wins: 0, losses: 0, aiAt: 0, hint: [] };
+                 wins: 0, losses: 0, aiAt: 0, hint: [], playerColor: 1, aiColor: 2 };
     st.wins = parseInt(cookieGet('mp_best11') || '0', 10) || 0;
     st.losses = parseInt(cookieGet('mp_reversi_loss') || '0', 10) || 0;
+    st.playerColor = parseInt(cookieGet('mp_reversi_color') || '1', 10) === 2 ? 2 : 1;
+    st.aiColor = 3 - st.playerColor;
     const idx = (x, y) => y * N + x;
     const inside = (x, y) => x >= 0 && y >= 0 && x < N && y < N;
     // 在 (x,y) 落 p 子可翻转的格子；不可落子返回 null
@@ -9429,8 +9842,9 @@ linksEl.addEventListener('change', () => {
     const finish = () => {
       const [b, w] = counts();
       st.over = true;
-      if (b > w) { st.wins++; cookieSet('mp_best11', String(st.wins)); }
-      else if (w > b) { st.losses++; cookieSet('mp_reversi_loss', String(st.losses)); }
+      const mine = st.playerColor === 1 ? b : w, opp = st.playerColor === 1 ? w : b;
+      if (mine > opp) { st.wins++; cookieSet('mp_best11', String(st.wins)); }
+      else if (opp > mine) { st.losses++; cookieSet('mp_reversi_loss', String(st.losses)); }
     };
     const apply = (x, y, p) => {
       const fl = flips(x, y, p);
@@ -9446,45 +9860,62 @@ linksEl.addEventListener('change', () => {
       return true;
     };
     const aiMove = () => {
-      const moves = validFor(2);
+      const me = st.aiColor;
+      const moves = validFor(me);
       if (!moves.length) return;
       let best = -1e9, pick = null;
       const corners = [0, N - 1, N * (N - 1), N * N - 1];
       for (const m of moves) {
         const i = idx(m.x, m.y);
-        let s = flips(m.x, m.y, 2).length + Math.random() * 0.5;
+        let s = flips(m.x, m.y, me).length + Math.random() * 0.5;
         if (corners.indexOf(i) >= 0) s += 8;
         if ((m.x === 1 || m.x === 6) && (m.y === 0 || m.y === 7)) s -= 5;
         if ((m.y === 1 || m.y === 6) && (m.x === 0 || m.x === 7)) s -= 5;
         if (s > best) { best = s; pick = m; }
       }
-      if (pick) apply(pick.x, pick.y, 2);
+      if (pick) apply(pick.x, pick.y, me);
     };
     st.reset = () => {
-      st.board.fill(0); st.turn = 1; st.over = false; st.last = null; st.aiAt = 0;
+      st.board.fill(0); st.turn = 1; st.over = false; st.last = null;
       st.board[idx(3, 3)] = 2; st.board[idx(4, 4)] = 2;
       st.board[idx(3, 4)] = 1; st.board[idx(4, 3)] = 1;
       st.hint = validFor(1);
+      st.aiAt = st.playerColor === 2 ? performance.now() + 320 : 0;   // 玩家执白：AI 执黑先手
+    };
+    st.setPlayerColor = (c) => {
+      st.playerColor = c === 2 ? 2 : 1; st.aiColor = 3 - st.playerColor;
+      cookieSet('mp_reversi_color', String(st.playerColor));
+      try { clearGameState(11); } catch (_) {}
+      st.reset();
+    };
+    st.snapshot = () => ({ board: taArr(st.board), turn: st.turn, over: st.over, last: st.last, playerColor: st.playerColor });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.board) || d.board.length !== N * N) return false;
+      st.board = arrTa(d.board, Int8Array); st.turn = d.turn === 2 ? 2 : 1;
+      st.over = !!d.over; st.last = d.last || null; st.aiAt = 0;
+      st.playerColor = d.playerColor === 2 ? 2 : 1; st.aiColor = 3 - st.playerColor;
+      st.hint = st.over ? [] : validFor(st.turn); return true;
     };
     st.onPointer = (type, x, y, button) => {
-      if (type !== 'down' || button === 2 || st.over || st.turn !== 1 || back.hidden) return false;
+      if (type !== 'down' || button === 2 || st.over || st.turn !== st.playerColor || back.hidden) return false;
       const w = canvas ? canvas.clientWidth : 600, h = canvas ? canvas.clientHeight : 400;
       const size = Math.min(w - 40, h - 40), cs = size / N;
       const ox = (w - size) / 2, oy = (h - size) / 2;
       const gx = Math.floor((x - ox) / cs), gy = Math.floor((y - oy) / cs);
-      if (!inside(gx, gy) || !apply(gx, gy, 1)) return false;
+      if (!inside(gx, gy) || !apply(gx, gy, st.playerColor)) return false;
       if (!st.over) st.aiAt = performance.now() + 320;
       return true;
     };
     st.tick = (dt, now) => {
-      if (!st.over && st.turn === 2 && now >= st.aiAt) { aiMove(); st.aiAt = now + 320; return true; }
+      if (!st.over && st.turn === st.aiColor && now >= st.aiAt) { aiMove(); st.aiAt = now + 320; return true; }
       return false;
     };
     st.info = () => {
       const [b, w] = counts();
-      const state = st.over ? (b > w ? ab('var(--ok)', '你赢') : b < w ? ab('var(--err)', '电脑赢') : '<b style="color:#64748b">平局</b>')
-                            : (st.turn === 1 ? ab('var(--accent-strong)', '轮到你') : '<b style="color:#64748b">电脑思考</b>');
-      return '黑 ' + ab('#e2e8f0', b) + ' : 白 ' + ab('#94a3b8', w) + ' · ' + state +
+      const mine = st.playerColor === 1 ? b : w, opp = st.playerColor === 1 ? w : b;
+      const state = st.over ? (mine > opp ? ab('var(--ok)', '你赢') : mine < opp ? ab('var(--err)', '电脑赢') : '<b style="color:#64748b">平局</b>')
+                            : (st.turn === st.playerColor ? ab('var(--accent-strong)', '轮到你') : '<b style="color:#64748b">电脑思考</b>');
+      return '黑 ' + ab('#e2e8f0', b) + ' : 白 ' + ab('#94a3b8', w) + ' · 执' + ab(st.playerColor === 1 ? '#e2e8f0' : '#94a3b8', st.playerColor === 1 ? '黑' : '白') + ' · ' + state +
              ' · 胜 ' + ab('var(--ok)', st.wins) + ' 负 ' + ab('var(--err)', st.losses);
     };
     st.draw = (ctx, w, h) => {
@@ -9499,7 +9930,7 @@ linksEl.addEventListener('change', () => {
         ctx.moveTo(ox, oy + i * cs); ctx.lineTo(ox + size, oy + i * cs);
       }
       ctx.stroke();
-      if (!st.over && st.turn === 1) {
+      if (!st.over && st.turn === st.playerColor) {
         ctx.fillStyle = 'rgba(255,255,255,0.6)';
         for (const m of st.hint) {
           ctx.beginPath(); ctx.arc(ox + (m.x + 0.5) * cs, oy + (m.y + 0.5) * cs, Math.max(2, cs * 0.09), 0, Math.PI * 2); ctx.fill();
@@ -9521,7 +9952,8 @@ linksEl.addEventListener('change', () => {
       if (st.over) {
         // 注意：白子数不可命名为 w，否则遮蔽画布宽度参数 w，横幅会被画到棋盘左侧之外
         const [b, wc] = counts();
-        const win = b > wc, tie = b === wc;
+        const mine = st.playerColor === 1 ? b : wc, opp = st.playerColor === 1 ? wc : b;
+        const win = mine > opp, tie = mine === opp;
         const title = win ? '你赢了!' : tie ? '平局' : '电脑获胜';
         const color = win ? cssVar('--ok', '#34d399') : tie ? cssVar('--warn', '#fbbf24') : cssVar('--err', '#f87171');
         ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(ox, oy, size, size);
@@ -9759,6 +10191,27 @@ linksEl.addEventListener('change', () => {
       st.px = s.px; st.py = s.py; st.face = s.face.slice();
       st.placed = s.placed; st.total = s.total;
       st.moves = 0; st.over = false; st.solvedAt = 0;
+    };
+    st.snapshot = () => ({
+      level: st.level, randomMode: st.randomMode, w: st.w, h: st.h,
+      walls: taArr(st.walls), targets: taArr(st.targets), boxes: taArr(st.boxes),
+      px: st.px, py: st.py, face: st.face.slice(), moves: st.moves,
+      placed: st.placed, total: st.total, over: st.over, solvedAt: st.solvedAt,
+      _snap: st._snap ? { w: st._snap.w, h: st._snap.h, walls: taArr(st._snap.walls),
+        targets: taArr(st._snap.targets), boxes: taArr(st._snap.boxes), px: st._snap.px,
+        py: st._snap.py, face: st._snap.face.slice(), placed: st._snap.placed, total: st._snap.total } : null
+    });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.walls) || d.walls.length !== d.w * d.h) return false;
+      st.level = d.level | 0; st.randomMode = !!d.randomMode; st.w = d.w; st.h = d.h;
+      st.walls = arrTa(d.walls, Uint8Array); st.targets = arrTa(d.targets, Uint8Array); st.boxes = arrTa(d.boxes, Uint8Array);
+      st.px = d.px | 0; st.py = d.py | 0; st.face = (d.face || [0, 1]).slice();
+      st.moves = d.moves | 0; st.placed = d.placed | 0; st.total = d.total | 0;
+      st.over = !!d.over; st.solvedAt = d.solvedAt | 0;
+      if (d._snap) st._snap = { w: d._snap.w, h: d._snap.h, walls: arrTa(d._snap.walls, Uint8Array),
+        targets: arrTa(d._snap.targets, Uint8Array), boxes: arrTa(d._snap.boxes, Uint8Array),
+        px: d._snap.px, py: d._snap.py, face: d._snap.face.slice(), placed: d._snap.placed, total: d._snap.total };
+      return true;
     };
     const move = (dx, dy) => {
       if (st.over) return false;
@@ -10191,6 +10644,14 @@ linksEl.addEventListener('change', () => {
       st.vals.set(st.puzzle);
       st.sel = -1; st.done = false; st.msg = ''; st.startAt = performance.now();
     };
+    st.snapshot = () => ({ puzzle: taArr(st.puzzle), sol: taArr(st.sol), vals: taArr(st.vals),
+      sel: st.sel, done: st.done, msg: st.msg });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.puzzle) || d.puzzle.length !== 81 ||
+          !Array.isArray(d.sol) || d.sol.length !== 81 || !Array.isArray(d.vals) || d.vals.length !== 81) return false;
+      st.puzzle = arrTa(d.puzzle, Uint8Array); st.sol = arrTa(d.sol, Uint8Array); st.vals = arrTa(d.vals, Uint8Array);
+      st.sel = d.sel | 0; st.done = !!d.done; st.msg = d.msg || ''; st.startAt = performance.now(); return true;
+    };
     st.put = (n) => {
       if (st.done || st.sel < 0 || st.puzzle[st.sel]) return;
       st.vals[st.sel] = n;
@@ -10354,6 +10815,13 @@ linksEl.addEventListener('change', () => {
       st.board[st.hole] = 0;
       st.sel = -1; st.moves = 0; st.done = false;
     };
+    st.snapshot = () => ({ board: taArr(st.board), sel: st.sel, moves: st.moves, done: st.done, boardIdx: st.boardIdx });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.board) || d.board.length !== 49) return false;
+      const idx = Math.max(0, Math.min(PEG_BOARDS.length - 1, d.boardIdx | 0));
+      if (idx !== st.boardIdx) { st.boardIdx = idx; buildBoard(); }
+      st.board = arrTa(d.board, Uint8Array); st.sel = d.sel | 0; st.moves = d.moves | 0; st.done = !!d.done; return true;
+    };
     st.setBoard = (idx) => {
       idx = Math.max(0, Math.min(PEG_BOARDS.length - 1, idx | 0));
       if (idx === st.boardIdx) return;
@@ -10453,6 +10921,445 @@ linksEl.addEventListener('change', () => {
     };
     buildBoard(); st.reset();
     return st;
+  }
+  // ---- 模式20：数字华容道（可选不同长宽；合法打乱保证有解） ----
+  function createSlidingPuzzle() {
+    const st = { sizeIdx: 0, cols: 3, rows: 3, tiles: [], blank: 0, steps: 0, won: false,
+                 cell: 0, ox: 0, oy: 0, best: [], themeIdx: 0 };
+    st.sizeIdx = Math.max(0, Math.min(SLIDE_SIZES.length - 1, parseInt(cookieGet('mp_slide_size') || '0', 10) || 0));
+    st.themeIdx = Math.max(0, Math.min(SLIDE_THEMES.length - 1, parseInt(cookieGet('mp_slide_theme') || '0', 10) || 0));
+    st.best = SLIDE_SIZES.map((_, i) => parseInt(cookieGet('mp_best20_' + i) || '999999', 10) || 999999);
+    const N = () => st.cols * st.rows;
+    const solvedTiles = () => { const a = []; for (let i = 1; i < N(); i++) a.push(i); a.push(0); return a; };
+    const isSolved = () => {
+      for (let i = 0; i < N() - 1; i++) if (st.tiles[i] !== i + 1) return false;
+      return st.tiles[N() - 1] === 0;
+    };
+    st.layout = () => {
+      const w = canvas ? canvas.clientWidth : 600, h = canvas ? canvas.clientHeight : 400;
+      st.cell = Math.max(18, Math.min(84, Math.floor(Math.min((w - 40) / st.cols, (h - 40) / st.rows))));
+      st.ox = Math.floor((w - st.cell * st.cols) / 2);
+      st.oy = Math.floor((h - st.cell * st.rows) / 2);
+    };
+    // 合法打乱：从完成态随机移动空格（避免立即回退），必然可解
+    const shuffle = () => {
+      st.tiles = solvedTiles(); st.blank = N() - 1;
+      let prev = -1;
+      const times = N() * 24;
+      for (let k = 0; k < times; k++) {
+        const bx = st.blank % st.cols, by = (st.blank / st.cols) | 0, cand = [];
+        for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+          const nx = bx + dx, ny = by + dy;
+          if (nx < 0 || nx >= st.cols || ny < 0 || ny >= st.rows) continue;
+          const ni = ny * st.cols + nx;
+          if (ni !== prev) cand.push(ni);
+        }
+        if (!cand.length) continue;
+        const ni = cand[(Math.random() * cand.length) | 0];
+        st.tiles[st.blank] = st.tiles[ni]; st.tiles[ni] = 0;
+        prev = st.blank; st.blank = ni;
+      }
+      if (isSolved()) shuffle();
+    };
+    st.reset = () => {
+      st.cols = SLIDE_SIZES[st.sizeIdx][0]; st.rows = SLIDE_SIZES[st.sizeIdx][1];
+      st.layout(); st.steps = 0; st.won = false; shuffle();
+    };
+    st.setSize = (idx) => {
+      idx = Math.max(0, Math.min(SLIDE_SIZES.length - 1, idx | 0));
+      if (idx === st.sizeIdx) return;
+      st.sizeIdx = idx; cookieSet('mp_slide_size', String(idx)); clearGameState(20); st.reset();
+      if (typeof updateScore === 'function') updateScore();
+      if (typeof draw === 'function') draw();
+    };
+    st.setTheme = (idx) => {
+      idx = Math.max(0, Math.min(SLIDE_THEMES.length - 1, idx | 0));
+      if (idx === st.themeIdx) return;
+      st.themeIdx = idx; cookieSet('mp_slide_theme', String(idx));
+      if (typeof draw === 'function') draw();
+    };
+    st.snapshot = () => ({ sizeIdx: st.sizeIdx, themeIdx: st.themeIdx, cols: st.cols, rows: st.rows,
+      tiles: st.tiles.slice(), blank: st.blank, steps: st.steps, won: st.won });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.tiles) || d.tiles.length !== d.cols * d.rows) return false;
+      const sz = SLIDE_SIZES[d.sizeIdx | 0]; if (!sz) return false;
+      st.sizeIdx = d.sizeIdx | 0; st.cols = d.cols; st.rows = d.rows;
+      st.themeIdx = Math.max(0, Math.min(SLIDE_THEMES.length - 1, d.themeIdx | 0));
+      st.tiles = d.tiles.slice(); st.blank = d.blank | 0; st.steps = d.steps | 0; st.won = !!d.won;
+      st.layout(); return true;
+    };
+    // 空格朝 (dx,dy) 移动一格（与相邻块交换）
+    const moveBlank = (dx, dy) => {
+      if (st.won) return false;
+      const bx = st.blank % st.cols, by = (st.blank / st.cols) | 0;
+      const nx = bx + dx, ny = by + dy;
+      if (nx < 0 || nx >= st.cols || ny < 0 || ny >= st.rows) return false;
+      const ni = ny * st.cols + nx;
+      st.tiles[st.blank] = st.tiles[ni]; st.tiles[ni] = 0; st.blank = ni; st.steps++;
+      if (isSolved()) {
+        st.won = true;
+        if (st.steps < st.best[st.sizeIdx]) { st.best[st.sizeIdx] = st.steps; cookieSet('mp_best20_' + st.sizeIdx, String(st.steps)); }
+      }
+      return true;
+    };
+    st.onPointer = (type, x, y, button) => {
+      if (type !== 'down' || button === 2 || st.won) return false;
+      const gx = Math.floor((x - st.ox) / st.cell), gy = Math.floor((y - st.oy) / st.cell);
+      if (gx < 0 || gy < 0 || gx >= st.cols || gy >= st.rows) return false;
+      const bx = st.blank % st.cols, by = (st.blank / st.cols) | 0;
+      const dx = gx - bx, dy = gy - by;
+      if (Math.abs(dx) + Math.abs(dy) !== 1) return false;
+      return moveBlank(dx, dy);
+    };
+    st.onKey = (e) => {
+      if (st.won) return false;
+      const K = { ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1], a:[-1,0], d:[1,0], w:[0,-1], s:[0,1] };
+      const d = K[e.key];
+      return d ? moveBlank(d[0], d[1]) : false;
+    };
+    st.info = () => {
+      const sz = SLIDE_SIZES[st.sizeIdx], b = st.best[st.sizeIdx];
+      return sz[0] + '×' + sz[1] + ' · 步 ' + ab('#22d3ee', st.steps) +
+             ' · 最佳 ' + ab('#a78bfa', b < 999999 ? b : '—') + (st.won ? ' · ' + ab('var(--ok)', '复原!') : '');
+    };
+    st.draw = (ctx, w, h) => {
+      ctx.clearRect(0, 0, w, h); st.layout();
+      const cs = st.cell, gap = Math.max(3, Math.round(cs * 0.06));
+      const TH = SLIDE_THEMES[st.themeIdx] || SLIDE_THEMES[0];
+      ctx.fillStyle = TH.board;
+      ctx.fillRect(st.ox - gap, st.oy - gap, cs * st.cols + gap * 2, cs * st.rows + gap * 2);
+      for (let i = 0; i < N(); i++) {
+        const gx = i % st.cols, gy = (i / st.cols) | 0, px = st.ox + gx * cs, py = st.oy + gy * cs, v = st.tiles[i];
+        if (v === 0) continue;
+        const grad = ctx.createLinearGradient(px, py, px + cs, py + cs);
+        grad.addColorStop(0, TH.c0); grad.addColorStop(1, TH.c1);
+        ctx.fillStyle = grad;
+        arcadeRoundRect(ctx, px + gap / 2, py + gap / 2, cs - gap, cs - gap, Math.max(4, cs * 0.12)); ctx.fill();
+        ctx.fillStyle = TH.txt; ctx.font = 'bold ' + Math.max(12, Math.round(cs * (v >= 100 ? 0.28 : 0.4))) + 'px system-ui';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(String(v), px + cs / 2, py + cs / 2 + 1);
+        if (v === i + 1) {
+          ctx.strokeStyle = TH.edge; ctx.lineWidth = 2;
+          arcadeRoundRect(ctx, px + gap / 2, py + gap / 2, cs - gap, cs - gap, Math.max(4, cs * 0.12)); ctx.stroke();
+        }
+      }
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      if (st.won) {
+        ctx.fillStyle = cssVar('--ok', '#34d399');
+        ctx.font = 'bold ' + Math.max(18, Math.round(Math.min(w, h) * 0.055)) + 'px system-ui';
+        ctx.textAlign = 'center'; ctx.fillText('复原成功 · ' + st.steps + ' 步', w / 2, Math.max(4, st.oy - 30)); ctx.textAlign = 'left';
+      }
+    };
+    st.reset(); return st;
+  }
+  // 圆角矩形兜底（不依赖原生 roundRect）
+  function arcadeRoundRect(ctx, x, y, w, h, r) {
+    if (typeof ctx.roundRect === 'function') { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); return; }
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+  // ---- 模式21：经典华容道（4×5，多个经典布局，按布局记录玩家历史最低步数） ----
+  function createKlotski() {
+    const st = { layoutIdx: 0, pieces: [], steps: 0, lastMoved: null, won: false, sel: null,
+                 cell: 0, ox: 0, oy: 0, best: [], themeIdx: 0,
+                 hintUsedFree: false, hintBase: 0 };
+    const CW = 4, CH = 5;
+    st.layoutIdx = Math.max(0, Math.min(KLOTSKI_LAYOUTS.length - 1, parseInt(cookieGet('mp_klotski_layout') || '0', 10) || 0));
+    st.themeIdx = Math.max(0, Math.min(KLOTSKI_THEMES.length - 1, parseInt(cookieGet('mp_klotski_theme') || '0', 10) || 0));
+    st.best = KLOTSKI_LAYOUTS.map((_, i) => parseInt(cookieGet('mp_best21_' + i) || '999999', 10) || 999999);
+    const parsePieces = () => {
+      const grid = KLOTSKI_LAYOUTS[st.layoutIdx].grid, map = {};
+      for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) {
+        const id = grid[y][x];
+        if (id === '.') continue;
+        if (!map[id]) map[id] = { id, cells: [] };
+        map[id].cells.push([x, y]);
+      }
+      st.pieces = Object.keys(map).map(k => {
+        const p = map[k], xs = p.cells.map(c => c[0]), ys = p.cells.map(c => c[1]);
+        p.x0 = Math.min.apply(null, xs); p.x1 = Math.max.apply(null, xs);
+        p.y0 = Math.min.apply(null, ys); p.y1 = Math.max.apply(null, ys);
+        return p;
+      });
+    };
+    const occ = () => {
+      const m = {};
+      for (const p of st.pieces) for (const [x, y] of p.cells) m[y * CW + x] = p.id;
+      return m;
+    };
+    const canMove = (p, dx, dy) => {
+      const own = new Set(p.cells.map(c => c[1] * CW + c[0])), o = occ();
+      for (const [x, y] of p.cells) {
+        const nx = x + dx, ny = y + dy;
+        if (nx < 0 || nx >= CW || ny < 0 || ny >= CH) return false;
+        const k = ny * CW + nx;
+        if (own.has(k)) continue;
+        if (o[k]) return false;
+      }
+      return true;
+    };
+    // 连续移动同一块算一步（权威口径），换块才 +1
+    const doMove = (p, dx, dy) => {
+      if (!canMove(p, dx, dy)) return false;
+      p.cells = p.cells.map(([x, y]) => [x + dx, y + dy]);
+      p.x0 += dx; p.x1 += dx; p.y0 += dy; p.y1 += dy;
+      st.hintMove = null;   // 玩家已按提示（或自行）移动，清除高亮
+      if (st.lastMoved !== p.id) { st.steps++; st.lastMoved = p.id; }
+      if (p.id === 'B' && p.x0 === 1 && p.y0 === 3) {
+        st.won = true;
+        if (st.steps < st.best[st.layoutIdx]) { st.best[st.layoutIdx] = st.steps; cookieSet('mp_best21_' + st.layoutIdx, String(st.steps)); }
+      }
+      return true;
+    };
+    st.layout = () => {
+      const w = canvas ? canvas.clientWidth : 600, h = canvas ? canvas.clientHeight : 400;
+      st.cell = Math.max(24, Math.min(96, Math.floor(Math.min((w - 40) / CW, (h - 60) / CH))));
+      st.ox = Math.floor((w - st.cell * CW) / 2); st.oy = Math.floor((h - st.cell * CH) / 2) + 10;
+    };
+    st.reset = () => {
+      st.layout(); parsePieces(); st.steps = 0; st.lastMoved = null; st.won = false; st.sel = null;
+      // 新局：首次免费提示 1 次（hintUsedFree=false），基准取当前知识库积分（存档恢复时由 restore 覆盖）
+      st.hintUsedFree = false; st.hintBase = kbScoreNow(); st.hintMove = null;
+    };
+    st.setLayout = (idx) => {
+      idx = Math.max(0, Math.min(KLOTSKI_LAYOUTS.length - 1, idx | 0));
+      if (idx === st.layoutIdx) return;
+      st.layoutIdx = idx; cookieSet('mp_klotski_layout', String(idx)); clearGameState(21); st.reset();
+      if (typeof updateScore === 'function') updateScore();
+      if (typeof draw === 'function') draw();
+    };
+    st.setTheme = (idx) => {
+      idx = Math.max(0, Math.min(KLOTSKI_THEMES.length - 1, idx | 0));
+      if (idx === st.themeIdx) return;
+      st.themeIdx = idx; cookieSet('mp_klotski_theme', String(idx));
+      if (typeof draw === 'function') draw();
+    };
+    st.snapshot = () => ({ layoutIdx: st.layoutIdx, themeIdx: st.themeIdx,
+      pieces: st.pieces.map(p => ({ id: p.id, cells: p.cells.map(c => c.slice()),
+        x0: p.x0, x1: p.x1, y0: p.y0, y1: p.y1 })),
+      steps: st.steps, lastMoved: st.lastMoved, won: st.won, sel: st.sel,
+      hintUsedFree: !!st.hintUsedFree, hintBase: st.hintBase | 0 });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.pieces) || d.pieces.length < 10) return false;
+      st.layoutIdx = Math.max(0, Math.min(KLOTSKI_LAYOUTS.length - 1, d.layoutIdx | 0));
+      st.themeIdx = Math.max(0, Math.min(KLOTSKI_THEMES.length - 1, d.themeIdx | 0));
+      st.pieces = d.pieces.map(p => ({ id: p.id, cells: p.cells.map(c => c.slice()),
+        x0: p.x0, x1: p.x1, y0: p.y0, y1: p.y1 }));
+      st.steps = d.steps | 0; st.lastMoved = d.lastMoved || null; st.won = !!d.won; st.sel = d.sel || null;
+      // 里程碑提示字段（兼容旧存档：缺失时按"首次免费未用"处理）
+      st.hintUsedFree = !!d.hintUsedFree; st.hintBase = d.hintBase | 0;
+      st.hintMove = null;
+      st.layout(); return true;
+    };
+    // 空格相对某块的方向（取块包围盒中心与空格的偏移主轴）
+    const dirToBlank = (p, gx, gy) => {
+      const cx = (p.x0 + p.x1) / 2, cy = (p.y0 + p.y1) / 2, vx = gx - cx, vy = gy - cy;
+      return Math.abs(vx) > Math.abs(vy) ? [Math.sign(vx), 0] : [0, Math.sign(vy)];
+    };
+    // ---- 下一步提示求解器（2.7.89）----
+    // 形状归一化 BFS：同类棋子（竖将/横将/兵）视为可互换，状态空间从数百万降到约 3.7 万，
+    // 浏览器内可在 ~0.3s 求出从当前局面到目标的路径，返回第一步（块 id + 方向）。
+    // 移动仍基于真实块边界，去重 key 用形状格，保证同类棋子互换不影响可达性。
+    const symOf = (id) => id === 'B' ? 'B' : id === 'E' ? 'H' : ('ACDF'.indexOf(id) >= 0) ? 'V' : 'S';
+    const wonBlocks = (blocks) => {
+      const B = blocks.find(b => b.id === 'B'); if (!B) return false;
+      return B.cells.some(c => c[0] === 1 && c[1] === 3) && B.cells.some(c => c[0] === 2 && c[1] === 3) &&
+             B.cells.some(c => c[0] === 1 && c[1] === 4) && B.cells.some(c => c[0] === 2 && c[1] === 4);
+    };
+    const keyOf = (blocks) => {
+      const g = new Array(20).fill('0');
+      for (const b of blocks) for (const c of b.cells) g[c[1] * CW + c[0]] = symOf(b.id);
+      return g.join('');
+    };
+    st.findNextMove = () => {
+      const init = st.pieces.map(p => ({ id: p.id, cells: p.cells.map(c => c.slice()) }));
+      if (wonBlocks(init)) return null;
+      const startKey = keyOf(init);
+      const q = [init], prev = new Map([[startKey, null]]);
+      let head = 0, nodes = 0;
+      const DD = [[0,-1],[0,1],[-1,0],[1,0]];
+      while (head < q.length) {
+        const blocks = q[head++];
+        if (++nodes > 60000) break;                    // 节点上限，避免长布局卡顿
+        if (wonBlocks(blocks)) {
+          let cur = blocks, first = null;
+          while (prev.get(keyOf(cur)) !== null) { const p = prev.get(keyOf(cur)); first = p.move; cur = p.blocks; }
+          return first;
+        }
+        const occ = new Array(20).fill(null);
+        for (const b of blocks) for (const c of b.cells) occ[c[1] * CW + c[0]] = b.id;
+        const seen = new Set();
+        for (const b of blocks) for (const [dx, dy] of DD) {
+          const k = b.id + '|' + dx + ',' + dy; if (seen.has(k)) continue; seen.add(k);
+          let ok = true;
+          for (const [x, y] of b.cells) {
+            const tx = x + dx, ty = y + dy;
+            if (tx < 0 || ty < 0 || tx >= CW || ty >= CH) { ok = false; break; }
+            const o = occ[ty * CW + tx]; if (o !== null && o !== b.id) { ok = false; break; }
+          }
+          if (!ok) continue;
+          const nb = blocks.map(bb => ({ id: bb.id, cells: bb.cells.map(c => c.slice()) }));
+          const t = nb.find(bb => bb.id === b.id);
+          t.cells = t.cells.map(([x, y]) => [x + dx, y + dy]);
+          const nk = keyOf(nb);
+          if (!prev.has(nk)) { prev.set(nk, { blocks, move: { id: b.id, dx, dy } }); q.push(nb); }
+        }
+      }
+      return null;
+    };
+    // 启发式兜底：优先把曹操朝出口（下方中间）方向挪，其次任意可动块
+    st.findHintMove = () => {
+      const mv = st.findNextMove();
+      if (mv) return mv;
+      const B = st.pieces.find(p => p.id === 'B');
+      const prefer = [];
+      if (B && B.y0 < 3) prefer.push([0, 1]);
+      if (B && B.x0 > 1) prefer.push([-1, 0]);
+      if (B && B.x0 < 1) prefer.push([1, 0]);
+      for (const [dx, dy] of prefer) if (canMove(B, dx, dy)) return { id: 'B', dx, dy };
+      for (const p of st.pieces) for (const [dx, dy] of [[0,-1],[0,1],[-1,0],[1,0]]) if (canMove(p, dx, dy)) return { id: p.id, dx, dy };
+      return null;
+    };
+    // ---- 积分里程碑提示资格（2.7.90）----
+    // 新局首次免费提示 1 次；用掉后以当时积分为基准，累计积分相对基准增长 ≥5 分才解锁下一次；
+    // 增长的超额分数不累计次数（消耗后基准重置为当前积分）；提示本身不扣知识库积分。
+    const HINT_STEP = 5;
+    st.hintEligible = () => {
+      if (st.won) return false;
+      if (!st.hintUsedFree) return true;                 // 本局首次：免费 1 次
+      return (kbScoreNow() - st.hintBase) >= HINT_STEP;  // 之后：积分较基准 +5 解锁
+    };
+    st.hintNeed = () => {
+      if (!st.hintUsedFree) return 0;                    // 首次免费
+      return Math.max(0, HINT_STEP - (kbScoreNow() - st.hintBase));
+    };
+    st.hintConsume = () => {
+      // 用掉一次提示资格：标记首次已用，并把基准重置为当前积分（不扣分、超额不累计）
+      st.hintUsedFree = true;
+      st.hintBase = kbScoreNow();
+    };
+    // 提示展示状态：{ move, until }，draw 里高亮要移动的棋子与方向
+    st.hintMove = null;
+    st.onPointer = (type, x, y, button) => {
+      if (type !== 'down' || button === 2 || st.won) return false;
+      st.layout();
+      const gx = Math.floor((x - st.ox) / st.cell), gy = Math.floor((y - st.oy) / st.cell);
+      if (gx < 0 || gy < 0 || gx >= CW || gy >= CH) return false;
+      const o = occ(), hit = o[gy * CW + gx];
+      if (hit) {
+        const p = st.pieces.find(q => q.id === hit);
+        // 已有选中块且点到另一块：尝试把选中块移向该点击方向
+        if (st.sel && st.sel !== hit) {
+          const sp = st.pieces.find(q => q.id === st.sel), d = dirToBlank(sp, gx, gy);
+          if ((d[0] || d[1]) && doMove(sp, d[0], d[1])) { st.sel = null; return true; }
+        }
+        const dirs = [];
+        for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) if (canMove(p, dx, dy)) dirs.push([dx, dy]);
+        // 点块：只有一个可行方向直接走；多个方向则选中等待二次操作；不可动则选中提示
+        if (dirs.length === 1 && st.sel !== hit) { st.sel = null; return doMove(p, dirs[0][0], dirs[0][1]); }
+        st.sel = (st.sel === hit) ? null : hit;
+        return true;
+      }
+      // 点空格：优先移动已选中块；否则自动把相邻能移入该空格的棋子滑入
+      if (st.sel) {
+        const sp = st.pieces.find(q => q.id === st.sel), d = dirToBlank(sp, gx, gy);
+        if ((d[0] || d[1]) && doMove(sp, d[0], d[1])) { st.sel = null; return true; }
+      }
+      const order = st.pieces.slice().sort((a, b) => (a.id === 'B' ? -1 : 0) - (b.id === 'B' ? -1 : 0));
+      for (const p of order) {
+        const d = dirToBlank(p, gx, gy);
+        if ((d[0] || d[1]) && doMove(p, d[0], d[1])) { st.sel = null; return true; }
+      }
+      return false;
+    };
+    st.onKey = (e) => {
+      if (st.won) return false;
+      const K = { ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1], a:[-1,0], d:[1,0], w:[0,-1], s:[0,1] };
+      const d = K[e.key];
+      if (!d) return false;
+      // 有选中块：精确移动它
+      if (st.sel) {
+        const p = st.pieces.find(q => q.id === st.sel);
+        if (p && doMove(p, d[0], d[1])) { st.sel = null; return true; }
+        return false;
+      }
+      // 无选中：自动找第一个能朝该方向移动的块（曹操优先），保证方向键总能推进
+      const order = st.pieces.slice().sort((a, b) => (a.id === 'B' ? -1 : 0) - (b.id === 'B' ? -1 : 0));
+      for (const p of order) if (doMove(p, d[0], d[1])) return true;
+      return false;
+    };
+    // 提示高亮期间持续重绘以驱动闪烁动画，到期清除提示
+    st.tick = () => {
+      if (st.hintMove && performance.now() >= st.hintMove.until) { st.hintMove = null; return true; }
+      return !!st.hintMove;
+    };
+    st.info = () => {
+      const def = KLOTSKI_LAYOUTS[st.layoutIdx], b = st.best[st.layoutIdx];
+      return def.name + ' · 步 ' + ab('#22d3ee', st.steps) + ' · 最佳 ' + ab('#a78bfa', b < 999999 ? b : '—') +
+             ' · 理论 ' + ab('#fbbf24', def.optimal) + (st.won ? ' · ' + ab('var(--ok)', '过关!') : '');
+    };
+    st.draw = (ctx, w, h) => {
+      ctx.clearRect(0, 0, w, h); st.layout();
+      const cs = st.cell, gap = Math.max(2, Math.round(cs * 0.05));
+      const TH = KLOTSKI_THEMES[st.themeIdx] || KLOTSKI_THEMES[0];
+      const NAMES = { B:'曹操', A:'张', C:'赵', D:'马', F:'黄', E:'关', G:'兵', H:'兵', I:'兵', J:'兵' };
+      const typeOf = (id) => id === 'B' ? 'B' : id === 'E' ? 'H' : (id === 'G' || id === 'H' || id === 'I' || id === 'J') ? 'S' : 'V';
+      ctx.fillStyle = TH.board; ctx.fillRect(st.ox - gap, st.oy - gap, cs * CW + gap * 2, cs * CH + gap * 2);
+      ctx.fillStyle = TH.cell; ctx.fillRect(st.ox, st.oy, cs * CW, cs * CH);
+      ctx.strokeStyle = TH.edge; ctx.lineWidth = 2; ctx.strokeRect(st.ox - gap + 1, st.oy - gap + 1, cs * CW + gap * 2 - 2, cs * CH + gap * 2 - 2);
+      ctx.fillStyle = cssVar('--ok', '#34d399'); ctx.fillRect(st.ox + cs, st.oy + cs * CH, cs * 2, 4);
+      ctx.strokeStyle = TH.grid; ctx.lineWidth = 1;
+      for (let x = 1; x < CW; x++) { ctx.beginPath(); ctx.moveTo(st.ox + x * cs, st.oy); ctx.lineTo(st.ox + x * cs, st.oy + cs * CH); ctx.stroke(); }
+      for (let y = 1; y < CH; y++) { ctx.beginPath(); ctx.moveTo(st.ox, st.oy + y * cs); ctx.lineTo(st.ox + cs * CW, st.oy + y * cs); ctx.stroke(); }
+      for (const p of st.pieces) {
+        const px = st.ox + p.x0 * cs + gap / 2, py = st.oy + p.y0 * cs + gap / 2;
+        const pw = (p.x1 - p.x0 + 1) * cs - gap, ph = (p.y1 - p.y0 + 1) * cs - gap;
+        const col = TH[typeOf(p.id)] || ['#94a3b8','#475569','#fff'];
+        const grad = ctx.createLinearGradient(px, py, px, py + ph);
+        grad.addColorStop(0, col[0]); grad.addColorStop(1, col[1]);
+        ctx.fillStyle = grad; arcadeRoundRect(ctx, px, py, pw, ph, Math.max(4, cs * 0.1)); ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 1; arcadeRoundRect(ctx, px, py, pw, ph, Math.max(4, cs * 0.1)); ctx.stroke();
+        if (st.sel === p.id) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; arcadeRoundRect(ctx, px, py, pw, ph, Math.max(4, cs * 0.1)); ctx.stroke(); }
+        // 提示高亮：脉冲亮青色外框 + 半透明填充 + 白色大箭头（持续 6 秒）
+        if (st.hintMove && st.hintMove.id === p.id && performance.now() < st.hintMove.until) {
+          const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 150);
+          ctx.save();
+          // 半透明脉冲填充覆盖棋子
+          ctx.globalAlpha = 0.18 + 0.16 * pulse;
+          ctx.fillStyle = '#22d3ee'; arcadeRoundRect(ctx, px, py, pw, ph, Math.max(4, cs * 0.1)); ctx.fill();
+          // 双层描边（深色底 + 亮青色），任何棋子颜色下都醒目
+          ctx.globalAlpha = 1;
+          ctx.strokeStyle = '#0e3a45'; ctx.lineWidth = Math.max(5, cs * 0.12);
+          arcadeRoundRect(ctx, px - 2, py - 2, pw + 4, ph + 4, Math.max(4, cs * 0.1)); ctx.stroke();
+          ctx.strokeStyle = '#67e8f9'; ctx.lineWidth = Math.max(3, cs * 0.07);
+          arcadeRoundRect(ctx, px - 2, py - 2, pw + 4, ph + 4, Math.max(4, cs * 0.1)); ctx.stroke();
+          // 移动方向大箭头（带深色描边）
+          const cx = px + pw / 2, cy = py + ph / 2, ar = Math.min(pw, ph) * 0.34;
+          const [hx, hy] = [st.hintMove.dx, st.hintMove.dy];
+          const tipX = cx + hx * ar, tipY = cy + hy * ar;
+          const bx = cx + hx * ar * 0.15, by = cy + hy * ar * 0.15;
+          ctx.fillStyle = '#fde047'; ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = Math.max(2, cs * 0.04);
+          ctx.beginPath();
+          ctx.moveTo(tipX, tipY);
+          ctx.lineTo(bx - hy * ar * 0.42 - hx * ar * 0.35, by + hx * ar * 0.42 - hy * ar * 0.35);
+          ctx.lineTo(bx + hy * ar * 0.42 - hx * ar * 0.35, by - hx * ar * 0.42 - hy * ar * 0.35);
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.restore();
+        }
+        ctx.fillStyle = col[2] || '#fff'; ctx.font = 'bold ' + Math.max(12, Math.round(Math.min(pw, ph) * (p.id === 'B' ? 0.3 : 0.5))) + 'px system-ui';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(NAMES[p.id] || p.id, px + pw / 2, py + ph / 2 + 1);
+      }
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      if (st.won) {
+        ctx.fillStyle = cssVar('--ok', '#34d399');
+        ctx.font = 'bold ' + Math.max(18, Math.round(Math.min(w, h) * 0.055)) + 'px system-ui';
+        ctx.textAlign = 'center'; ctx.fillText('曹操出关 · ' + st.steps + ' 步', w / 2, Math.max(4, st.oy - 26)); ctx.textAlign = 'left';
+      }
+    };
+    st.reset(); return st;
   }
   // ---- 模式16：迷宫 Maze（深度优先生成完美迷宫，尺寸下拉切换） ----
   function createMaze() {
@@ -10916,6 +11823,38 @@ linksEl.addEventListener('change', () => {
       loadProg();
       st.over = false; st.clear = false; st.overAt = 0;
       startLevel();
+    };
+    // 局面存档（模式17）：实时战场，保存地形/玩家/敌人/道具/数值；时间基准在恢复时重置
+    st.snapshot = () => ({
+      level: st.level, unlocked: st.unlocked, cleared: st.cleared, score: st.score,
+      power: st.power, speed: st.speed, steelShield: st.steelShield, allyOn: st.allyOn,
+      randomMode: st.randomMode, randomSeed: st.randomSeed,
+      spawned: st.spawned, spawnTotal: st.spawnTotal, dir: st.dir,
+      over: st.over, clear: st.clear,
+      grid: st.grid ? st.grid.map(r => r.slice()) : null,
+      player: deepCopy(st.player), ally: deepCopy(st.ally),
+      enemies: deepCopy(st.enemies), items: deepCopy(st.items)
+    });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.grid) || d.grid.length !== ROWS ||
+          !d.grid.every(r => Array.isArray(r) && r.length === COLS)) return false;
+      st.level = d.level | 0; st.unlocked = Math.max(1, d.unlocked | 0); st.cleared = d.cleared | 0;
+      st.score = d.score | 0; st.power = d.power | 0; st.speed = d.speed || 4.6;
+      st.steelShield = !!d.steelShield; st.allyOn = !!d.allyOn;
+      st.randomMode = !!d.randomMode; st.randomSeed = d.randomSeed | 0;
+      st.spawned = d.spawned | 0; st.spawnTotal = d.spawnTotal | 0; st.dir = d.dir | 0;
+      st.over = !!d.over; st.clear = !!d.clear; st.overAt = 0;
+      st.grid = d.grid.map(r => r.slice());
+      st.player = d.player ? deepCopy(d.player) : newPlayer();
+      st.ally = d.ally ? deepCopy(d.ally) : (st.allyOn ? newAlly() : null);
+      st.enemies = deepCopy(d.enemies || []); st.items = deepCopy(d.items || []);
+      st.bullets = []; st.booms = []; st.pressed = []; st.ironCells = []; st.ironUntil = 0; st.hitAt = 0;
+      const now = performance.now();
+      st.spawnAt = now + 700;
+      if (st.player) st.player.fireAt = 0;
+      for (const e of st.enemies) { e.fireAt = 0; e.aiAt = now + 200; }
+      saveProg();
+      return true;
     };
     // 选关：n<0 进入「无尽战场」（换种子、过关数从 0 起算）；否则加载已解锁的固定关卡（1~100）
     st.setLevel = (n) => {
@@ -11544,6 +12483,47 @@ linksEl.addEventListener('change', () => {
       st.level = lv; st.over = false; st.clear = false; st.overAt = 0;
       startLevel(); saveProg();
     };
+    // 完整局面存档（切换游戏 / ESC / 刷新恢复）：地图、玩家、敌人、炸弹、道具、火焰与全部数值。
+    // 时间基准类字段（炸弹 at / 火焰 t / overAt / hitAt）在恢复时重设为当前时间，
+    // 避免读档瞬间全部炸弹立即爆炸或立刻结算。
+    st.snapshot = () => ({
+      level: st.level, unlocked: st.unlocked, score: st.score, lives: st.lives,
+      over: st.over, clear: st.clear,
+      fire: st.fire, maxBombs: st.maxBombs, speed: st.speed, remote: st.remote, wall: st.wall,
+      grid: st.grid ? st.grid.map(r => r.slice()) : null,
+      player: st.player ? Object.assign({}, st.player) : null,
+      enemies: st.enemies.map(e => Object.assign({}, e)),
+      bombs: st.bombs.map(b => Object.assign({}, b)),
+      flames: [],   // 火焰是瞬时特效，不必跨局恢复
+      items: st.items.map(i => Object.assign({}, i)),
+      exitOpen: st.exitOpen, exitX: st.exitX, exitY: st.exitY
+    });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.grid) || !d.player) return false;
+      st.level = Math.max(1, d.level | 0);
+      st.unlocked = Math.max(st.level, d.unlocked | 0);
+      st.score = Math.max(0, d.score | 0);
+      st.lives = Math.max(1, Math.min(9, d.lives | 0));
+      st.over = !!d.over; st.clear = !!d.clear; st.overAt = 0; st.hitAt = 0;
+      st.fire = Math.max(1, Math.min(6, d.fire | 0));
+      st.maxBombs = Math.max(1, Math.min(6, d.maxBombs | 0));
+      st.speed = Number.isFinite(parseFloat(d.speed)) ? Math.max(4.2, Math.min(6.5, parseFloat(d.speed))) : 4.2;
+      st.remote = !!d.remote; st.wall = !!d.wall;
+      st.grid = d.grid.map(r => r.slice());
+      st.player = Object.assign({}, d.player);
+      st.player.fire = st.fire; st.player.maxBombs = st.maxBombs; st.player.speed = st.speed;
+      st.player.remote = st.remote; st.player.wall = st.wall;
+      st.enemies = (d.enemies || []).map(e => Object.assign({}, e, { aiAt: 0 }));
+      const now = performance.now();
+      st.bombs = (d.bombs || []).map(b => Object.assign({}, b, { at: now - 1000 }));
+      st.flames = [];
+      st.items = (d.items || []).map(i => Object.assign({}, i));
+      st.exitOpen = !!d.exitOpen;
+      st.exitX = d.exitX | 0; st.exitY = d.exitY | 0;
+      st.pressed = []; st.dir = st.player.dir || 2;
+      saveProg();
+      return true;
+    };
     // passSoft=true（玩家持有穿墙道具）时软砖 t=1 可穿过；硬砖 t=2 与边界仍阻挡
     const solid = (x, y, passSoft) => {
       if (x < 0 || y < 0 || x >= COLS || y >= ROWS) return true;
@@ -11852,6 +12832,899 @@ linksEl.addEventListener('change', () => {
     st.reset();
     return st;
   }
+  // ============ 模式22~23：钻石迷阵 / 空当接龙 ============
+  // 主题与几何工具（两款游戏共用）
+  const uiLight = () => document.documentElement.dataset.theme === 'light';
+  const rrect = (ctx, x, y, w, h, r) => {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  };
+  const tipLine = (ctx, w, text, y) => {
+    ctx.save(); ctx.font = '11.5px system-ui, -apple-system, "Segoe UI", sans-serif';
+    ctx.fillStyle = uiLight() ? 'rgba(71,85,105,.9)' : 'rgba(148,162,184,.88)';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText(text, w / 2, y); ctx.restore();
+  };
+
+  // ---- 模式22：钻石迷阵（Bejeweled Classic 风格三消 · 多主题）----
+  function createJewelMania() {
+    let C = 8, R = 8; const TYPES = 7;
+    const SIZE_LIST = [[8, 8], [9, 9], [8, 10], [10, 10]];
+    // 2.8.98：形状顺序对齐附图——红=圆角方块、橙=六边形、黄=菱形、绿=六边形、蓝=钻石、紫=三角、白=圆形星芒
+    const SHAPES = ['square', 'hex', 'diamond', 'hex', 'gem', 'triangle', 'circle'];
+    const NAMES = ['红宝石', '橙宝石', '黄水晶', '绿祖母', '蓝宝石', '紫水晶', '白钻'];
+    // 四套宝石配色主题：经典 / 糖果 / 霓虹 / 皇室
+    // 2.8.98：经典主题重做——参考附图 Bejeweled 风格，浓郁宝石色 + 深色刻面，配暖棕棋盘/金框。
+    const THEMES = [
+      { name: '经典', board: ['#7c4a2d','#4a2c1b'], frame: '#e0a53c', ink: '#3a1d0e', cols: [
+        ['#e11d2e','#ff8a8a','#7f0b17'], ['#f97316','#ffc08a','#9a3412'],
+        ['#facc15','#fff3a0','#a16207'], ['#22c55e','#a7f3a0','#14532d'],
+        ['#0ea5e9','#a5e8ff','#075985'], ['#a21caf','#e9a8ff','#6b21a8'],
+        ['#f8fafc','#ffffff','#b6c2d2'] ] },
+      // 2.9.00：重做糖果主题——旧版棋盘粉紫 + 粉红/浅紫/粉紫白钻三者混色难分辨；
+      // 改为「中性深蓝灰棋盘 + 七色相分明的马卡龙糖果色」，白钻用银白不带粉，红/紫/白彻底区分。
+      { name: '糖果', board: ['#37324e','#211d33'], frame: '#c7b8ff', ink: '#1a1628', cols: [
+        ['#ff6b81','#ffc2cc','#a30e2b'], ['#ff9f43','#ffd9a8','#a9540b'],
+        ['#ffd32a','#fff2a8','#916000'], ['#4ade80','#c0f7cf','#157a38'],
+        ['#38bdf8','#b3e8ff','#03658f'], ['#a855f7','#dcb4ff','#5b21a8'],
+        ['#f1f5f9','#ffffff','#9aa8bd'] ] },
+      { name: '霓虹', board: ['#243a63','#121d36'], frame: '#6ee7ff', ink: '#0b1226', cols: [
+        ['#f2486a','#ffa8ba','#a51638'], ['#f9822e','#ffc99a','#9c4408'],
+        ['#e3be1f','#f8ed9a','#806a05'], ['#1fc479','#a0f0c8','#0c6d43'],
+        ['#22bcd9','#aef0f8','#0a6577'], ['#a855f7','#e2c0ff','#6123a3'],
+        ['#e6ecf4','#ffffff','#8f9db0'] ] },
+      { name: '皇室', board: ['#4a2c2c','#291818'], frame: '#e8c66a', ink: '#1d0d0d', cols: [
+        ['#dc2626','#ff9a9a','#7f1d1d'], ['#ea580c','#ffc08a','#7c2d12'],
+        ['#ca8a04','#ffe070','#713f12'], ['#15803d','#9ae8a8','#14532d'],
+        ['#1d4ed8','#a8c8ff','#1e3a8a'], ['#7e22ce','#e0b0ff','#581c87'],
+        ['#c4b5a5','#f0ebe4','#57534e'] ] }
+    ];
+    const gemsOf = () => {
+      const th = THEMES[st.theme];
+      return th.cols.map((c, i) => ({ n: NAMES[i], c: c[0], hi: c[1], lo: c[2], shape: SHAPES[i], ink: th.ink, frame: th.frame, board: th.board }));
+    };
+    const st = { grid: [], sel: null, dragFrom: null, swapDone: false, score: 0, level: 1, goal: 1500, moves: 0,
+                 combo: 0, phase: 'idle', anim: null, clearFx: [], fallFx: [], hint: null, hintAt: 0,
+                 swap: null, lastSwap: null, win: false, winAt: 0, over: false, theme: 0, levelBase: 0, msg: '', best: 0,
+                 achv: '', achvUntil: 0 };   // 2.8.98：成就/特殊效果文字 + 到期时间（performance.now）
+    // 2.8.97：按棋盘尺寸分别记录历史最高分（累计分数），键名带尺寸，持久化到 localStorage/Cookie。
+    // 加分即尝试刷新纪录；切换尺寸 / 恢复存档时按当前 C×R 重新载入对应档位的最高分。
+    const bestKey = () => 'mp_jewel_best_' + C + 'x' + R;
+    const loadBest = () => { st.best = parseInt(cookieGet(bestKey()) || '0', 10) || 0; };
+    const saveBest = () => { if (st.score > st.best) { st.best = st.score; cookieSet(bestKey(), String(st.best)); } };
+    const idx = (x, y) => y * C + x;
+    const inside = (x, y) => x >= 0 && x < C && y >= 0 && y < R;
+    const rnd = () => (Math.random() * TYPES) | 0;
+    const newGem = () => ({ t: rnd(), sp: 0 });
+    const geom = () => {
+      const w = canvas ? canvas.clientWidth : 900, h = canvas ? canvas.clientHeight : 560;
+      const padX = 26, padTop = 40, padBottom = 28;
+      const cell = Math.max(22, Math.min(62, Math.floor(Math.min((w - padX * 2) / C, (h - padTop - padBottom) / R))));
+      return { w, h, cell, ox: Math.floor((w - cell * C) / 2), oy: padTop + Math.floor((h - padTop - padBottom - cell * R) / 2) };
+    };
+
+    // 扫描全部横向/纵向三连及以上（返回 {cells,dir,len,t}）
+    const findMatches = () => {
+      const res = [];
+      for (let y = 0; y < R; y++) {
+        let x = 0;
+        while (x < C) {
+          const g = st.grid[idx(x, y)];
+          if (!g) { x++; continue; }
+          let e = x + 1;
+          while (e < C && st.grid[idx(e, y)] && st.grid[idx(e, y)].t === g.t) e++;
+          if (e - x >= 3) { const cells = []; for (let k = x; k < e; k++) cells.push(idx(k, y)); res.push({ cells, dir: 'h', len: e - x, t: g.t }); }
+          x = e;
+        }
+      }
+      for (let x = 0; x < C; x++) {
+        let y = 0;
+        while (y < R) {
+          const g = st.grid[idx(x, y)];
+          if (!g) { y++; continue; }
+          let e = y + 1;
+          while (e < R && st.grid[idx(x, e)] && st.grid[idx(x, e)].t === g.t) e++;
+          if (e - y >= 3) { const cells = []; for (let k = y; k < e; k++) cells.push(idx(x, k)); res.push({ cells, dir: 'v', len: e - y, t: g.t }); }
+          y = e;
+        }
+      }
+      return res;
+    };
+    const findHint = () => {
+      for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) for (const [dx, dy] of [[1, 0], [0, 1]]) {
+        const nx = x + dx, ny = y + dy; if (!inside(nx, ny)) continue;
+        const a = idx(x, y), b = idx(nx, ny);
+        if (!st.grid[a] || !st.grid[b]) continue;
+        const ga = st.grid[a], gb = st.grid[b];
+        st.grid[a] = gb; st.grid[b] = ga;
+        const ok = findMatches().length > 0;
+        st.grid[a] = ga; st.grid[b] = gb;   // 正确换回（此前用 t 单变量换回会把 b 置成与 a 相同，凭空造出三连）
+        if (ok) return { a, b };
+      }
+      return null;
+    };
+    const hasMove = () => !!findHint();
+    const shuffle = () => {
+      st.grid = new Array(C * R);   // 每次重建，确保切换尺寸后数组长度与 C*R 一致
+      let guard = 0;
+      do {
+        for (let i = 0; i < C * R; i++) st.grid[i] = newGem();
+      } while ((findMatches().length || !hasMove()) && guard++ < 400);
+      st.clearFx = []; st.fallFx = []; st.phase = 'idle'; st.anim = null;
+    };
+
+    // 关键：解析一轮匹配（消除→生成特殊宝石→扩散引爆），随后进入 clear 动画
+    const stepResolve = (now) => {
+      const matches = findMatches();
+      if (!matches.length) {
+        st.phase = 'idle'; st.combo = 0; st.hint = null; st.lastSwap = null;
+        if (!hasMove()) { st.over = true; st.msg = '无可移动宝石，游戏结束'; }
+        return false;
+      }
+      const clearSet = new Set();
+      const spawns = [], spawnPos = new Set();
+      for (const m of matches) {
+        for (const c of m.cells) clearSet.add(c);
+        let sp = 0;
+        if (m.len >= 5) sp = m.dir === 'h' ? 2 : 3;       // 直线五连 → 闪电
+        else if (m.len === 4) sp = 1;                      // 四连 → 火焰
+        // L/T 形交叉 → 超新星
+        for (const c of m.cells) if (matches.some(o => o.dir !== m.dir && o.cells.indexOf(c) >= 0)) { sp = 4; break; }
+        if (sp) {
+          let pos = m.cells[(m.cells.length / 2) | 0];
+          if (st.lastSwap) for (const c of m.cells) if (c === st.lastSwap.a || c === st.lastSwap.b) { pos = c; break; }
+          if (!spawnPos.has(pos)) { spawnPos.add(pos); spawns.push({ idx: pos, t: m.t, sp }); }
+        }
+      }
+      // 扩散：被清除格中已有的特殊宝石依次引爆（连锁）
+      const seen = new Set(), q = [...clearSet];
+      while (q.length) {
+        const c = q.shift(); if (seen.has(c)) continue; seen.add(c);
+        const gem = st.grid[c]; if (!gem || !gem.sp) continue;
+        const x = c % C, y = (c / C) | 0; let add = [];
+        if (gem.sp === 1) { for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (inside(x + dx, y + dy)) add.push(idx(x + dx, y + dy)); }
+        else if (gem.sp === 2) { for (let k = 0; k < C; k++) add.push(idx(k, y)); }
+        else if (gem.sp === 3) { for (let k = 0; k < R; k++) add.push(idx(x, k)); }
+        else if (gem.sp === 4) { for (let k = 0; k < C * R; k++) if (st.grid[k] && st.grid[k].t === gem.t) add.push(k); }
+        for (const a of add) { clearSet.add(a); if (st.grid[a] && st.grid[a].sp && !seen.has(a)) q.push(a); }
+      }
+      const gain = Math.round(clearSet.size * 60 * (1 + st.combo * 0.5) + spawns.reduce((s, p) => s + (p.sp === 4 ? 500 : p.sp >= 2 ? 300 : 200), 0));
+      st.score += gain; st.moves++; saveBest();
+      st.clearFx = [...clearSet].map(c => ({ c, t: st.grid[c] ? st.grid[c].t : 0, sp: st.grid[c] ? st.grid[c].sp : 0 }));
+      for (const c of clearSet) st.grid[c] = null;
+      for (const s of spawns) st.grid[s.idx] = { t: s.t, sp: s.sp };
+      st.combo++;
+      st.msg = (st.combo > 1 ? '连锁 ×' + st.combo + '  ' : '') + '+' + gain;
+      // 2.8.98：达成特殊效果/成就时在尺寸框后高亮提示（按稀有度取最高一项）
+      const spMax = spawns.reduce((m, p) => Math.max(m, p.sp), 0);
+      if (spMax >= 4) st.achv = '✦ 超新星！';
+      else if (spMax >= 2) st.achv = '⚡ 闪电宝石！';
+      else if (spMax === 1) st.achv = '🔥 火焰宝石！';
+      else if (st.combo >= 4) st.achv = '🔥 ' + st.combo + ' 连锁！';
+      else if (clearSet.size >= 9) st.achv = '💎 大消除 ×' + clearSet.size;
+      if (st.achv) st.achvUntil = now + 2600;
+      // 里程碑：分数每跨过一个 5000 整数档
+      const mile = Math.floor(st.score / 5000);
+      if (mile > 0 && st.score >= mile * 5000 && st.score - gain < mile * 5000) { st.achv = '🏆 得分破 ' + (mile * 5000); st.achvUntil = now + 3000; }
+      st.phase = 'clear'; st.anim = { start: now, dur: 340 };
+      return true;
+    };
+    const doFall = (now) => {
+      st.fallFx = [];
+      for (let x = 0; x < C; x++) {
+        let write = R - 1;
+        for (let y = R - 1; y >= 0; y--) {
+          if (st.grid[idx(x, y)]) {
+            if (write !== y) { st.grid[idx(x, write)] = st.grid[idx(x, y)]; st.grid[idx(x, y)] = null; st.fallFx.push({ c: idx(x, write), from: y }); }
+            write--;
+          }
+        }
+        for (let y = write; y >= 0; y--) { st.grid[idx(x, y)] = newGem(); st.fallFx.push({ c: idx(x, y), from: y - R - Math.random() * 2 }); }
+      }
+      st.clearFx = []; st.phase = 'fall'; st.anim = { start: now, dur: 240 };
+    };
+    const doSwap = (a, b) => {
+      const ia = idx(a.x, a.y), ib = idx(b.x, b.y);
+      const t = st.grid[ia]; st.grid[ia] = st.grid[ib]; st.grid[ib] = t;
+      st.swap = { a: ia, b: ib }; st.lastSwap = { a: ia, b: ib };
+      st.sel = null; st.hint = null; st.phase = 'swap'; st.anim = { start: performance.now(), dur: 160 };
+    };
+    const nextLevel = () => {
+      st.win = false; st.winAt = 0; st.levelBase = st.score; st.level++; st.goal = Math.round(st.goal * 1.6);
+      st.combo = 0; st.lastSwap = null;
+      // 过关保留当前棋盘，不重新布局（用户要求：过关后沿用现有宝石继续玩）
+    };
+
+    st.tick = (dt, now) => {
+      const ph = st.phase;
+      // 2.8.98：成就文字到期即清除，并返回 true 触发一次 updateScore 把它从信息条隐藏
+      let achvTick = false;
+      if (st.achv && now >= st.achvUntil) { st.achv = ''; achvTick = true; }
+      if (ph === 'idle') {
+        if (st.over) return achvTick;
+        // 防御性检测：任何残留匹配（例如下落填充后未被触发）都在此消除，杜绝"落下不消"
+        let acted = false;
+        if (findMatches().length) { stepResolve(now); acted = true; }
+        if (st.score >= st.goal && !st.win) { st.win = true; st.winAt = now; st.msg = '过关！'; }
+        // 2.8.97：过关 2 秒到点自动进下一关时，nextLevel() 会把 st.win 置回 false。
+        // 若此处直接 return acted||st.win（此时二者皆 false），本帧不会重绘，上一帧的
+        // “★ 过关”遮罩会一直留在画布上，必须等下一次点击才消失——正是「过关后还要点一下
+        // 才开始」的根因。进关帧强制返回 true，让遮罩立即被擦掉、画面切到新关卡。
+        if (st.win && st.winAt && now - st.winAt > 2000) { nextLevel(); acted = true; }
+        return acted || st.win || achvTick;
+      }
+      if (!st.anim) { st.phase = 'idle'; return true; }
+      if (now - st.anim.start < st.anim.dur) return true;
+      if (ph === 'swap') {
+        if (findMatches().length) { st.phase = 'idle'; stepResolve(now); }
+        else {
+          const a = st.swap.a, b = st.swap.b, t = st.grid[a]; st.grid[a] = st.grid[b]; st.grid[b] = t;
+          st.phase = 'swapback'; st.anim = { start: now, dur: 160 }; st.msg = '无效交换';
+        }
+      } else if (ph === 'swapback') { st.phase = 'idle'; st.lastSwap = null; }
+      else if (ph === 'clear') doFall(now);
+      else if (ph === 'fall') { st.fallFx = []; stepResolve(now); }
+      if (st.score >= st.goal && !st.win) { st.win = true; st.winAt = now; st.msg = '过关！'; }
+      if (st.win && st.winAt && now - st.winAt > 2000) nextLevel();
+      return true;
+    };
+
+    // 2.8.98：按附图重绘宝石——深色描边 + 玻璃刻面 + 顶部强高光，饱满立体。
+    // 形状：红=圆角方块 / 橙·绿=六边形 / 黄=菱形 / 蓝=钻石(上宽下尖) / 紫=三角 / 白=圆形星芒。
+    const drawGem = (ctx, cx, cy, r, t, sp, GEMS) => {
+      const G = GEMS[t] || GEMS[0];
+      const rr = r * .9, ink = G.ink || 'rgba(20,10,5,.9)';
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.45)'; ctx.shadowBlur = r * .32; ctx.shadowOffsetY = r * .14;
+
+      // 构造宝石外轮廓路径（不 fill，供描边/裁剪复用）
+      const path = () => {
+        ctx.beginPath();
+        if (G.shape === 'circle') { ctx.arc(cx, cy, rr, 0, Math.PI * 2); return; }
+        if (G.shape === 'square') {                       // 圆角方块
+          const s = rr * 1.4, x = cx - s / 2, y = cy - s / 2, rad = r * .22;
+          rrect(ctx, x, y, s, s, rad); return;
+        }
+        if (G.shape === 'diamond') {                      // 菱形（黄）
+          ctx.moveTo(cx, cy - rr); ctx.lineTo(cx + rr * .82, cy); ctx.lineTo(cx, cy + rr); ctx.lineTo(cx - rr * .82, cy); ctx.closePath(); return;
+        }
+        if (G.shape === 'gem') {                          // 钻石（蓝）：上沿平、肩宽、下收尖
+          ctx.moveTo(cx - rr * .9, cy - rr * .45); ctx.lineTo(cx + rr * .9, cy - rr * .45);
+          ctx.lineTo(cx + rr * .62, cy + rr * .1); ctx.lineTo(cx, cy + rr);
+          ctx.lineTo(cx - rr * .62, cy + rr * .1); ctx.closePath(); return;
+        }
+        const n = G.shape === 'triangle' ? 3 : G.shape === 'hex' ? 6 : 5;
+        for (let i = 0; i < n; i++) {
+          const ang = -Math.PI / 2 + i * Math.PI * 2 / n;
+          const px = cx + Math.cos(ang) * rr, py = cy + Math.sin(ang) * rr;
+          i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        }
+        ctx.closePath();
+      };
+
+      const grd = ctx.createRadialGradient(cx - r * .3, cy - r * .42, r * .06, cx, cy, r * 1.05);
+      grd.addColorStop(0, G.hi); grd.addColorStop(.5, G.c); grd.addColorStop(1, G.lo);
+      ctx.fillStyle = grd;
+      path(); ctx.fill();
+      ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      // 深色描边（附图宝石均带明显深色轮廓）
+      ctx.strokeStyle = ink; ctx.lineWidth = Math.max(1.5, r * .12); ctx.lineJoin = 'round';
+      path(); ctx.stroke();
+
+      // 内部刻面：按形状绘制多面切割，明暗棱线成对，贴近附图 Bejeweled 玻璃宝石质感
+      ctx.save(); path(); ctx.clip();
+      // 上亮下暗的整体渐变，先铺立体基调
+      const shade = ctx.createLinearGradient(cx, cy - rr, cx, cy + rr);
+      shade.addColorStop(0, 'rgba(255,255,255,.3)'); shade.addColorStop(.4, 'rgba(255,255,255,0)');
+      shade.addColorStop(1, 'rgba(0,0,0,.36)');
+      ctx.fillStyle = shade; ctx.fillRect(cx - rr, cy - rr, rr * 2, rr * 2);
+      // 放射刻面：从中心向四周切成 n 个折射面，暗棱 + 亮棱成对形成立体折角
+      const facet = (n, phase) => {
+        for (let k = 0; k < n; k++) {
+          const a = phase + k * Math.PI * 2 / n;
+          const ex = cx + Math.cos(a) * rr * 1.25, ey = cy + Math.sin(a) * rr * 1.25;
+          ctx.strokeStyle = 'rgba(0,0,0,.24)'; ctx.lineWidth = Math.max(1, r * .085);
+          ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ex, ey); ctx.stroke();
+          ctx.strokeStyle = 'rgba(255,255,255,.34)'; ctx.lineWidth = Math.max(1, r * .042);
+          ctx.beginPath(); ctx.moveTo(cx, cy - r * .05); ctx.lineTo(ex, ey - r * .05); ctx.stroke();
+        }
+      };
+      if (G.shape === 'circle') facet(8, -Math.PI / 2);        // 白钻：八面切割
+      else if (G.shape === 'hex') facet(6, -Math.PI / 2);      // 六边形：六面祖母绿切割
+      else if (G.shape === 'triangle') facet(3, -Math.PI / 2); // 紫水晶：三分面
+      else if (G.shape === 'square') facet(4, Math.PI / 4);    // 红方块：X 形四瓣
+      else if (G.shape === 'diamond') facet(4, 0);             // 黄菱形：十字四瓣
+      else if (G.shape === 'gem') {                            // 蓝钻：顶部横切 + 向尖端汇聚的棱
+        ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = Math.max(1, r * .065);
+        ctx.beginPath(); ctx.moveTo(cx - rr, cy - rr * .45); ctx.lineTo(cx + rr, cy - rr * .45); ctx.stroke();
+        for (const f of [-.62, 0, .62]) {
+          ctx.strokeStyle = 'rgba(0,0,0,.22)'; ctx.lineWidth = Math.max(1, r * .075);
+          ctx.beginPath(); ctx.moveTo(cx + f * rr, cy - rr * .45); ctx.lineTo(cx, cy + rr); ctx.stroke();
+        }
+      }
+      // 中上部大面积反光面
+      ctx.fillStyle = 'rgba(255,255,255,.16)';
+      ctx.beginPath(); ctx.moveTo(cx - rr, cy - rr); ctx.lineTo(cx + rr, cy - rr); ctx.lineTo(cx, cy + rr * .2); ctx.closePath(); ctx.fill();
+      ctx.restore();
+
+      // 顶部椭圆高光 + 左上闪点（附图宝石的标志性反光）
+      ctx.fillStyle = 'rgba(255,255,255,.62)';
+      ctx.beginPath(); ctx.ellipse(cx - r * .24, cy - r * .38, r * .24, r * .11, -.55, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.9)';
+      ctx.beginPath(); ctx.arc(cx - r * .34, cy - r * .46, Math.max(1, r * .09), 0, Math.PI * 2); ctx.fill();
+      if (G.shape === 'circle') {   // 白钻：中心星芒
+        ctx.strokeStyle = 'rgba(148,163,184,.55)'; ctx.lineWidth = Math.max(1, r * .06);
+        for (let k = 0; k < 4; k++) { const a = k * Math.PI / 4; ctx.beginPath(); ctx.moveTo(cx - Math.cos(a) * r * .5, cy - Math.sin(a) * r * .5); ctx.lineTo(cx + Math.cos(a) * r * .5, cy + Math.sin(a) * r * .5); ctx.stroke(); }
+      }
+      if (sp) {
+        if (sp === 1) {
+          ctx.strokeStyle = '#fb923c'; ctx.lineWidth = Math.max(2, r * .16);
+          ctx.beginPath(); ctx.arc(cx, cy, rr * .96, 0, Math.PI * 2); ctx.stroke();
+          ctx.font = Math.round(r * .78) + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🔥', cx, cy + r * .04);
+        } else if (sp === 2 || sp === 3) {
+          ctx.strokeStyle = sp === 2 ? '#fef08a' : '#e0f2fe'; ctx.lineWidth = Math.max(2, r * .14);
+          ctx.beginPath(); if (sp === 2) { ctx.moveTo(cx - rr, cy); ctx.lineTo(cx + rr, cy); } else { ctx.moveTo(cx, cy - rr); ctx.lineTo(cx, cy + rr); } ctx.stroke();
+          ctx.fillStyle = sp === 2 ? '#fef08a' : '#e0f2fe';
+          ctx.beginPath(); if (sp === 2) { ctx.moveTo(cx + rr, cy); ctx.lineTo(cx + rr * .6, cy - r * .18); ctx.lineTo(cx + rr * .6, cy + r * .18); } else { ctx.moveTo(cx, cy - rr); ctx.lineTo(cx - r * .18, cy - rr * .6); ctx.lineTo(cx + r * .18, cy - rr * .6); } ctx.closePath(); ctx.fill();
+        } else if (sp === 4) {
+          const rg = ctx.createLinearGradient(cx - rr, cy - rr, cx + rr, cy + rr);
+          rg.addColorStop(0, '#f43f5e'); rg.addColorStop(.5, '#fbbf24'); rg.addColorStop(1, '#38bdf8');
+          ctx.strokeStyle = rg; ctx.lineWidth = Math.max(2, r * .17);
+          ctx.beginPath(); ctx.arc(cx, cy, rr * .97, 0, Math.PI * 2); ctx.stroke();
+        }
+        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      }
+      ctx.restore();
+    };
+
+    st.draw = (ctx, w, h) => {
+      const G = geom(), cell = G.cell, ox = G.ox, oy = G.oy, now = performance.now(), GEMS = gemsOf();
+      // 2.8.98：附图风格棋盘——暖色渐变底 + 金色双层边框 + 深色交错格纹
+      const TH = GEMS[0], board = TH.board || ['#7c4a2d','#4a2c1b'], frame = TH.frame || '#e0a53c';
+      const bw = cell * C, bh = cell * R;
+      const bg = ctx.createLinearGradient(ox, oy, ox + bw, oy + bh);
+      bg.addColorStop(0, board[0]); bg.addColorStop(1, board[1]);
+      ctx.fillStyle = bg;
+      rrect(ctx, ox - 6, oy - 6, bw + 12, bh + 12, 14); ctx.fill();
+      ctx.strokeStyle = frame; ctx.lineWidth = 3; rrect(ctx, ox - 6, oy - 6, bw + 12, bh + 12, 14); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 1; rrect(ctx, ox - 2, oy - 2, bw + 4, bh + 4, 10); ctx.stroke();
+      for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) {
+        if ((x + y) % 2 === 0) { ctx.fillStyle = 'rgba(0,0,0,.10)'; ctx.fillRect(ox + x * cell, oy + y * cell, cell, cell); }
+      }
+      const ph = st.phase;
+      if (st.sel) { ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3; rrect(ctx, ox + st.sel.x * cell + 2, oy + st.sel.y * cell + 2, cell - 4, cell - 4, 7); ctx.stroke(); }
+      if (st.hint && now - st.hintAt < 4200 && Math.floor(now / 240) % 2 === 0) {
+        for (const c of [st.hint.a, st.hint.b]) { const x = c % C, y = (c / C) | 0; ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 3; rrect(ctx, ox + x * cell + 2, oy + y * cell + 2, cell - 4, cell - 4, 7); ctx.stroke(); }
+      }
+      const skipSwap = (ph === 'swap' || ph === 'swapback') && st.swap;
+      for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) {
+        const c = idx(x, y);
+        if (skipSwap && (c === st.swap.a || c === st.swap.b)) continue;
+        const gem = st.grid[c]; if (!gem) continue;
+        let py = oy + (y + .5) * cell;
+        if (ph === 'fall') {
+          const f = st.fallFx.find(o => o.c === c);
+          if (f) { const p = Math.min(1, (now - st.anim.start) / st.anim.dur), e = 1 - Math.pow(1 - p, 3); py = oy + (f.from + (y - f.from) * e + .5) * cell; }
+        }
+        drawGem(ctx, ox + (x + .5) * cell, py, cell * .44, gem.t, gem.sp, GEMS);
+      }
+      if (skipSwap) {
+        const p = Math.min(1, (now - st.anim.start) / st.anim.dur);
+        let e = 1 - Math.pow(1 - p, 2); if (ph === 'swapback') e = 1 - e;
+        const a = st.swap.a, b = st.swap.b, ax = a % C, ay = (a / C) | 0, bx = b % C, by = (b / C) | 0;
+        const ga = st.grid[a], gb = st.grid[b];
+        if (ga) drawGem(ctx, ox + (ax + (bx - ax) * e + .5) * cell, oy + (ay + (by - ay) * e + .5) * cell, cell * .44, ga.t, ga.sp, GEMS);
+        if (gb) drawGem(ctx, ox + (bx + (ax - bx) * e + .5) * cell, oy + (by + (ay - by) * e + .5) * cell, cell * .44, gb.t, gb.sp, GEMS);
+      }
+      if (ph === 'clear') {
+        const p = Math.min(1, (now - st.anim.start) / st.anim.dur);
+        for (const f of st.clearFx) { const x = f.c % C, y = (f.c / C) | 0; ctx.globalAlpha = 1 - p; drawGem(ctx, ox + (x + .5) * cell, oy + (y + .5) * cell, cell * .44 * (1 - p * .55), f.t, f.sp, GEMS); ctx.globalAlpha = 1; }
+      }
+      {
+        const p = Math.max(0, Math.min(1, (st.score - st.levelBase) / Math.max(1, st.goal - st.levelBase)));
+        const bw = cell * C, bx = ox, by = Math.max(6, oy - 11);
+        ctx.fillStyle = uiLight() ? 'rgba(15,23,42,.12)' : 'rgba(255,255,255,.12)';
+        rrect(ctx, bx, by, bw, 6, 3); ctx.fill();
+        ctx.fillStyle = st.win ? '#fbbf24' : '#34d399';
+        rrect(ctx, bx, by, Math.max(2, bw * p), 6, 3); ctx.fill();
+      }
+      if (st.win) {
+        ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, h / 2 - 40, w, 80);
+        ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 24px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('★ 过关！即将进入第 ' + (st.level + 1) + ' 关', w / 2, h / 2);
+        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      }
+      if (st.over) {
+        ctx.fillStyle = 'rgba(0,0,0,.62)'; ctx.fillRect(0, h / 2 - 46, w, 92);
+        ctx.fillStyle = '#f87171'; ctx.font = 'bold 24px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('无可移动宝石 · 游戏结束', w / 2, h / 2 - 12);
+        ctx.fillStyle = '#e2e8f0'; ctx.font = '14px system-ui';
+        ctx.fillText('按 R 或点击「R 重开」再来一局', w / 2, h / 2 + 18);
+        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      }
+    };
+
+    st.onPointer = (type, x, y, button) => {
+      if (button !== 0 || st.win || st.over || st.phase !== 'idle') return false;
+      const G = geom(), cell = G.cell;
+      if (x < G.ox || y < G.oy || x >= G.ox + cell * C || y >= G.oy + cell * R) return false;
+      const cx = Math.floor((x - G.ox) / cell), cy = Math.floor((y - G.oy) / cell);
+      const adj = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y) === 1;
+      if (type === 'down') { st.dragFrom = { x: cx, y: cy }; st.swapDone = false; return true; }
+      if (type === 'move') {
+        if (st.dragFrom && !st.swapDone && adj(st.dragFrom, { x: cx, y: cy })) {
+          const a = st.dragFrom; st.dragFrom = null; st.swapDone = true; st.sel = null; doSwap(a, { x: cx, y: cy }); return true;
+        }
+        return false;
+      }
+      if (type === 'up') {
+        const from = st.dragFrom; st.dragFrom = null;
+        if (st.swapDone) { st.swapDone = false; return true; }
+        if (!from) return false;
+        if (from.x === cx && from.y === cy) {
+          if (st.sel && adj(st.sel, { x: cx, y: cy })) { const a = st.sel; doSwap(a, { x: cx, y: cy }); return true; }
+          st.sel = (st.sel && st.sel.x === cx && st.sel.y === cy) ? null : { x: cx, y: cy };
+          return true;
+        }
+        if (adj(from, { x: cx, y: cy })) { doSwap(from, { x: cx, y: cy }); return true; }
+        return false;
+      }
+      return false;
+    };
+    st.onKey = (e) => {
+      const k = e.key;
+      if (k === 'r' || k === 'R') { st.reset(); return true; }
+      if (k === 'h' || k === 'H') { if (st.over || st.win) return true; st.hint = findHint(); st.hintAt = performance.now(); st.msg = st.hint ? '已标出一组可行交换' : '无可移动宝石，游戏结束'; if (!st.hint) st.over = true; return true; }
+      if (k === ' ' && st.win) { nextLevel(); return true; }
+      return false;
+    };
+    st.sizeNames = SIZE_LIST.map(s => s[0] + '×' + s[1]);
+    st.getSize = () => [C, R];
+    st.setSize = (c, r) => { const s = SIZE_LIST.find(o => o[0] === c && o[1] === r); if (!s) return; C = s[0]; R = s[1]; loadBest(); st.reset(); };
+    st.themeNames = THEMES.map(t => t.name);
+    st.setTheme = (idx) => { idx = Math.max(0, Math.min(THEMES.length - 1, idx | 0)); if (idx === st.theme) return; st.theme = idx; st.msg = '主题：' + THEMES[idx].name; };
+    const levelProgress = () => Math.max(0, Math.min(100, Math.round((st.score - st.levelBase) / Math.max(1, st.goal - st.levelBase) * 100)));
+    st.info = () => ab('#f59e0b', '分数 ' + st.score) + ' · ' + ab('#34d399', '最高 ' + st.best) + ' · ' + ab('#38bdf8', '目标 ' + st.goal) + ' · ' + ab('#a78bfa', '关卡 ' + st.level);
+    st.reset = () => {
+      st.score = 0; st.level = 1; st.levelBase = 0; st.goal = 1500; st.moves = 0; st.combo = 0; st.win = false; st.winAt = 0; st.over = false;
+      st.sel = null; st.dragFrom = null; st.swapDone = false; st.hint = null; st.clearFx = []; st.fallFx = []; st.phase = 'idle'; st.anim = null; st.swap = null; st.lastSwap = null;
+      shuffle(); st.msg = '交换相邻宝石，凑齐三连'; st.achv = ''; st.achvUntil = 0;
+    };
+    st.snapshot = () => {
+      let guard = 0, t = performance.now() + 1e6;
+      while (!st.over && (st.phase !== 'idle' || findMatches().length) && guard++ < 300) { st.tick(0, t); t += 1000; }
+      if (st.win && st.winAt) { // 过关瞬间存档：直接落到下一关，保留当前棋盘不重新布局
+        st.win = false; st.winAt = 0; st.level++; st.levelBase = st.score; st.goal = Math.round(st.goal * 1.6);
+      }
+      return { grid: st.grid.map(g => g ? { t: g.t, sp: g.sp } : null), score: st.score, level: st.level, goal: st.goal, moves: st.moves, win: st.win, over: st.over, cols: C, rows: R, theme: st.theme, levelBase: st.levelBase, msg: st.msg };
+    };
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.grid)) return false;
+      const nc = d.cols | 0 || 8, nr = d.rows | 0 || 8;
+      if (d.grid.length !== nc * nr) return false;
+      C = nc; R = nr; loadBest();   // 按恢复的棋盘尺寸载入对应档位历史最高分
+      st.grid = d.grid.map(g => g ? { t: Math.max(0, Math.min(TYPES - 1, g.t | 0)), sp: Math.max(0, Math.min(4, g.sp | 0)) } : null);
+      st.score = d.score | 0; st.level = Math.max(1, d.level | 0); st.goal = Math.max(100, d.goal | 0); st.moves = d.moves | 0;
+      st.win = !!d.win; st.over = !!d.over; st.winAt = st.win ? performance.now() : 0; st.theme = Math.max(0, Math.min(THEMES.length - 1, d.theme | 0)); st.levelBase = d.levelBase | 0;
+      st.msg = d.msg || ''; st.combo = 0;
+      st.sel = null; st.dragFrom = null; st.swapDone = false; st.hint = null; st.clearFx = []; st.fallFx = []; st.phase = 'idle'; st.anim = null; st.swap = null; st.lastSwap = null;
+      // 恢复后若棋盘残留匹配，立即结算，避免"落下不消"（死局存档除外）
+      if (!st.over && findMatches().length) stepResolve(performance.now());
+      saveBest();   // 存档里的分数也可能刷新纪录，按当前尺寸落盘
+      return true;
+    };
+    loadBest();   // 首次载入默认 8×8 的最高分
+    st.reset();
+    return st;
+  }
+
+
+  // ---- 模式23：空当接龙（经典 FreeCell · 全部明牌 · 多主题）----
+  function createFreeCell() {
+    const SUITS = [
+      { s: '♠', red: false }, { s: '♥', red: true }, { s: '♦', red: true }, { s: '♣', red: false }
+    ];
+    const RANK = (r) => ({ 1: 'A', 11: 'J', 12: 'Q', 13: 'K' }[r] || String(r));
+    const suitOf = (c) => (c / 13) | 0, rankOf = (c) => (c % 13) + 1;
+    // 四套桌面主题：经典绿 / 深海蓝 / 酒红 / 黑金（牌面红黑保持经典配色以确保可读）
+    // 2.8.97：统一「同色系低饱和」搭配——felt/lite 铺底，back 牌背与 line 虚线取 felt 的邻近色，
+    // 避免高饱和互补色（如纯蓝牌背压在绿呢面、亮黄虚线）造成的刺眼与不协调。
+    const TABLES = [
+      { name: '经典绿', felt: '#105c47', lite: '#14705a', back: '#1c6fa8', line: '#bfe3d6', card: '#f7fdfb' },
+      { name: '深海蓝', felt: '#1b3a72', lite: '#2456a0', back: '#3f6ea8', line: '#c2d6f2', card: '#f7faff' },
+      { name: '酒红', felt: '#712424', lite: '#8d3030', back: '#7a4a52', line: '#e8c4c4', card: '#fffaf6' },
+      { name: '黑金', felt: '#1c1b18', lite: '#2a2823', back: '#8a6d2f', line: '#d9c89a', card: '#fbfaf6' }
+    ];
+    // 2.8.97：自动收牌动画参数——每张牌飞入收牌区 380ms，逐张间隔 160ms，放慢到肉眼清晰可见。
+    // 2.9.00：收牌动画改为「串行」——每张间隔=时长，同时只飞一张，避免多牌飞向同一收牌堆时终点重叠错乱。
+    const FLY_DUR = 340, FLY_GAP = FLY_DUR;   // 间隔 = 时长，严格串行；单张时长略缩短以控制批量收牌总耗时
+    const st = {
+      tab: [[], [], [], [], [], [], [], []],   // 8 列，全部明牌（自底向上）
+      free: [null, null, null, null],            // 4 空当 → 卡号
+      found: [[], [], [], []],                   // 4 回收 → 卡号数组
+      sel: null, undo: [], moves: 0, won: false, msg: '', hint: null, hintAt: 0, seed: 0, theme: 0, completed: 0,
+      fly: [],                                   // 收牌飞行动画队列：{c,fi,fx,fy,start,dur}
+      flyColStep: null,                          // 2.9.02：动画期间每列「收牌前」的固定纵向步长，保证飞行牌与剩余牌布局一致、不因长度变化而挤压倒置
+      winPending: false, winMsg: ''              // 2.8.98：逻辑已通关但收牌动画未落定，延后到动画结束才显示通关
+    };
+    const COMPLETED_KEY = 'mp_freecell_completed';
+    st.completed = (() => { try { return parseInt(localStorage.getItem(COMPLETED_KEY) || '0', 10) || 0; } catch (_) { return 0; } })();
+    const persistCompleted = () => { try { localStorage.setItem(COMPLETED_KEY, String(st.completed)); } catch (_) {} };
+    // markWin 只登记「待通关」；真正显示遮罩/计数由 settleWin 在所有飞行动画落定后完成。
+    const markWin = (msg) => { if (!st.won && !st.winPending) { st.winPending = true; st.winMsg = msg || '恭喜通关！'; } };
+    const settleWin = () => {
+      if (st.winPending && !st.won) {
+        st.won = true; st.completed++; persistCompleted();
+        st.msg = st.winMsg || '恭喜通关！'; st.winPending = false;
+      }
+    };
+    const geom = () => {
+      const w = canvas ? canvas.clientWidth : 900, h = canvas ? canvas.clientHeight : 560;
+      const padX = 22, padTop = 42, gap = 10;
+      // 2.8.97：空当区(左 4 槽)与收牌区(右 4 槽)之间留出额外间隙 gap2，避免两区紧贴混淆。
+      // 顶部整行宽度因此变为 cw*8 + gap*7 + gap2，牌宽与居中基准都按此计算。
+      const gap2 = 42;   // 2.8.98：按用户截图标注再加宽 20px（22 → 42），空当区与收牌区分离更明显
+      // 牌宽随游戏区增大：取横向 8 列与纵向（顶部回收行 + 牌列）两者约束，去掉旧的 96 硬上限。
+      const cwW = Math.floor((w - padX * 2 - gap * 7 - gap2) / 8);
+      const cwH = Math.floor((h - padTop - 40) / 2.76);
+      const cw = Math.max(38, Math.min(150, Math.min(cwW, cwH)));
+      const ch = Math.round(cw * 1.38);
+      const ox = Math.floor((w - (cw * 8 + gap * 7 + gap2)) / 2);
+      return { w, h, cw, ch, ox, padX, padTop, gap, gap2 };
+    };
+    // 顶部槽位 X：i=0..3 空当左对齐牌列，i=4..7 收牌整体右移 gap2，与空当区拉开明显间隙。
+    // hit/draw/收牌动画终点统一走这里，确保点击区、绘制区、动画落点三者一致。
+    const topX = (G, i) => G.ox + i * (G.cw + G.gap) + (i >= 4 ? G.gap2 : 0);
+    // 经典超级移动上限（FreeCell 标准）：(空当数 + 1) × 2^空列数
+    // 每个空当可作为一次中转，再加一个「目标位」基准共 (空当+1) 张；空列每多一个翻倍。
+    // 修复：旧公式 2^空当数 × 2^空列数 在 2 空当 0 空列时算出 4，错误地允许移动 4 张牌
+    //       （截图中 6♣ 4 张序列移到 7♥ 即此 bug）。正确应为 (2+1)×2^0 = 3。
+    const maxMove = () => {
+      const emptyFree = st.free.filter(x => x === null).length;
+      const emptyTab = st.tab.filter(t => t.length === 0).length;
+      return (emptyFree + 1) * Math.pow(2, emptyTab);
+    };
+    const topCard = (t) => t.length ? t[t.length - 1].c : null;
+    const isSeq = (cards) => {
+      for (let i = 0; i + 1 < cards.length; i++) {
+        const a = cards[i], b = cards[i + 1];
+        if (suitOf(a) === suitOf(b)) return false;
+        if (rankOf(b) !== rankOf(a) - 1) return false;
+      }
+      return true;
+    };
+    const canStack = (moving, targetTop) => {
+      if (targetTop === null || targetTop === undefined) return true;
+      if (suitOf(moving) === suitOf(targetTop)) return false;
+      return rankOf(targetTop) === rankOf(moving) + 1;
+    };
+    const canFound = (c, fi) => suitOf(c) === fi && rankOf(c) === st.found[fi].length + 1;
+    const isWon = () => st.found.every(f => f.length === 13);
+
+    // 经典发牌：逐行发 7 轮，前 4 列各 7 张、后 4 列各 6 张，全部明牌
+    const deal = () => {
+      let seed = st.seed || (Date.now() & 0x7fffffff);
+      let s = seed >>> 0;
+      const rnd = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+      const deck = []; for (let c = 0; c < 52; c++) deck.push(c);
+      for (let i = deck.length - 1; i > 0; i--) { const j = (rnd() * (i + 1)) | 0; const t = deck[i]; deck[i] = deck[j]; deck[j] = t; }
+      st.tab = [[], [], [], [], [], [], [], []];
+      st.free = [null, null, null, null];
+      st.found = [[], [], [], []];
+      st.undo = []; st.moves = 0; st.won = false; st.sel = null; st.hint = null; st.fly = []; st.flyColStep = null;
+      st.winPending = false; st.winMsg = '';
+      let n = 0;
+      for (let row = 0; row < 7; row++) for (let col = 0; col < 8; col++) {
+        if (row < 6 || col < 4) st.tab[col].push({ c: deck[n++], up: true });
+      }
+      st.msg = '';
+    };
+
+    const snap = () => ({
+      tab: st.tab.map(t => t.map(x => ({ c: x.c, up: x.up }))),
+      free: st.free.slice(), found: st.found.map(f => f.slice()), moves: st.moves, seed: st.seed, theme: st.theme
+    });
+    const pushUndo = () => { st.undo.push(snap()); };
+    const doUndo = () => {
+      const d = st.undo.pop(); if (!d) { st.msg = '没有可撤销的步骤'; return false; }
+      st.tab = d.tab.map(t => t.map(x => ({ c: x.c, up: x.up })));
+      st.free = d.free.slice(); st.found = d.found.map(f => f.slice());
+      st.moves = d.moves; st.won = false; st.sel = null; st.hint = null; st.fly = []; st.flyColStep = null; st.winPending = false; st.winMsg = ''; st.msg = '已撤销'; return true;
+    };
+    const afterMove = () => {
+      st.moves++; st.sel = null; st.hint = null;
+      autoCollect();
+      if (isWon()) markWin('恭喜通关！');
+    };
+    const toFound = (c) => { const fi = suitOf(c); if (!canFound(c, fi)) return false; st.found[fi].push(c); return true; };
+
+    const selectAt = (col, k) => {
+      const t = st.tab[col];
+      if (k < 0 || k >= t.length || !t[k].up) return null;
+      const cards = t.slice(k).map(x => x.c);
+      if (cards.length > maxMove() || !isSeq(cards)) return null;
+      return cards;
+    };
+    const moveToTab = (cards, from, toCol) => {
+      if (toCol === (from.type === 'tab' ? from.i : -1)) return false;
+      // 防御：任何路径落牌都不得超出超级移动上限（修复 4 张牌越限移动）
+      if (cards.length > maxMove()) return false;
+      if (!canStack(cards[0], topCard(st.tab[toCol]))) return false;
+      pushUndo();
+      if (from.type === 'tab') { const src = st.tab[from.i]; src.splice(src.length - cards.length, cards.length); }
+      else st.free[from.i] = null;
+      for (const c of cards) st.tab[toCol].push({ c, up: true });
+      afterMove(); return true;
+    };
+    const moveToFree = (cards, from, fi) => {
+      if (cards.length !== 1 || st.free[fi] !== null) return false;
+      pushUndo();
+      if (from.type === 'tab') { const src = st.tab[from.i]; src.splice(src.length - 1, 1); }
+      else st.free[from.i] = null;
+      st.free[fi] = cards[0]; afterMove(); return true;
+    };
+    const moveToFound = (cards, from) => {
+      if (cards.length !== 1 || !canFound(cards[0], suitOf(cards[0]))) return false;
+      pushUndo();
+      if (from.type === 'tab') { const src = st.tab[from.i]; src.splice(src.length - 1, 1); }
+      else st.free[from.i] = null;
+      toFound(cards[0]); afterMove(); return true;
+    };
+    const sendHome = (c, from) => {
+      if (!canFound(c, suitOf(c))) return false;
+      pushUndo();
+      if (from.type === 'tab') { const src = st.tab[from.i]; src.splice(src.length - 1, 1); }
+      else st.free[from.i] = null;
+      toFound(c); afterMove(); return true;
+    };
+
+    const autoCollect = () => {
+      let moved = false, again = true, seq = 0;
+      const t0 = performance.now();
+      const G = geom(), tabY = G.padTop + G.ch + 26;
+      const stepY = (len) => Math.min(G.ch * .36, Math.max(16, Math.floor((G.h - tabY - 12 - G.ch) / Math.max(1, len - 1))));
+      // 2.9.02：快照每列「收牌前」的原始步长。stepY 随牌列长度变化（牌越少步长越大），
+      // 若每张被 pop 的牌用当时 colLen 重算步长，会导致连续收走的牌间距逐级压缩、挤成一团并顺序倒置。
+      // 统一用收牌前的固定步长 + 原始 index 定位，飞行牌停在收牌前的真实位置，间距均匀、顺序正确。
+      const baseSteps = st.tab.map(t => t.length ? stepY(t.length) : 0);
+      while (again) {
+        again = false;
+        for (let fi = 0; fi < 4; fi++) {
+          const f = st.found[fi], need = f.length + 1;
+          if (need > 13) continue;
+          let found = -1;
+          for (let i = 0; i < 4; i++) if (st.free[i] !== null && rankOf(st.free[i]) === need && suitOf(st.free[i]) === fi) { found = i; break; }
+          if (found >= 0) {
+            const c = st.free[found];
+            pushUndo(); st.found[fi].push(c); st.free[found] = null;
+            // 2.8.97：记录从该空当槽位飞往收牌区的动画（逻辑已入位，仅视觉延迟呈现）
+            st.fly.push({ c, fi, fx: topX(G, found), fy: G.padTop, start: t0 + seq * FLY_GAP, dur: FLY_DUR });
+            seq++; moved = again = true; continue;
+          }
+          for (let col = 0; col < 8; col++) {
+            const t = st.tab[col];
+            if (t.length && rankOf(t[t.length - 1].c) === need && suitOf(t[t.length - 1].c) === fi) {
+              const c = t[t.length - 1].c, colLen = t.length;
+              pushUndo(); st.found[fi].push(c); t.pop();
+              // 2.9.02：起点用「收牌前」固定步长 + 该牌原始 index（colLen-1），不再用弹出时的 colLen 重算
+              st.fly.push({ c, fi, fx: G.ox + col * (G.cw + G.gap), fy: tabY + (colLen - 1) * baseSteps[col], start: t0 + seq * FLY_GAP, dur: FLY_DUR });
+              seq++; moved = again = true; break;
+            }
+          }
+        }
+      }
+      if (moved) {
+        st.sel = null;
+        st.flyColStep = baseSteps;   // 动画期间锁定每列步长，draw 与飞行牌共用同一布局
+        if (isWon()) markWin('恭喜通关！');
+      }
+      return moved;
+    };
+
+    const hit = (x, y) => {
+      const G = geom();
+      const topY = G.padTop, ch = G.ch, cw = G.cw, gap = G.gap;
+      for (let i = 0; i < 8; i++) {
+        const px = topX(G, i);
+        if (x >= px && x <= px + cw && y >= topY && y <= topY + ch) return i < 4 ? { zone: 'free', i } : { zone: 'found', i: i - 4 };
+      }
+      const tabY = topY + ch + 26;
+      for (let col = 0; col < 8; col++) {
+        const px = G.ox + col * (cw + gap);
+        if (x < px || x > px + cw) continue;
+        const t = st.tab[col];
+        // 2.8.98：空列整列（从 tabY 到画布底）都可点击落牌，不必精确点到虚线框
+        if (!t.length) { if (y >= tabY && y <= G.h - 8) return { zone: 'tab', col, k: 0 }; continue; }
+        const stepY = Math.min(ch * .36, Math.max(16, Math.floor((G.h - tabY - 12 - ch) / Math.max(1, t.length - 1))));
+        for (let k = t.length - 1; k >= 0; k--) {
+          const py = tabY + k * stepY;
+          if (y >= py && y <= py + ch) return { zone: 'tab', col, k };
+        }
+      }
+      return null;
+    };
+
+    const drawCard = (ctx, px, py, cw, ch, c, faceUp, selected, dim) => {
+      const T = TABLES[st.theme];
+      ctx.save();
+      ctx.globalAlpha = dim ? .5 : 1;
+      rrect(ctx, px, py, cw, ch, Math.max(4, cw * .07));
+      ctx.fillStyle = T.card; ctx.fill();
+      ctx.strokeStyle = selected ? '#fbbf24' : 'rgba(0,0,0,.22)'; ctx.lineWidth = selected ? 2.5 : 1; ctx.stroke();
+      if (selected) { ctx.shadowColor = '#fbbf24'; ctx.shadowBlur = 10; ctx.stroke(); ctx.shadowBlur = 0; }
+      if (!faceUp) {
+        rrect(ctx, px + 3, py + 3, cw - 6, ch - 6, Math.max(3, cw * .05));
+        ctx.fillStyle = T.back; ctx.fill();
+        ctx.strokeStyle = T.line; ctx.lineWidth = 1;
+        for (let d = -ch; d < cw; d += 8) { ctx.beginPath(); ctx.moveTo(px + 4 + Math.max(0, d), py + ch - 4); ctx.lineTo(px + 4 + Math.min(cw - 6, d + ch), py + 4); ctx.stroke(); }
+        ctx.restore(); return;
+      }
+      const S = SUITS[suitOf(c)], rk = RANK(rankOf(c)), col = S.red ? '#dc2626' : '#1f2937';
+      const fs = Math.max(12, Math.round(cw * .3));
+      ctx.fillStyle = col; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.font = 'bold ' + fs + 'px system-ui'; ctx.fillText(rk, px + 5, py + 4);
+      ctx.font = Math.round(fs * .86) + 'px system-ui'; ctx.fillText(S.s, px + 5, py + fs + 3);
+      ctx.save(); ctx.translate(px + cw - 5, py + ch - 4); ctx.rotate(Math.PI);
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.font = 'bold ' + fs + 'px system-ui'; ctx.fillText(rk, 0, 0); ctx.restore();
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = Math.round(cw * .5) + 'px system-ui'; ctx.fillText(S.s, px + cw / 2, py + ch / 2);
+      ctx.restore();
+    };
+
+    st.draw = (ctx, w, h) => {
+      const G = geom(), cw = G.cw, ch = G.ch, gap = G.gap, topY = G.padTop, T = TABLES[st.theme];
+      const now = performance.now();
+      ctx.fillStyle = T.felt; rrect(ctx, 8, 8, w - 16, h - 16, 12); ctx.fill();
+      const labels = ['空当', '空当', '空当', '空当', '♠', '♥', '♦', '♣'];
+      for (let i = 0; i < 8; i++) {
+        const px = topX(G, i);
+        rrect(ctx, px, topY, cw, ch, Math.max(4, cw * .07));
+        ctx.strokeStyle = 'rgba(255,255,255,.38)'; ctx.lineWidth = 1.2; ctx.setLineDash([4, 3]); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.font = (i >= 4 ? 'bold ' : '') + Math.max(13, Math.round(cw * (i >= 4 ? .42 : .2))) + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        if ((i < 4 && st.free[i] === null) || (i >= 4 && st.found[i - 4].length === 0)) ctx.fillText(labels[i], px + cw / 2, topY + ch / 2);
+      }
+      // 空当区与收牌区之间的间隙中点画一条淡分隔线，两区边界一目了然
+      const sepX = topX(G, 3) + cw + G.gap2 / 2;
+      ctx.strokeStyle = 'rgba(255,255,255,.16)'; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+      ctx.beginPath(); ctx.moveTo(sepX, topY + ch * .12); ctx.lineTo(sepX, topY + ch * .88); ctx.stroke(); ctx.setLineDash([]);
+      for (let i = 0; i < 4; i++) if (st.free[i] !== null) {
+        const sel = !!(st.sel && st.sel.from && st.sel.from.type === 'free' && st.sel.from.i === i);
+        drawCard(ctx, topX(G, i), topY, cw, ch, st.free[i], true, sel, false);
+      }
+      // 收牌区顶牌：所有「已入位但动画未完成」（含尚未起飞）的牌都先隐藏，
+      // 只显示最后一张彻底落定的牌，避免飞行途中收牌区出现半张/错位牌。
+      const flyingIds = new Set(st.fly.map(o => o.c));
+      for (let i = 0; i < 4; i++) {
+        const f = st.found[i]; if (!f.length) continue;
+        let k = f.length - 1; while (k >= 0 && flyingIds.has(f[k])) k--;
+        if (k >= 0) drawCard(ctx, topX(G, 4 + i), topY, cw, ch, f[k], true, false, false);
+      }
+      const tabY = topY + ch + 26;
+      for (let col = 0; col < 8; col++) {
+        const px = G.ox + col * (cw + gap), t = st.tab[col];
+        // 2.8.98：空列占位虚线框高度改为与真实牌一致（ch），不再只有 0.7 倍显得矮小
+        if (!t.length) { rrect(ctx, px, tabY, cw, ch, Math.max(4, cw * .07)); ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.setLineDash([4, 3]); ctx.stroke(); ctx.setLineDash([]); }
+        // 2.9.02：动画期间用收牌前锁定的固定步长，保证剩余牌停在原位、与飞行牌布局一致（否则牌越少步长越大，剩余牌会跳位）
+        const stepY = (st.flyColStep && st.flyColStep[col]) ? st.flyColStep[col]
+          : Math.min(ch * .36, Math.max(16, Math.floor((G.h - tabY - 12 - ch) / Math.max(1, t.length - 1))));
+        const selCards = st.sel && st.sel.from && st.sel.from.type === 'tab' && st.sel.from.i === col ? st.sel.cards : null;
+        for (let k = 0; k < t.length; k++) {
+          const isSel = selCards && k >= t.length - selCards.length;
+          drawCard(ctx, px, tabY + k * stepY, cw, ch, t[k].c, t[k].up, !!isSel, false);
+        }
+      }
+      // 收牌飞行动画（2.9.03）：严格串行（间隔=时长），任一时刻只有一张牌在飞，ease-out 落向收牌槽位。
+      // 未起飞的牌静止画在其被 pop 前的原始位置 (fx,fy)，牌列随动画逐张减少；已落定的牌交回收牌区静止顶牌绘制。
+      // 2.9.03 关键修复（图层顺序）：st.fly 按「收牌顺序」存储——先收的牌原在牌列最底下(y 大)、后收的靠上(y 小)。
+      //   若直接按数组顺序绘制，后收的「上方牌」会最后画、盖住下方牌的下半部分，露出牌底旋转180°的数字，视觉上"倒置"
+      //   （平时一次只收 1 张看不出，通关时一次收多张才暴露）。修正为：静止牌按 fy 从小到大（上→下）排序绘制，
+      //   保证下方牌盖住上方牌、露出顶部正常数字；飞行中的那张牌最后单独画在最上层（带阴影）。
+      const pending = st.fly.filter(o => now < o.start).sort((a, b) => a.fy - b.fy);
+      for (const o of pending) drawCard(ctx, o.fx, o.fy, cw, ch, o.c, true, false, false);
+      for (const o of st.fly) {
+        if (now < o.start || now >= o.start + o.dur) continue;   // 未起飞 / 已落定都不在此绘制
+        const tx = topX(G, 4 + o.fi), ty = topY;
+        const p = (now - o.start) / o.dur, e = 1 - Math.pow(1 - p, 3);
+        const x = o.fx + (tx - o.fx) * e, y = o.fy + (ty - o.fy) * e;
+        ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 5;
+        drawCard(ctx, x, y, cw, ch, o.c, true, false, false);
+        ctx.restore();
+      }
+      if (st.won) {
+        ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(0, h / 2 - 40, w, 80);
+        ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 24px system-ui'; ctx.textAlign = 'center'; ctx.fillText('★ 通关！', w / 2, h / 2 - 2); ctx.textAlign = 'left';
+      }
+    };
+
+    // 2.8.97：FreeCell 此前无 tick；收牌动画需要逐帧推进。逻辑已在 autoCollect 同步落定，
+    // 这里只清理已完成的飞行项；fly 非空期间返回 true 让 arcadeTick 持续重绘，动画自然跑完。
+    st.tick = (dt, now) => {
+      if (!st.fly.length) {
+        // 2.8.98：飞行动画全部落定后，才兑现此前登记的通关（遮罩/计数/提示此时才出现）
+        if (st.winPending) { settleWin(); st.flyColStep = null; return true; }
+        st.flyColStep = null;   // 2.9.02：动画结束释放锁定的列步长，牌列恢复正常布局
+        return false;
+      }
+      st.fly = st.fly.filter(o => now < o.start + o.dur);
+      if (!st.fly.length) { st.flyColStep = null; if (st.winPending) settleWin(); }   // 恰在本帧落定：释放步长锁定 + 兑现通关
+      return true;   // 本帧仍在动画（含刚清空的那帧），返回 true 保证静止顶牌被重绘一次
+    };
+    let lastTap = { key: '', at: 0 };
+    st.onPointer = (type, x, y, button) => {
+      if (button !== 0 || type !== 'down' || st.won || st.fly.length) return false;
+      const H = hit(x, y); if (!H) return false;
+      const now = performance.now();
+      const key = H.zone + ':' + (H.i != null ? H.i : H.col) + ':' + (H.k || 0);
+      const dbl = lastTap.key === key && now - lastTap.at < 340;
+      lastTap = { key, at: now };
+      // 双击判断必须先于选中落牌：否则同一格第二次点击会命中下方「同列取消选择」分支提前 return，
+      // 导致双击自动入位/回收永远执行不到（用户反馈「双击没反应」的根因）。
+      if (dbl && H.zone === 'tab') {
+        const t = st.tab[H.col];
+        if (t.length && t[H.k] && t[H.k].c === t[t.length - 1].c) {
+          const c = t[H.k].c;
+          if (sendHome(c, { type: 'tab', i: H.col })) return true;
+          const fi = st.free.findIndex(x => x === null);
+          if (fi >= 0) return moveToFree([c], { type: 'tab', i: H.col }, fi);
+        }
+      }
+      if (dbl && H.zone === 'free' && st.free[H.i] !== null) {
+        if (sendHome(st.free[H.i], { type: 'free', i: H.i })) return true;
+      }
+      if (st.sel && st.sel.from) {
+        const from = st.sel.from, cards = st.sel.cards;
+        let ok = false;
+        if (H.zone === 'tab') ok = moveToTab(cards, from, H.col);
+        else if (H.zone === 'free') ok = moveToFree(cards, from, H.i);
+        else if (H.zone === 'found') ok = moveToFound(cards, from);
+        if (ok) return true;
+        if (from.type === 'tab' && H.zone === 'tab' && from.i === H.col) { st.sel = null; return true; }
+        if (from.type === 'free' && H.zone === 'free' && from.i === H.i) { st.sel = null; return true; }
+      }
+      if (H.zone === 'tab') {
+        const t = st.tab[H.col];
+        if (!t.length) { st.sel = null; return true; }
+        const cards = selectAt(H.col, H.k);
+        st.sel = cards ? { from: { type: 'tab', i: H.col, k: H.k }, cards } : null;
+        return true;
+      }
+      if (H.zone === 'free') {
+        if (st.free[H.i] === null) { st.sel = null; return true; }
+        st.sel = { from: { type: 'free', i: H.i }, cards: [st.free[H.i]] }; return true;
+      }
+      if (H.zone === 'found') { st.sel = null; return true; }
+      return false;
+    };
+    st.onKey = (e) => {
+      const k = e.key;
+      if (k === 'r' || k === 'R') { st.seed = (Date.now() & 0x7fffffff); deal(); return true; }
+      if (k === 'z' || k === 'Z') return doUndo();
+      return false;
+    };
+    st.themeNames = TABLES.map(t => t.name);
+    st.setTheme = (idx) => { idx = Math.max(0, Math.min(TABLES.length - 1, idx | 0)); if (idx === st.theme) return; st.theme = idx; st.msg = '主题：' + TABLES[idx].name; };
+    st.info = () => ab('#34d399', '回收 ' + st.found.reduce((s, f) => s + f.length, 0) + '/52') + ' · ' + ab('#60a5fa', '步数 ' + st.moves) + ' · ' + ab('#fbbf24', '可移 ' + maxMove()) + ' · ' + ab('#c084fc', '已完成 ' + st.completed + ' 次') + (st.msg ? ' · ' + ab('#10b981', st.msg) : '');
+    st.reset = () => { st.seed = (Date.now() & 0x7fffffff); deal(); };
+    st.snapshot = () => ({ tab: st.tab.map(t => t.map(x => ({ c: x.c, up: x.up }))), free: st.free.slice(), found: st.found.map(f => f.slice()), moves: st.moves, seed: st.seed, won: st.won, theme: st.theme, undo: st.undo });
+    st.restore = (d) => {
+      if (!d || !Array.isArray(d.tab) || d.tab.length !== 8 || !Array.isArray(d.free) || d.free.length !== 4 || !Array.isArray(d.found) || d.found.length !== 4) return false;
+      st.tab = d.tab.map(t => t.map(x => ({ c: x.c | 0, up: true })));  // 经典规则：全部明牌
+      st.free = d.free.slice(); st.found = d.found.map(f => f.slice());
+      st.moves = d.moves | 0; st.seed = d.seed | 0; st.won = !!d.won; st.theme = Math.max(0, Math.min(TABLES.length - 1, d.theme | 0));
+      st.undo = Array.isArray(d.undo) ? d.undo.slice() : []; st.sel = null; st.hint = null; st.fly = []; st.flyColStep = null; st.winPending = false; st.winMsg = '';
+      // 2.8.98：动画中切走时 found 已全满但 won 未兑现，恢复后无动画直接判定通关
+      if (isWon() && !st.won) { markWin('恭喜通关！'); settleWin(); }
+      st.msg = '已恢复上次牌局';
+      return true;
+    };
+    st.reset();
+    return st;
+  }
+
+
   // ---- 模式6 生命游戏：状态工厂 ----
   // 康威规则 B3/S23：死细胞恰好 3 个邻居存活则诞生；活细胞邻居为 2 或 3 时存活，否则死亡。
   // 边界环绕（toroidal）：滑翔机等图案可穿越边界，画面更持久有趣。
@@ -12157,7 +14030,7 @@ linksEl.addEventListener('change', () => {
     if (gameMode === 4) { drawTetris(); return; }
     if (gameMode === 5) { draw2048(); return; }
     if (gameMode === 6) { drawLife(); return; }
-    if (gameMode >= 7 && gameMode <= 18) { arcadeDraw(ctx, canvas.clientWidth, canvas.clientHeight); return; }
+    if (isArcade(gameMode)) { arcadeDraw(ctx, canvas.clientWidth, canvas.clientHeight); return; }
     const w = cols * CELL, h = rows * CELL;
     ctx.clearRect(0, 0, w, h);
     // 细网格点
@@ -12301,7 +14174,7 @@ linksEl.addEventListener('change', () => {
       return;
     }
     // 模式7~18 小游戏：各实例自行推进（连续游戏用 tick，回合制游戏仅在 AI 走子时返回变化）。
-    if (gameMode >= 7 && gameMode <= 18) {
+    if (isArcade(gameMode)) {
       arcadeTick(dt, now);
       raf = requestAnimationFrame(frame);
       return;
@@ -12454,6 +14327,38 @@ linksEl.addEventListener('change', () => {
   // 摸鱼模式：点击画布在「铺满关于窗体 / 还原小窗」之间切换。
   // 每次切换都完整重置参数并重新开始游戏（等价于一次干净的 snakeStart）。
   const modalEl = back.querySelector('.about-modal');
+  // 贪吃蛇局面存档（模式 1/2/3/19）：snake/dir/foods/score/速度/各蛇计时等
+  function snakeSnapshot() {
+    return { CELL: CELL, dir: { x: dir.x, y: dir.y }, snake: snake.map(s => ({ x: s.x, y: s.y })),
+      foods: foods.map(f => ({ x: f.x, y: f.y, bonus: !!f.bonus, ttl: f.ttl || 0 })),
+      score: score, manualScore: manualScore, speed: speed, alive: alive,
+      cpuSnake: cpuSnake.map(s => ({ x: s.x, y: s.y })), cpuDir: { x: cpuDir.x, y: cpuDir.y },
+      cpuAlive: cpuAlive, cpuScore: cpuScore,
+      arenaBots: arenaBots.map(b => ({ body: b.body.map(s => ({ x: s.x, y: s.y })),
+        dir: { x: b.dir.x, y: b.dir.y }, alive: b.alive, score: b.score, acc: b.acc,
+        color: b.color, slot: b.slot, no: b.no })),
+      endlessBotSeq: endlessBotSeq, arenaOver: arenaOver, arenaOverWin: arenaOverWin };
+  }
+  function snakeRestore(d) {
+    if (!d || !Array.isArray(d.snake) || !d.snake.length) return false;
+    CELL = d.CELL || CELL;
+    dir = { x: d.dir ? d.dir.x : 1, y: d.dir ? d.dir.y : 0 };
+    snake = d.snake.map(s => ({ x: s.x, y: s.y }));
+    foods = (d.foods || []).map(f => ({ x: f.x, y: f.y, bonus: !!f.bonus, ttl: f.ttl || 0 }));
+    score = d.score | 0; manualScore = d.manualScore | 0;
+    speed = d.speed || SPEED_DEFAULT; alive = d.alive !== false;
+    cpuSnake = (d.cpuSnake || []).map(s => ({ x: s.x, y: s.y }));
+    cpuDir = d.cpuDir ? { x: d.cpuDir.x, y: d.cpuDir.y } : { x: -1, y: 0 };
+    cpuAlive = d.cpuAlive !== false; cpuScore = d.cpuScore | 0;
+    arenaBots = (d.arenaBots || []).map(b => ({ body: (b.body || []).map(s => ({ x: s.x, y: s.y })),
+      dir: b.dir ? { x: b.dir.x, y: b.dir.y } : { x: -1, y: 0 },
+      alive: b.alive !== false, score: b.score | 0, acc: b.acc || 0,
+      color: b.color, slot: b.slot, no: b.no }));
+    endlessBotSeq = d.endlessBotSeq || ENDLESS_BOT_COUNT;
+    arenaOver = !!d.arenaOver; arenaOverWin = !!d.arenaOverWin;
+    userControl = false; lastUserInputAt = 0; sameDirRun = 0; acc = 0;
+    return true;
+  }
   function restartGame() {
     // 先彻底停掉旧循环，再按当前画布尺寸重新计时并完整重置
     snakeStop();
@@ -12471,7 +14376,8 @@ linksEl.addEventListener('change', () => {
     if (show) snakeSubRadios.forEach(r => { r.checked = (parseInt(r.value, 10) === gameMode); });
   }
   function switchMode(n) {
-    if (!((n >= 1 && n <= 18) || n === 19)) return;
+    if (!(n >= 1 && n <= 23)) return;
+    if (n !== gameMode && running) saveCurrentGameState();   // 离开当前游戏前先保存局面
     if ((n >= 1 && n <= 3) || n === 19) lastSnakeSub = n;  // 记住贪吃蛇子模式，供下拉框切回时恢复
     const next = snakeMax ? n : 1;           // 小屏无论选择什么，都保持模式1
     gameMode = next;
@@ -12487,6 +14393,11 @@ linksEl.addEventListener('change', () => {
     if (gameMode !== 3 && gameMode !== 4 && gameMode !== 5) updateScore();
     if (running) restartGame();              // 切换模式即完整重置、重新开局
   }
+  // 页面刷新/关闭/隐藏：保存当前游戏局面，供下次进入恢复
+  const gamePageHide = () => { if (running && snakeMax) { try { saveCurrentGameState(); } catch (_) {} } };
+  window.addEventListener('pagehide', gamePageHide);
+  window.addEventListener('beforeunload', gamePageHide);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) gamePageHide(); });
   if (modeSel) {
     modeSel.addEventListener('change', () => {
       const v = parseInt(modeSel.value, 10);
@@ -12563,10 +14474,11 @@ linksEl.addEventListener('change', () => {
     if (!snakeMax && !force && !isGameUnlocked()) return;
     // 注意：b 键（force=true）仅绕过本次进入门槛，不写入解锁状态；
     // 鼠标点击画布仍需满足解锁条件（答题总分 ≥100 或连点版本号 6 次）。
-    // 退出大屏前保存当前模式，供下次进入大屏时恢复
+    // 退出大屏前保存当前模式与局面，供下次进入大屏时恢复
     if (snakeMax) {
       savedBigMode = gameMode;
       cookieSet('mp_snake_mode', String(savedBigMode));
+      if (running) saveCurrentGameState();
     }
     snakeMax = !snakeMax;
     if (modalEl) modalEl.classList.toggle('snake-max', snakeMax);
@@ -12594,7 +14506,7 @@ linksEl.addEventListener('change', () => {
     // 模式6 生命游戏：画布点击/拖动用于绘制细胞，不触发大小屏切换
     if (gameMode === 6) return;
     // 模式7~18 小游戏：画布点击用于游戏操作（落子/推箱/填数等），不触发大小屏切换
-    if (gameMode >= 7 && gameMode <= 18) return;
+    if (isArcade(gameMode)) return;
     // 模式5 通关画面：点击优先用于「继续挑战」，不触发大小屏切换
     if (gameMode === 5 && g2048.won && !g2048.keepPlaying) {
       g2048.keepPlaying = true; draw(); return;
@@ -12618,7 +14530,7 @@ linksEl.addEventListener('change', () => {
     canvas.addEventListener('pointerdown', (e) => {
       if (back.hidden || !running) return;
       // 模式7~18：转发给当前小游戏（落子/插旗/拍翅/射击/填数/跳吃/移动等）
-      if (gameMode >= 7 && gameMode <= 18) {
+      if (isArcade(gameMode)) {
         // 点击画布时把焦点从下拉框移开：下拉框（选模式/尺寸/关卡）选完后焦点常停留其上，
         // canvas 无 tabindex 不会自动转移焦点，后续数字键会被 select 的 type-ahead 截获切游戏。
         if (document.activeElement && document.activeElement.tagName === 'SELECT' &&
@@ -12641,7 +14553,7 @@ linksEl.addEventListener('change', () => {
     });
     canvas.addEventListener('pointermove', (e) => {
       // 模式7~18：转发 move 事件（打砖块用鼠标移动挡板）
-      if (gameMode >= 7 && gameMode <= 18) {
+      if (isArcade(gameMode)) {
         const p = arcadePt(e);
         if (arcadePointer('move', p.x, p.y, e.button)) { e.preventDefault(); draw(); }
         return;
@@ -12663,7 +14575,7 @@ linksEl.addEventListener('change', () => {
     // 小游戏：鼠标松开/取消时转发 'up'（太空侵略者「按住连发」据此停止）。
     // 挂到 window 上兜底，保证在画布外松开鼠标也能正确停止连发。
     const arcadeUp = (e) => {
-      if (gameMode >= 7 && gameMode <= 18) {
+      if (isArcade(gameMode)) {
         const p = arcadePt(e);
         if (arcadePointer('up', p.x, p.y, e.button || 0)) { updateScore(); draw(); }
       }
@@ -12695,13 +14607,17 @@ linksEl.addEventListener('change', () => {
     // P 键：暂停 / 继续（所有模式通用）；暂停期间屏蔽其余游戏按键
     if (e.key === 'p' || e.key === 'P') { e.preventDefault(); togglePause(); return; }
     if (paused) return;
-    // 大屏下数字键 1-9 仅对应序号 1-9 的游戏（序号 10~16 只能从下拉框选择）；
+    // 大屏下数字键 1-9 仅对应序号 1-9 的游戏（序号 10~20 只能从下拉框选择）；
     // 小屏不响应；焦点在任一 select 上时交给原生处理，避免与选项操作冲突。
     // 数独模式例外：数字键 1-9 用于填数，不切换游戏（下落至 arcadeKey 处理）。
     const focusOnSel = document.activeElement === modeSel || document.activeElement === minesSizeSelEl ||
                        document.activeElement === mazeSizeSelEl || document.activeElement === mazeStyleSelEl ||
                        document.activeElement === breakoutLevelSelEl || document.activeElement === pegBoardSelEl ||
-                       document.activeElement === sokobanLevelSelEl;
+                       document.activeElement === sokobanLevelSelEl || document.activeElement === slideSizeSelEl ||
+                       document.activeElement === klotskiLayoutSelEl || document.activeElement === slideThemeSelEl ||
+                       document.activeElement === klotskiThemeSelEl || document.activeElement === gomokuColorSelEl ||
+                       document.activeElement === reversiColorSelEl || document.activeElement === jewelThemeSelEl ||
+                       document.activeElement === freecellThemeSelEl;
     if (snakeMax && /^[1-9]$/.test(e.key) && !focusOnSel && gameMode !== 14) {
       e.preventDefault();
       switchMode(displayToMode(parseInt(e.key, 10)));
@@ -12718,7 +14634,7 @@ linksEl.addEventListener('change', () => {
       return;
     }
     // 模式7~18 小游戏：R 重开，其余按键交给当前游戏处理
-    if (gameMode >= 7 && gameMode <= 18) {
+    if (isArcade(gameMode)) {
       if (e.key === 'r' || e.key === 'R') { e.preventDefault(); arcadeReset(true, true); return; }  // R 重开 = 重新开始本局
       if (arcadeKey(e)) { updateScore(); draw(); }
       return;
@@ -12821,9 +14737,14 @@ linksEl.addEventListener('change', () => {
     snakeStart();
   };
   const close = () => {
+    // 大屏摸鱼模式下退出：必须在 snakeStop() 之前保存——snakeStop() 会把 running 置 false，
+    // 若在其后判断 running 则存档永远不执行（ESC 退出丢进度的根因）。
+    if (snakeMax && running) {
+      try { saveCurrentGameState(); } catch (_) {}
+    }
     back.hidden = true;
     snakeStop();
-    // 大屏摸鱼模式下退出：先保存当前模式（供下次进大屏恢复），再恢复小屏关于窗体
+    // 大屏摸鱼模式下退出：记住当前模式（供下次进大屏恢复），再恢复小屏关于窗体
     if (snakeMax) {
       savedBigMode = gameMode;
       cookieSet('mp_snake_mode', String(savedBigMode));
@@ -12936,6 +14857,11 @@ boot();
 .kb-option.kb-correct .kb-key { color: var(--kb-correct); border-color: var(--kb-correct); }
 .kb-option.kb-wrong { border-color: var(--kb-wrong); background: var(--kb-wrong-bg); }
 .kb-option.kb-wrong .kb-key { color: var(--kb-wrong); border-color: var(--kb-wrong); }
+.kb-option.kb-hint { opacity: .32; text-decoration: line-through; border-style: dashed; }
+.kb-hint-btn { padding: 7px 14px; font-size: 13px; border-radius: 9px; border: 1px solid var(--kb-primary); cursor: pointer; background: var(--accent-soft, #f5f7ff); color: var(--kb-primary); font-family: inherit; font-weight: 600; }
+.kb-hint-btn:hover:not(:disabled) { background: var(--kb-primary); color: #fff; }
+.kb-hint-btn:disabled { opacity: .5; cursor: default; }
+.kb-toolbar { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
 .kb-unlock-banner { margin-top: 8px; padding: 9px 14px; border-radius: 10px; background: var(--kb-correct-bg); color: var(--kb-correct); font-size: 15px; font-weight: 700; text-align: center; }
 .kb-feedback { margin-top: clamp(8px, 1.2vh, 14px); font-size: clamp(13px, 1.6vh, 15px); min-height: 20px; }
 .kb-feedback.kb-ok { color: var(--kb-correct); }
@@ -12994,6 +14920,7 @@ boot();
       <label class="kb-cat-filter" for="kbCategorySelect">分类
         <select class="kb-cat-select" id="kbCategorySelect" title="只出所选分类的题目"></select>
       </label>
+      <button class="kb-hint-btn" id="kbHintBtn" title="消耗 5 积分，排除一个错误选项">💡 提示（5分）</button>
       <button class="kb-btn kb-btn-restart" id="kbRestartBtn" title="清空本轮得分与答题数（累计总分保留）">↻ 重新开始</button>
       <button class="kb-btn" id="kbReloadBtn" title="重新载入题库并清空本轮进度">🔄 重新载入题库</button>
     </div>
@@ -13058,6 +14985,8 @@ boot();
   try { totalScore = parseInt(localStorage.getItem(TOTAL_KEY) || '0', 10) || 0; } catch (e) {}
   let DATA = qs(), score = 0, answered = 0, current = null, history = [], doneKeys = new Set(), nextTimer = null;
   let currentCategory = '__ALL__';   // '__ALL__' 表示所有分类
+  const POINTS_PER_CORRECT = 1;      // 2.7.90：答对恢复为 1 分（2.7.88 曾提到 5 分）
+  const HINT_COST = 5;               // 知识库提示每次扣除 5 分（经典华容道提示不扣分，见里程碑解锁）
   const DELAY_CORRECT = 1000, DELAY_WRONG = 4000;   // 答对 1 秒 / 答错 4 秒进入下一题
   // 按题库实际数据生成分类清单（含"所有"），并为每个分类统计题数
   function buildCategories() {
@@ -13090,6 +15019,9 @@ boot();
     $('kbAnswered').textContent = answered;
     $('kbTotalScore').textContent = totalScore;
     if (DATA) $('kbTotalQs').textContent = DATA.questions.length;
+    // 提示按钮：有当前题、未揭晓、未用过提示，且累计总分 ≥ 提示花费时可用
+    const hb = $('kbHintBtn');
+    if (hb) hb.disabled = !(current && current.chosen === -1 && !current.usedHint && totalScore >= HINT_COST);
   }
 
   function loadData() {
@@ -13116,7 +15048,7 @@ boot();
     doneKeys.add(q.q);
     const wrongs = shuffle(q.wrong || []).slice(0, 3);
     const options = shuffle([q.answer, ...wrongs]);
-    current = { q, options, answerIndex: options.indexOf(q.answer), chosen: -1 };
+    current = { q, options, answerIndex: options.indexOf(q.answer), chosen: -1, hinted: -1, usedHint: false };
     renderQuestion(false);
   }
   function esc(s) {
@@ -13129,17 +15061,21 @@ boot();
     html += `<div class="kb-question">${esc(q.q)}</div><div class="kb-options">`;
     options.forEach((opt, i) => {
       let cls = 'kb-option';
+      if (!reveal && current.hinted === i) cls += ' kb-hint';
       if (reveal) { if (i === current.answerIndex) cls += ' kb-correct'; else if (i === current.chosen) cls += ' kb-wrong'; }
-      html += `<button class="${cls}" data-i="${i}" ${reveal ? 'disabled' : ''}><span class="kb-key">${'ABCD'[i]}</span><span>${esc(opt)}</span></button>`;
+      const disabled = reveal ? 'disabled' : (current.hinted === i ? 'disabled' : '');
+      html += `<button class="${cls}" data-i="${i}" ${disabled}><span class="kb-key">${'ABCD'[i]}</span><span>${esc(opt)}</span></button>`;
     });
     html += '</div>';
     // 累计总分首次达 100：在 ABCD 选项下方插入解锁横幅（显示期内跨题持续）
     if (Date.now() < unlockBannerUntil) html += '<div class="kb-unlock-banner">得分到100，解锁摸鱼模式</div>';
     if (reveal) {
       const ok = current.chosen === current.answerIndex;
-      html += `<div class="kb-feedback ${ok ? 'kb-ok' : 'kb-no'}">${ok ? '✅ 回答正确，得 1 分！' : '❌ 回答错误。正确答案：' + esc(options[current.answerIndex])}</div>
+      html += `<div class="kb-feedback ${ok ? 'kb-ok' : 'kb-no'}">${ok ? '✅ 回答正确，得 ' + POINTS_PER_CORRECT + ' 分！' : '❌ 回答错误。正确答案：' + esc(options[current.answerIndex])}</div>
         <div class="kb-auto-next"><div class="kb-line"><span>⏳ 即将自动进入下一题…</span><button class="kb-link-btn" id="kbSkipBtn">立即下一题 →</button></div><div class="kb-progress"><div class="kb-bar"></div></div></div>`;
-    } else { html += `<div class="kb-feedback"></div>`; }
+    } else {
+      html += `<div class="kb-feedback">${current.usedHint ? '💡 已使用提示，排除一个错误选项（不计分）' : ''}</div>`;
+    }
     $('kbQuizCard').innerHTML = html;
     if (!reveal) {
       $('kbQuizCard').querySelectorAll('.kb-option').forEach(btn => btn.addEventListener('click', () => answer(parseInt(btn.dataset.i, 10))));
@@ -13158,7 +15094,7 @@ boot();
     const ok = i === current.answerIndex;
     answered++;
     if (ok) {
-      score++; totalScore++;
+      score += POINTS_PER_CORRECT; totalScore += POINTS_PER_CORRECT;
       try { localStorage.setItem(TOTAL_KEY, String(totalScore)); } catch (e) {}
       // 累计总分首次达 100：ABCD 下方横幅显示 3 秒；期间切题不受影响（按截止时间戳渲染）
       if (!unlockNotified && totalScore >= UNLOCK_AT) {
@@ -13207,8 +15143,22 @@ boot();
     if (DATA) nextQuestion();
     else $('kbQuizCard').innerHTML = '<div class="kb-empty">❌ 题库为空或载入失败</div>';
   }
+  // 提示：消耗 HINT_COST 积分，排除一个错误选项（不会排除正确答案）
+  function useHint() {
+    if (!current || current.chosen !== -1 || current.usedHint || totalScore < HINT_COST) return;
+    const wrongIdx = [];
+    current.options.forEach((opt, i) => { if (i !== current.answerIndex && current.hinted !== i) wrongIdx.push(i); });
+    if (!wrongIdx.length) return;
+    totalScore -= HINT_COST;
+    try { localStorage.setItem(TOTAL_KEY, String(totalScore)); } catch (e) {}
+    current.hinted = wrongIdx[Math.floor(Math.random() * wrongIdx.length)];
+    current.usedHint = true;
+    window.dispatchEvent(new CustomEvent('kb:score', { detail: { totalScore } }));
+    renderQuestion(false);
+  }
   $('kbReloadBtn').addEventListener('click', reload);
   $('kbRestartBtn').addEventListener('click', restart);
+  $('kbHintBtn').addEventListener('click', useHint);
   $('kbCategorySelect').addEventListener('change', (e) => {
     currentCategory = e.target.value || '__ALL__';
     // 切换分类后题目集合改变，重置本轮进度并从新分类出题
@@ -13245,6 +15195,7 @@ boot();
     <button class="calc-subtab active" type="button" data-sub="base" role="tab" aria-selected="true">进制转换</button>
     <button class="calc-subtab" type="button" data-sub="crc" role="tab" aria-selected="false">校验</button>
     <button class="calc-subtab" type="button" data-sub="time" role="tab" aria-selected="false">时间</button>
+    <button class="calc-subtab" type="button" data-sub="unit" role="tab" aria-selected="false">单位</button>
   </div>
 
   <!-- 子页 1：进制转换 -->
@@ -13450,6 +15401,46 @@ boot();
       <div class="time-diff-grid" id="timeDiffGrid"></div>
     </div>
   </div>
+
+  <!-- 子页 4：单位 -->
+  <div class="calc-subpage" data-subpage="unit" hidden>
+    <div class="calc-card">
+      <h3>单位换算</h3>
+      <p class="calc-desc">选择类别与子类后，在第一行输入数值与原单位，第二行即时给出换算结果与目标单位。覆盖长度、面积、体积、质量、时间、温度、速度、力、能量、功率、压强、频率、角度、数据与电学等常用单位（分类参考 Qalculate!）。点击结果框可复制。</p>
+
+      <div class="unit-head">
+        <div class="calc-field">
+          <label for="unitCat">类别</label>
+          <select class="calc-select" id="unitCat" title="选择单位类别"></select>
+        </div>
+        <div class="calc-field" id="unitSubWrap">
+          <label for="unitSub">子类</label>
+          <select class="calc-select" id="unitSub" title="选择单位子类"></select>
+        </div>
+      </div>
+
+      <div class="unit-rows">
+        <div class="unit-row">
+          <span class="unit-row-label">输入</span>
+          <input class="calc-input unit-num" id="unitInNum" type="text" spellcheck="false" autocomplete="off" inputmode="decimal" value="1" placeholder="输入数值">
+          <select class="calc-select unit-select" id="unitInUnit" title="原单位"></select>
+        </div>
+        <div class="unit-swap-row">
+          <button class="btn" id="unitSwapBtn" title="交换原单位与目标单位">⇅ 交换单位</button>
+        </div>
+        <div class="unit-row out">
+          <span class="unit-row-label">输出</span>
+          <div class="calc-out copyable" id="unitOutNum" title="点击复制">—</div>
+          <select class="calc-select unit-select" id="unitOutUnit" title="目标单位"></select>
+        </div>
+      </div>
+      <div class="unit-meta" id="unitMeta"></div>
+      <div class="calc-actions" style="margin-top:14px">
+        <button class="btn" id="unitResetBtn" title="重置为默认单位和数值">重置</button>
+        <span class="calc-hint" style="margin:0">输入时自动换算 · 点击结果框复制数值 · 选“全部”子类可跨子类换算</span>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -13557,7 +15548,7 @@ boot();
         <span class="ver-badge"><span class="ver-badge-l">当前内核版本</span><span class="ver-badge-r vb-blue" id="aboutVersion">检测中…</span></span>
         <span class="ver-badge"><span class="ver-badge-l">PHP 版本</span><span class="ver-badge-r vb-orange" id="aboutPhpVersion">检测中…</span></span>
         <span class="ver-badge"><span class="ver-badge-l">知识库版本</span><span class="ver-badge-r vb-purple" id="aboutKbVersion">检测中…</span></span>
-        <span class="ver-badge" id="appVersionBadge"><span class="ver-badge-l">程序版本</span><span class="ver-badge-r" id="appVersionBody">2.7.86</span></span>
+        <span class="ver-badge" id="appVersionBadge"><span class="ver-badge-l">程序版本</span><span class="ver-badge-r" id="appVersionBody">2.9.04</span></span>
       </div>
       <div class="about-ver-row">
         <div class="about-credit-links">
@@ -13619,6 +15610,10 @@ boot();
             <option value="14">14. Flappy Bird</option>
             <option value="15">15. 迷宫</option>
             <option value="16">16. 生命游戏</option>
+            <option value="17">17. 数字华容道</option>
+            <option value="18">18. 经典华容道</option>
+            <option value="19">19. 钻石迷阵</option>
+            <option value="20">20. 空当接龙</option>
           </select>
           <!-- 坦克选关/AI 队员：右上角控件，与模式选择框同一行；AI 用复选框一键切换 -->
           <span class="about-snake-bar-right" id="tankRightCtl" hidden><select id="tankLevelSel" class="mines-size-sel" aria-label="选择坦克大战关卡" title="坦克大战：选择已解锁关卡 / 无尽战场"></select><label class="about-snake-bar-rival" id="tankAILabel" title="勾选后出现一台蓝色 AI 友军坦克协助作战"><input type="checkbox" id="tankAIChk"> AI 队员</label></span>
@@ -13633,7 +15628,7 @@ boot();
           <div class="about-snake-bar-arena" id="arenaScoreBar" hidden></div>
           <b class="about-snake-bar-tetris" id="tetrisScoreBar" hidden>得分 <span id="tetScore">0</span> · 消行 <span id="tetLines">0</span> · 等级 <span id="tetLevel">1</span></b>
           <b class="about-snake-bar-tetris" id="g2048ScoreBar" hidden>得分 <span id="g2048Score">0</span></b>
-          <b class="about-snake-bar-tetris" id="arcadeScoreBar" hidden><button type="button" id="sokoRandomBtn" class="soko-btn" title="随机生成一个全新关卡（不占用 1~999 关号）" hidden>随机生成关卡</button><button type="button" id="sokoRestartBtn" class="soko-btn soko-btn-ghost" title="重新开始本关：布局不变、步数清零" hidden>重新开始本关</button><span id="arcadeInfo"><span class="ai-pre"></span><select id="sokobanLevelSel" class="mines-size-sel" aria-label="选择推箱子关卡" title="推箱子关卡：选择后从该关开始" hidden></select><select id="bomberLevelSel" class="mines-size-sel" aria-label="选择炸弹人关卡" title="炸弹人：选择已解锁关卡" hidden></select><span class="ai-text"></span><span class="ai-sep">　</span><span class="ai-tip"></span></span><select id="minesSizeSel" class="mines-size-sel" aria-label="选择扫雷棋盘大小" title="扫雷棋盘大小" hidden></select><select id="mazeSizeSel" class="mines-size-sel" aria-label="选择迷宫大小" title="迷宫大小" hidden></select><select id="mazeStyleSel" class="mines-size-sel" aria-label="选择迷宫墙壁风格" title="迷宫墙壁风格" hidden></select><select id="breakoutLevelSel" class="mines-size-sel" aria-label="选择打砖块关卡" title="打砖块起始关卡" hidden></select><select id="pegBoardSel" class="mines-size-sel" aria-label="选择独立钻石棋盘" title="独立钻石棋盘" hidden></select></b>
+          <b class="about-snake-bar-tetris" id="arcadeScoreBar" hidden><button type="button" id="sokoRandomBtn" class="soko-btn" title="随机生成一个全新关卡（不占用 1~999 关号）" hidden>随机生成关卡</button><button type="button" id="sokoRestartBtn" class="soko-btn soko-btn-ghost" title="重新开始本关：布局不变、步数清零" hidden>重新开始本关</button><span id="arcadeInfo"><span class="ai-pre"></span><select id="sokobanLevelSel" class="mines-size-sel" aria-label="选择推箱子关卡" title="推箱子关卡：选择后从该关开始" hidden></select><select id="bomberLevelSel" class="mines-size-sel" aria-label="选择炸弹人关卡" title="炸弹人：选择已解锁关卡" hidden></select><span class="ai-text"></span><span class="ai-sep">　</span><span class="ai-tip"></span></span><select id="minesSizeSel" class="mines-size-sel" aria-label="选择扫雷棋盘大小" title="扫雷棋盘大小" hidden></select><select id="mazeSizeSel" class="mines-size-sel" aria-label="选择迷宫大小" title="迷宫大小" hidden></select><select id="mazeStyleSel" class="mines-size-sel" aria-label="选择迷宫墙壁风格" title="迷宫墙壁风格" hidden></select><select id="breakoutLevelSel" class="mines-size-sel" aria-label="选择打砖块关卡" title="打砖块起始关卡" hidden></select><select id="pegBoardSel" class="mines-size-sel" aria-label="选择独立钻石棋盘" title="独立钻石棋盘" hidden></select><select id="slideSizeSel" class="mines-size-sel" aria-label="选择数字华容道尺寸" title="数字华容道：选择长宽" hidden></select><select id="slideThemeSel" class="mines-size-sel" aria-label="选择数字华容道方块主题" title="数字华容道：数字方块配色主题" hidden></select><select id="klotskiLayoutSel" class="mines-size-sel" aria-label="选择经典华容道布局" title="经典华容道：选择经典布局" hidden></select><select id="klotskiThemeSel" class="mines-size-sel" aria-label="选择经典华容道棋子主题" title="经典华容道：棋子配色主题" hidden></select><button type="button" id="klotskiHintBtn" class="soko-btn" title="本局首次免费提示，高亮下一步移动" hidden>💡 提示</button><select id="gomokuColorSel" class="mines-size-sel" aria-label="选择五子棋执子颜色" title="五子棋：选择执黑或执白" hidden></select><select id="reversiColorSel" class="mines-size-sel" aria-label="选择黑白棋执子颜色" title="黑白棋：选择执黑或执白" hidden></select><select id="jewelThemeSel" class="mines-size-sel" aria-label="选择钻石迷阵宝石主题" title="钻石迷阵：宝石配色主题" hidden></select><select id="jewelSizeSel" class="mines-size-sel" aria-label="选择钻石迷阵棋盘尺寸" title="钻石迷阵：棋盘大小" hidden></select><span id="jewelAchv" class="jewel-achv" hidden></span><select id="freecellThemeSel" class="mines-size-sel" aria-label="选择空当接龙桌面主题" title="空当接龙：桌面主题" hidden></select></b>
           <div class="about-snake-bar-life" id="lifeScoreBar" hidden>
             <span>世代 <b id="lifeGen">0</b></span>
             <span>存活 <b id="lifeAlive">0</b></span>
@@ -13804,6 +15799,7 @@ boot();
       subPages.forEach(function (p) { p.hidden = p.getAttribute('data-subpage') !== name; });
       if (name === 'crc') computeCRC();
       else if (name === 'time') computeTime();
+      else if (name === 'unit') convertUnit();
       else convertBase();
     });
   });
@@ -14844,6 +16840,382 @@ boot();
     else if (e.key === 'Enter' && calPick.contains(e.target)) { e.preventDefault(); applyCalendar(); }
   });
 
+  /* ================= 单位换算 ================= */
+  /* 所有单位通过「基准单位」中转：to(v) 把原值换成基准值，from(v) 把基准值换成目标值。
+   * uLin 为纯系数换算；uOff 为带偏移的线性换算（温度）。 */
+  function uLin(sym, name, factor) {
+    return { sym: sym, name: name, to: function (v) { return v * factor; },
+             from: function (v) { return v / factor; } };
+  }
+  function uOff(sym, name, mul, add) {
+    return { sym: sym, name: name, to: function (v) { return v * mul + add; },
+             from: function (v) { return (v - add) / mul; } };
+  }
+  var UNIT_CATS = [
+    { key: 'length', name: '长度', base: 'm', subs: [
+      { name: '公制', units: [
+        uLin('km', '千米', 1000), uLin('m', '米', 1), uLin('dm', '分米', 0.1),
+        uLin('cm', '厘米', 0.01), uLin('mm', '毫米', 0.001),
+        uLin('µm', '微米', 1e-6), uLin('nm', '纳米', 1e-9), uLin('pm', '皮米', 1e-12)
+      ]},
+      { name: '英制', units: [
+        uLin('mi', '英里', 1609.344), uLin('fur', '弗隆', 201.168), uLin('ch', '链', 20.1168),
+        uLin('yd', '码', 0.9144), uLin('ft', '英尺', 0.3048), uLin('in', '英寸', 0.0254),
+        uLin('nmi', '海里', 1852)
+      ]},
+      { name: '中国市制', units: [
+        uLin('里', '里', 500), uLin('丈', '丈', 10 / 3), uLin('尺', '尺', 1 / 3),
+        uLin('寸', '寸', 1 / 30), uLin('分', '分', 1 / 300)
+      ]},
+      { name: '天文', units: [
+        uLin('ly', '光年', 9.4607304725808e15), uLin('au', '天文单位', 1.495978707e11),
+        uLin('pc', '秒差距', 3.0856775814913673e16)
+      ]}
+    ]},
+    { key: 'area', name: '面积', base: 'm²', subs: [
+      { name: '公制', units: [
+        uLin('km²', '平方千米', 1e6), uLin('ha', '公顷', 1e4), uLin('a', '公亩', 100),
+        uLin('m²', '平方米', 1), uLin('dm²', '平方分米', 0.01),
+        uLin('cm²', '平方厘米', 1e-4), uLin('mm²', '平方毫米', 1e-6)
+      ]},
+      { name: '英制', units: [
+        uLin('mi²', '平方英里', 2589988.110336), uLin('ac', '英亩', 4046.8564224),
+        uLin('yd²', '平方码', 0.83612736), uLin('ft²', '平方英尺', 0.09290304),
+        uLin('in²', '平方英寸', 0.00064516)
+      ]}
+    ]},
+    { key: 'volume', name: '体积', base: 'm³', subs: [
+      { name: '公制', units: [
+        uLin('m³', '立方米', 1), uLin('L', '升', 0.001), uLin('mL', '毫升', 1e-6),
+        uLin('cm³', '立方厘米', 1e-6), uLin('mm³', '立方毫米', 1e-9)
+      ]},
+      { name: '美制', units: [
+        uLin('gal', '加仑(美)', 0.003785411784), uLin('qt', '夸脱(美)', 0.000946352946),
+        uLin('pt', '品脱(美)', 0.000473176473), uLin('cup', '杯(美)', 0.0002365882365),
+        uLin('floz', '液量盎司(美)', 2.95735295625e-5), uLin('in³', '立方英寸', 1.6387064e-5)
+      ]},
+      { name: '英制', units: [
+        uLin('gal', '加仑(英)', 0.00454609), uLin('pt', '品脱(英)', 0.00056826125),
+        uLin('floz', '液量盎司(英)', 2.84130625e-5)
+      ]}
+    ]},
+    { key: 'mass', name: '质量', base: 'kg', subs: [
+      { name: '公制', units: [
+        uLin('t', '吨', 1000), uLin('kg', '千克', 1), uLin('hg', '百克', 0.1),
+        uLin('dag', '十克', 0.01), uLin('g', '克', 0.001), uLin('mg', '毫克', 1e-6),
+        uLin('µg', '微克', 1e-9)
+      ]},
+      { name: '英制', units: [
+        uLin('LT', '英吨', 1016.0469088), uLin('ton', '美吨', 907.18474),
+        uLin('st', '英石', 6.35029318), uLin('lb', '磅', 0.45359237),
+        uLin('oz', '盎司', 0.028349523125), uLin('gr', '格令', 6.479891e-5)
+      ]},
+      { name: '中国市制', units: [
+        uLin('斤', '斤', 0.5), uLin('两', '两', 0.05), uLin('钱', '钱', 0.005)
+      ]}
+    ]},
+    { key: 'time', name: '时间', base: 's', subs: [
+      { name: '常用', units: [
+        uLin('年', '年(365.25天)', 31557600), uLin('月', '月(1/12年)', 2629800),
+        uLin('周', '周', 604800), uLin('天', '天', 86400), uLin('时', '小时', 3600),
+        uLin('分', '分钟', 60), uLin('秒', '秒', 1), uLin('ms', '毫秒', 1e-3),
+        uLin('µs', '微秒', 1e-6), uLin('ns', '纳秒', 1e-9)
+      ]}
+    ]},
+    { key: 'temperature', name: '温度', base: 'K', minBase: 0, subs: [
+      { name: '常用', units: [
+        uLin('K', '开尔文', 1), uOff('°C', '摄氏度', 1, 273.15),
+        uOff('°F', '华氏度', 5 / 9, 459.67 * 5 / 9), uLin('°R', '兰氏度', 5 / 9)
+      ]}
+    ]},
+    { key: 'speed', name: '速度', base: 'm/s', subs: [
+      { name: '常用', units: [
+        uLin('m/s', '米/秒', 1), uLin('km/h', '千米/时', 1 / 3.6),
+        uLin('km/s', '千米/秒', 1000), uLin('cm/s', '厘米/秒', 0.01),
+        uLin('mph', '英里/时', 0.44704), uLin('kn', '节', 1852 / 3600),
+        uLin('ft/s', '英尺/秒', 0.3048), uLin('Ma', '马赫(20℃)', 343),
+        uLin('c', '光速', 299792458)
+      ]}
+    ]},
+    { key: 'force', name: '力', base: 'N', subs: [
+      { name: '常用', units: [
+        uLin('kN', '千牛', 1000), uLin('N', '牛顿', 1), uLin('dyn', '达因', 1e-5),
+        uLin('kgf', '千克力', 9.80665), uLin('lbf', '磅力', 4.4482216152605),
+        uLin('pdl', '磅达', 0.138254954376)
+      ]}
+    ]},
+    { key: 'energy', name: '能量', base: 'J', subs: [
+      { name: '常用', units: [
+        uLin('MJ', '兆焦', 1e6), uLin('kJ', '千焦', 1000), uLin('J', '焦耳', 1),
+        uLin('erg', '尔格', 1e-7), uLin('cal', '卡', 4.184), uLin('kcal', '千卡', 4184),
+        uLin('Wh', '瓦时', 3600), uLin('kWh', '千瓦时', 3.6e6),
+        uLin('BTU', '英热单位', 1055.05585262), uLin('eV', '电子伏', 1.602176634e-19)
+      ]}
+    ]},
+    { key: 'power', name: '功率', base: 'W', subs: [
+      { name: '常用', units: [
+        uLin('MW', '兆瓦', 1e6), uLin('kW', '千瓦', 1000), uLin('W', '瓦特', 1),
+        uLin('hp', '马力(英)', 745.6998715822702), uLin('PS', '马力(公制)', 735.49875),
+        uLin('kcal/h', '千卡/时', 1.163), uLin('BTU/h', '英热单位/时', 0.2930710701722222)
+      ]}
+    ]},
+    { key: 'pressure', name: '压强', base: 'Pa', subs: [
+      { name: '常用', units: [
+        uLin('MPa', '兆帕', 1e6), uLin('kPa', '千帕', 1000), uLin('hPa', '百帕', 100),
+        uLin('Pa', '帕斯卡', 1), uLin('bar', '巴', 1e5), uLin('mbar', '毫巴', 100),
+        uLin('atm', '标准大气压', 101325), uLin('at', '工程大气压', 98066.5),
+        uLin('mmHg', '毫米汞柱', 133.322387415), uLin('Torr', '托', 101325 / 760),
+        uLin('psi', '磅力/平方英寸', 6894.757293168)
+      ]}
+    ]},
+    { key: 'frequency', name: '频率', base: 'Hz', subs: [
+      { name: '常用', units: [
+        uLin('THz', '太赫', 1e12), uLin('GHz', '吉赫', 1e9), uLin('MHz', '兆赫', 1e6),
+        uLin('kHz', '千赫', 1e3), uLin('Hz', '赫兹', 1), uLin('rps', '转/秒', 1),
+        uLin('rpm', '转/分', 1 / 60)
+      ]}
+    ]},
+    { key: 'angle', name: '角度', base: 'rad', subs: [
+      { name: '常用', units: [
+        uLin('rad', '弧度', 1), uLin('°', '度', Math.PI / 180),
+        uLin('′', '角分', Math.PI / 10800), uLin('″', '角秒', Math.PI / 648000),
+        uLin('grad', '百分度', Math.PI / 200), uLin('圈', '圈', Math.PI * 2),
+        uLin('mrad', '毫弧度', 0.001)
+      ]}
+    ]},
+    { key: 'data', name: '数据存储', base: 'B', subs: [
+      { name: '十进制(SI)', units: [
+        uLin('PB', '拍字节', 1e15), uLin('TB', '太字节', 1e12), uLin('GB', '吉字节', 1e9),
+        uLin('MB', '兆字节', 1e6), uLin('kB', '千字节', 1e3), uLin('B', '字节', 1)
+      ]},
+      { name: '二进制(IEC)', units: [
+        uLin('PiB', '皮比字节', 1125899906842624), uLin('TiB', '太比字节', 1099511627776),
+        uLin('GiB', '吉比字节', 1073741824), uLin('MiB', '兆比字节', 1048576),
+        uLin('KiB', '千比字节', 1024)
+      ]},
+      { name: '位(bit)', units: [
+        uLin('Gbit', '吉比特', 1.25e8), uLin('Mbit', '兆比特', 1.25e5),
+        uLin('kbit', '千比特', 125), uLin('bit', '比特', 0.125)
+      ]}
+    ]},
+    { key: 'datarate', name: '数据速率', base: 'B/s', subs: [
+      { name: '十进制(SI)', units: [
+        uLin('GB/s', '吉字节/秒', 1e9), uLin('MB/s', '兆字节/秒', 1e6),
+        uLin('kB/s', '千字节/秒', 1e3), uLin('B/s', '字节/秒', 1)
+      ]},
+      { name: '二进制(IEC)', units: [
+        uLin('GiB/s', '吉比字节/秒', 1073741824), uLin('MiB/s', '兆比字节/秒', 1048576),
+        uLin('KiB/s', '千比字节/秒', 1024)
+      ]},
+      { name: '网络(bit/s)', units: [
+        uLin('Gbit/s', '吉比特/秒', 1.25e8), uLin('Mbit/s', '兆比特/秒', 1.25e5),
+        uLin('kbit/s', '千比特/秒', 125), uLin('bit/s', '比特/秒', 0.125)
+      ]}
+    ]},
+    { key: 'current', name: '电流', base: 'A', subs: [
+      { name: '常用', units: [
+        uLin('kA', '千安', 1000), uLin('A', '安培', 1), uLin('mA', '毫安', 1e-3),
+        uLin('µA', '微安', 1e-6), uLin('nA', '纳安', 1e-9)
+      ]}
+    ]},
+    { key: 'voltage', name: '电压', base: 'V', subs: [
+      { name: '常用', units: [
+        uLin('kV', '千伏', 1000), uLin('V', '伏特', 1), uLin('mV', '毫伏', 1e-3),
+        uLin('µV', '微伏', 1e-6)
+      ]}
+    ]},
+    { key: 'resistance', name: '电阻', base: 'Ω', subs: [
+      { name: '常用', units: [
+        uLin('MΩ', '兆欧', 1e6), uLin('kΩ', '千欧', 1000), uLin('Ω', '欧姆', 1),
+        uLin('mΩ', '毫欧', 1e-3), uLin('µΩ', '微欧', 1e-6)
+      ]}
+    ]},
+    { key: 'capacitance', name: '电容', base: 'F', subs: [
+      { name: '常用', units: [
+        uLin('F', '法拉', 1), uLin('mF', '毫法', 1e-3), uLin('µF', '微法', 1e-6),
+        uLin('nF', '纳法', 1e-9), uLin('pF', '皮法', 1e-12)
+      ]}
+    ]},
+    { key: 'inductance', name: '电感', base: 'H', subs: [
+      { name: '常用', units: [
+        uLin('H', '亨利', 1), uLin('mH', '毫亨', 1e-3), uLin('µH', '微亨', 1e-6),
+        uLin('nH', '纳亨', 1e-9)
+      ]}
+    ]},
+    { key: 'charge', name: '电荷', base: 'C', subs: [
+      { name: '常用', units: [
+        uLin('kC', '千库', 1000), uLin('C', '库仑', 1), uLin('mC', '毫库', 1e-3),
+        uLin('Ah', '安时', 3600), uLin('mAh', '毫安时', 3.6),
+        uLin('e', '元电荷', 1.602176634e-19)
+      ]}
+    ]},
+    { key: 'substance', name: '物质的量', base: 'mol', subs: [
+      { name: '常用', units: [
+        uLin('kmol', '千摩尔', 1000), uLin('mol', '摩尔', 1), uLin('mmol', '毫摩尔', 1e-3),
+        uLin('µmol', '微摩尔', 1e-6)
+      ]}
+    ]},
+    { key: 'luminous', name: '发光强度', base: 'cd', subs: [
+      { name: '常用', units: [
+        uLin('cd', '坎德拉', 1), uLin('烛光', '烛光', 1)
+      ]}
+    ]},
+    { key: 'radiation', name: '辐射剂量', base: 'Gy', subs: [
+      { name: '常用', units: [
+        uLin('kGy', '千戈瑞', 1000), uLin('Gy', '戈瑞', 1), uLin('mGy', '毫戈瑞', 1e-3),
+        uLin('rad', '拉德', 0.01), uLin('Sv', '希沃特', 1), uLin('mSv', '毫希沃特', 1e-3),
+        uLin('rem', '雷姆', 0.01)
+      ]}
+    ]}
+  ];
+
+  var unitCat = $('unitCat'), unitSub = $('unitSub'), unitSubWrap = $('unitSubWrap');
+  var unitInNum = $('unitInNum'), unitInUnit = $('unitInUnit'), unitOutUnit = $('unitOutUnit');
+  var unitOutNum = $('unitOutNum'), unitMeta = $('unitMeta');
+  var unitSwapBtn = $('unitSwapBtn'), unitResetBtn = $('unitResetBtn');
+  var unitCatIdx = 0, unitSubKey = 'all', unitCurUnits = [];
+
+  function unitList(catIdx, subKey) {
+    var cat = UNIT_CATS[catIdx];
+    if (subKey === 'all') {
+      var all = [];
+      cat.subs.forEach(function (s) { all = all.concat(s.units); });
+      return all;
+    }
+    return cat.subs[Number(subKey)].units;
+  }
+  function unitSave() {
+    try {
+      localStorage.setItem('mp_unit_state', JSON.stringify({
+        cat: unitCatIdx, sub: unitSubKey,
+        inSym: unitCurUnits[unitInUnit.value] ? unitCurUnits[unitInUnit.value].sym : '',
+        outSym: unitCurUnits[unitOutUnit.value] ? unitCurUnits[unitOutUnit.value].sym : '',
+        num: unitInNum.value
+      }));
+    } catch (_) {}
+  }
+  function unitLoad() {
+    try { return JSON.parse(localStorage.getItem('mp_unit_state') || 'null'); }
+    catch (_) { return null; }
+  }
+  function formatUnitNum(v) {
+    if (!isFinite(v)) return '—';
+    if (v === 0) return '0';
+    var a = Math.abs(v);
+    if (a >= 1e15 || a < 1e-7) {
+      return v.toExponential(9).replace(/(\.\d*?)0+([eE])/, '$1$2').replace(/\.([eE])/, '$1');
+    }
+    return String(parseFloat(v.toPrecision(12)));
+  }
+  function rebuildUnitSelects(saved) {
+    unitCurUnits = unitList(unitCatIdx, unitSubKey);
+    unitInUnit.innerHTML = ''; unitOutUnit.innerHTML = '';
+    unitCurUnits.forEach(function (u, i) {
+      var op1 = document.createElement('option'), op2 = document.createElement('option');
+      op1.value = op2.value = String(i);
+      op1.textContent = op2.textContent = u.sym + ' · ' + u.name;
+      unitInUnit.appendChild(op1); unitOutUnit.appendChild(op2);
+    });
+    var inIdx = 0, outIdx = unitCurUnits.length > 1 ? 1 : 0;
+    if (saved) {
+      var si = -1, so = -1;
+      unitCurUnits.forEach(function (u, i) {
+        if (u.sym === saved.inSym) si = i;
+        if (u.sym === saved.outSym) so = i;
+      });
+      if (si >= 0) inIdx = si;
+      if (so >= 0) outIdx = so;
+      if (typeof saved.num === 'string' && saved.num !== '') unitInNum.value = saved.num;
+    }
+    unitInUnit.value = String(inIdx); unitOutUnit.value = String(outIdx);
+  }
+  function onUnitCatChange(restore) {
+    unitCatIdx = Number(unitCat.value) || 0;
+    var cat = UNIT_CATS[unitCatIdx];
+    var saved = restore ? unitLoad() : null;
+    unitSub.innerHTML = '';
+    var opts = [{ name: '全部', key: 'all' }];
+    if (cat.subs.length > 1) {
+      cat.subs.forEach(function (s, i) { opts.push({ name: s.name, key: String(i) }); });
+    }
+    opts.forEach(function (o) {
+      var op = document.createElement('option');
+      op.value = o.key; op.textContent = o.name; unitSub.appendChild(op);
+    });
+    unitSubWrap.hidden = cat.subs.length <= 1;
+    var wantSub = saved && saved.cat === unitCatIdx ? saved.sub : 'all';
+    var valid = opts.some(function (o) { return o.key === wantSub; });
+    unitSubKey = valid ? wantSub : 'all';
+    unitSub.value = unitSubKey;
+    rebuildUnitSelects(saved && saved.cat === unitCatIdx ? saved : null);
+    convertUnit();
+  }
+  function convertUnit() {
+    if (!unitCat || !unitInNum) return;
+    var txt = String(unitInNum.value).trim();
+    var v = Number(txt);
+    unitOutNum.classList.remove('err');
+    if (!txt || !isFinite(v)) {
+      unitOutNum.textContent = '—'; unitMeta.innerHTML = ''; return;
+    }
+    var inU = unitCurUnits[Number(unitInUnit.value)];
+    var outU = unitCurUnits[Number(unitOutUnit.value)];
+    if (!inU || !outU) return;
+    var base = inU.to(v);
+    var cat = UNIT_CATS[unitCatIdx];
+    if (cat.minBase != null && base < cat.minBase - 1e-9) {
+      unitOutNum.textContent = '低于绝对零度'; unitOutNum.classList.add('err');
+      unitMeta.innerHTML = ''; return;
+    }
+    var res = outU.from(base);
+    if (!isFinite(res)) {
+      unitOutNum.textContent = '—'; unitMeta.innerHTML = ''; return;
+    }
+    unitOutNum.textContent = formatUnitNum(res);
+    var one = outU.from(inU.to(1));
+    unitMeta.innerHTML =
+      '<span>换算关系：<b>1 ' + esc(inU.sym) + ' = ' + esc(formatUnitNum(one)) + ' ' + esc(outU.sym) + '</b></span>' +
+      '<span>基准单位：<b>' + esc(cat.base) + '</b></span>' +
+      '<span>类别：<b>' + esc(cat.name) + '</b></span>';
+    unitSave();
+  }
+  function initUnit() {
+    if (!unitCat) return;
+    UNIT_CATS.forEach(function (cat, i) {
+      var op = document.createElement('option');
+      op.value = String(i); op.textContent = cat.name; unitCat.appendChild(op);
+    });
+    var saved = unitLoad();
+    if (saved && UNIT_CATS[saved.cat]) unitCat.value = String(saved.cat);
+    onUnitCatChange(true);
+    unitCat.addEventListener('change', function () { onUnitCatChange(false); });
+    unitSub.addEventListener('change', function () {
+      unitSubKey = unitSub.value;
+      var s = unitLoad();
+      rebuildUnitSelects(s && s.cat === unitCatIdx ? s : null);
+      convertUnit();
+    });
+    unitInNum.addEventListener('input', convertUnit);
+    unitInUnit.addEventListener('change', convertUnit);
+    unitOutUnit.addEventListener('change', convertUnit);
+    unitSwapBtn.addEventListener('click', function () {
+      var a = unitInUnit.value, b = unitOutUnit.value;
+      unitInUnit.value = b; unitOutUnit.value = a;
+      var out = unitOutNum.textContent;
+      if (out && out !== '—' && !unitOutNum.classList.contains('err')) unitInNum.value = out;
+      convertUnit();
+    });
+    unitResetBtn.addEventListener('click', function () {
+      unitInNum.value = '1'; unitSubKey = 'all'; unitSub.value = 'all';
+      rebuildUnitSelects(null); convertUnit();
+    });
+    bindCopy(unitOutNum, function () {
+      var t = unitOutNum.textContent;
+      return (t && t !== '—' && !unitOutNum.classList.contains('err')) ? t : '';
+    });
+  }
+  initUnit();
+
   // 初始渲染
   convertBase();
   computeCRC();
@@ -14860,7 +17232,33 @@ boot();
     solarToLunar: solarToLunar, solarTermOfDate: solarTermOfDate,
     TIME_FORMATS: TIME_FORMATS, autoCopyEnabled: autoCopyEnabled,
     openCalPicker: openCalPicker, closeCalPicker: closeCalPicker,
-    calPickerShown: function () { return !calPick.hidden; }
+    calPickerShown: function () { return !calPick.hidden; },
+    UNIT_CATS: UNIT_CATS, convertUnit: convertUnit, formatUnitNum: formatUnitNum,
+    unitState: function () {
+      var iu = unitCurUnits[Number(unitInUnit.value)], ou = unitCurUnits[Number(unitOutUnit.value)];
+      return {
+        cat: unitCatIdx, sub: unitSubKey,
+        inSym: iu ? iu.sym : '', outSym: ou ? ou.sym : '',
+        input: unitInNum.value, output: unitOutNum.textContent,
+        subHidden: unitSubWrap.hidden
+      };
+    },
+    unitSet: function (catIdx, subKey, input, inSym, outSym) {
+      unitCat.value = String(catIdx);
+      onUnitCatChange(false);
+      unitSubKey = String(subKey); unitSub.value = unitSubKey;
+      rebuildUnitSelects(null);
+      unitInNum.value = String(input);
+      var si = -1, so = -1;
+      unitCurUnits.forEach(function (u, i) {
+        if (u.sym === inSym) si = i;
+        if (u.sym === outSym) so = i;
+      });
+      if (si >= 0) unitInUnit.value = String(si);
+      if (so >= 0) unitOutUnit.value = String(so);
+      convertUnit();
+      return unitOutNum.textContent;
+    }
   };
 })();
 </script>
